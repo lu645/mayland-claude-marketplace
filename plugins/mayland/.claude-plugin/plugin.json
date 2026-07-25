@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "mayland",
+  "displayName": "Mayland",
+  "version": "0.2.0+c084a217980f1aabafbc735209a92ea8ae70e36a",
+  "description": "Produce brand-safe emails through the attested Mayland MCP release.",
+  "author": {
+    "name": "Mayland"
+  },
+  "homepage": "https://mayland.frondorf.co",
+  "repository": "https://github.com/lu645/mayland-claude-marketplace",
+  "keywords": [
+    "email",
+    "production",
+    "mcp"
+  ]
+}

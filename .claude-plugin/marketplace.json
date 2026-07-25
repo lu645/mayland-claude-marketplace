@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "mayland",
+  "owner": {
+    "name": "Mayland",
+    "url": "https://mayland.frondorf.co"
+  },
+  "description": "Official Mayland plugins for brand-safe email production.",
+  "plugins": [
+    {
+      "name": "mayland",
+      "displayName": "Mayland",
+      "source": "./plugins/mayland",
+      "description": "Connect Claude Desktop to the attested Mayland email production MCP release.",
+      "version": "0.2.0+c084a217980f1aabafbc735209a92ea8ae70e36a",
+      "author": {
+        "name": "Mayland"
+      },
+      "homepage": "https://mayland.frondorf.co",
+      "repository": "https://github.com/lu645/mayland-claude-marketplace",
+      "keywords": [
+        "email",
+        "production",
+        "mcp"
+      ],
+      "strict": true
+    }
+  ]
+}
