@@ -5,14 +5,14 @@
     "name": "Mayland",
     "url": "https://mayland.frondorf.co"
   },
-  "description": "Official Mayland plugins for brand-safe email production.",
+  "description": "Official Mayland plugins for verified brand catalogs and brand-safe email production.",
   "plugins": [
     {
       "name": "mayland",
       "displayName": "Mayland",
       "source": "./plugins/mayland",
-      "description": "Connect Claude Desktop to the attested Mayland email production MCP release.",
-      "version": "0.2.0+d78ff7c9be0ddfbadba2afbd83ec584ee37208cd",
+      "description": "Research verified public brand catalogs and produce brand-safe emails through Mayland.",
+      "version": "0.2.1",
       "author": {
         "name": "Mayland"
       },
@@ -20,6 +20,9 @@
       "repository": "https://github.com/lu645/mayland-claude-marketplace",
       "keywords": [
         "email",
+        "brand",
+        "catalog",
+        "products",
         "production",
         "mcp"
       ],
