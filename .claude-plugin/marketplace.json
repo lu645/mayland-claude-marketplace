@@ -12,7 +12,7 @@
       "displayName": "Mayland",
       "source": "./plugins/mayland",
       "description": "Connect Claude Desktop to the attested Mayland email production MCP release.",
-      "version": "0.2.0+c084a217980f1aabafbc735209a92ea8ae70e36a",
+      "version": "0.2.0+d78ff7c9be0ddfbadba2afbd83ec584ee37208cd",
       "author": {
         "name": "Mayland"
       },
