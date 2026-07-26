@@ -3,6 +3,8 @@
 import { readFile } from "node:fs/promises";
 import { extname, resolve } from "node:path";
 
+const DEFAULT_MAYLAND_UPLOAD_ORIGIN = "https://mayland.frondorf.co";
+
 function fail(message) {
   process.stderr.write(`${message}\n`);
   process.exit(1);
@@ -20,11 +22,43 @@ function contentTypeFromPath(filePath) {
     case ".jpg":
     case ".jpeg":
       return "image/jpeg";
+    case ".gif":
+      return "image/gif";
     case ".webp":
       return "image/webp";
     default:
       return "application/octet-stream";
   }
+}
+
+function isLocalOrigin(url) {
+  return url.protocol === "http:" && /^(localhost|127\.0\.0\.1)$/.test(url.hostname);
+}
+
+function parseConfiguredOrigin(rawOrigin) {
+  const trimmed = rawOrigin?.trim();
+  if (!trimmed) return null;
+
+  let url;
+  try {
+    url = new URL(trimmed);
+  } catch {
+    fail("MAYLAND_UPLOAD_ORIGIN is invalid.");
+  }
+  if (url.pathname !== "/" || url.search || url.hash || url.username || url.password) {
+    fail("MAYLAND_UPLOAD_ORIGIN must be an exact origin.");
+  }
+  if (isLocalOrigin(url)) return url.origin;
+  if (url.protocol !== "https:") fail("MAYLAND_UPLOAD_ORIGIN must use HTTPS unless it is localhost.");
+  return url.origin;
+}
+
+function allowedOrigins() {
+  const configuredOrigin = parseConfiguredOrigin(process.env.MAYLAND_UPLOAD_ORIGIN);
+  return new Set([
+    DEFAULT_MAYLAND_UPLOAD_ORIGIN,
+    ...(configuredOrigin ? [configuredOrigin] : []),
+  ]);
 }
 
 function validateUploadUrl(rawUrl) {
@@ -34,9 +68,15 @@ function validateUploadUrl(rawUrl) {
   } catch {
     fail("Invalid Mayland upload target.");
   }
-  const local = url.protocol === "http:" && /^(localhost|127\.0\.0\.1)$/.test(url.hostname);
+
+  const local = isLocalOrigin(url);
   if (!(url.protocol === "https:" || local)) fail("Mayland upload target must be HTTPS.");
-  if (!url.pathname.startsWith("/api/mcp/reference-upload/")) fail("Unexpected Mayland upload path.");
+  if (!local && !allowedOrigins().has(url.origin)) {
+    fail("Unexpected Mayland upload origin.");
+  }
+  const acceptedPath = url.pathname.startsWith("/api/mcp/reference-upload/")
+    || url.pathname.startsWith("/api/mcp/brand-asset-upload/");
+  if (!acceptedPath) fail("Unexpected Mayland upload path.");
   if (url.username || url.password) fail("Credential-bearing upload URLs are not allowed.");
   return url;
 }
