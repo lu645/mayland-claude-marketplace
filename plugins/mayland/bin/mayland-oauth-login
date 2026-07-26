@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+"""Run Claude MCP OAuth through a socket-safe PTY and open its private handoff URL."""
+
+import errno
+import fcntl
+import os
+import pty
+import re
+import select
+import shutil
+import signal
+import struct
+import subprocess
+import sys
+import termios
+import time
+from urllib.parse import parse_qs, quote, urlsplit
+
+
+ANSI = re.compile(r"\x1b(?:\[[0-?]*[ -/]*[@-~]|\][^\x07]*(?:\x07|\x1b\\))")
+
+
+def valid_oauth_url(candidate, endpoint, client_id, resource, callback):
+    try:
+        parsed = urlsplit(candidate)
+        parsed_endpoint = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
+        query = parse_qs(parsed.query, keep_blank_values=True)
+    except ValueError:
+        return False
+
+    def one(key):
+        values = query.get(key, [])
+        return values if len(values) == 1 else []
+
+    challenge = one("code_challenge")
+    state = one("state")
+    return (
+        parsed_endpoint == endpoint
+        and one("response_type") == ["code"]
+        and one("client_id") == [client_id]
+        and one("redirect_uri") == [callback]
+        and one("code_challenge_method") == ["S256"]
+        and one("resource") == [resource]
+        and len(state) == 1
+        and 16 <= len(state[0]) <= 1024
+        and len(challenge) == 1
+        and re.fullmatch(r"[A-Za-z0-9_-]{43}", challenge[0]) is not None
+    )
+
+
+def extract_oauth_url(raw, endpoint, client_id, resource, callback):
+    plain = ANSI.sub("", raw.decode("utf-8", "ignore"))
+    variants = [plain]
+    variants.extend(
+        block.replace("\r", "").replace("\n", "")
+        for block in re.split(r"\r?\n\s*\r?\n", plain)
+    )
+    url_pattern = re.compile(re.escape(endpoint) + r"\?[^\s\x00-\x1f<>\"]+")
+    encoded_resource = quote(resource, safe="")
+
+    for variant in reversed(variants):
+        for match in reversed(list(url_pattern.finditer(variant))):
+            candidate = match.group(0)
+            options = [candidate]
+            marker_at = candidate.find(encoded_resource)
+            if marker_at >= 0:
+                options.insert(0, candidate[:marker_at + len(encoded_resource)])
+            for option in options:
+                if valid_oauth_url(option, endpoint, client_id, resource, callback):
+                    return option
+    return None
+
+
+def open_browser(url):
+    if sys.platform == "darwin":
+        command = ["open", url]
+    elif os.environ.get("WSL_DISTRO_NAME") and shutil.which("wslview"):
+        command = ["wslview", url]
+    elif shutil.which("xdg-open"):
+        command = ["xdg-open", url]
+    elif shutil.which("wslview"):
+        command = ["wslview", url]
+    else:
+        raise RuntimeError("No supported browser opener is available")
+
+    completed = subprocess.run(
+        command,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise RuntimeError(f"Browser opener exited with status {completed.returncode}")
+
+
+def wait_for_child(child_pid):
+    waited_pid, raw_status = os.waitpid(child_pid, os.WNOHANG)
+    if waited_pid == 0:
+        return None
+    return os.waitstatus_to_exitcode(raw_status)
+
+
+def terminate_child(child_pid):
+    try:
+        os.kill(child_pid, signal.SIGTERM)
+    except ProcessLookupError:
+        return
+
+    deadline = time.monotonic() + 2
+    while time.monotonic() < deadline:
+        if wait_for_child(child_pid) is not None:
+            return
+        time.sleep(0.05)
+
+    try:
+        os.kill(child_pid, signal.SIGKILL)
+    except ProcessLookupError:
+        return
+    os.waitpid(child_pid, 0)
+
+
+def run_login(server, endpoint, client_id, resource, callback):
+    env = os.environ.copy()
+    env.update({"COLUMNS": "8192", "LINES": "24", "TERM": env.get("TERM", "xterm-256color")})
+    child_pid, master = pty.fork()
+    if child_pid == 0:
+        os.execvpe(
+            "claude",
+            ["claude", "mcp", "login", "--no-browser", server],
+            env,
+        )
+
+    fcntl.ioctl(master, termios.TIOCSWINSZ, struct.pack("HHHH", 24, 8192, 0, 0))
+    captured = bytearray()
+    opened = False
+    child_status = None
+    deadline = time.monotonic() + 600
+
+    try:
+        while True:
+            readable, _, _ = select.select([master], [], [], 0.1)
+            if readable:
+                try:
+                    chunk = os.read(master, 65536)
+                except OSError as error:
+                    if error.errno != errno.EIO:
+                        raise
+                    chunk = b""
+                if chunk:
+                    captured.extend(chunk)
+                    if len(captured) > 1048576:
+                        del captured[:-1048576]
+                    if not opened:
+                        oauth_url = extract_oauth_url(
+                            captured,
+                            endpoint,
+                            client_id,
+                            resource,
+                            callback,
+                        )
+                        if oauth_url:
+                            open_browser(oauth_url)
+                            opened = True
+                            print(
+                                "Mayland OAuth opened; waiting for the localhost callback.",
+                                flush=True,
+                            )
+
+            child_status = wait_for_child(child_pid)
+            if child_status is not None:
+                break
+            if time.monotonic() >= deadline:
+                raise RuntimeError(
+                    "Claude MCP login timed out waiting for the localhost callback"
+                )
+    finally:
+        os.close(master)
+        if child_status is None:
+            terminate_child(child_pid)
+
+    if not opened:
+        raise RuntimeError("Claude did not emit a valid Mayland OAuth URL")
+    if child_status != 0:
+        raise RuntimeError(f"Claude MCP login exited with status {child_status}")
+    print("Mayland OAuth callback completed.", flush=True)
+
+
+def main():
+    if len(sys.argv) != 6:
+        raise RuntimeError(
+            "Usage: mayland-oauth-login SERVER ENDPOINT CLIENT_ID RESOURCE CALLBACK"
+        )
+    run_login(*sys.argv[1:])
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (OSError, RuntimeError) as error:
+        print(f"Mayland OAuth failed: {error}", file=sys.stderr)
+        sys.exit(1)
