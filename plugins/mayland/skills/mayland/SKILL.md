@@ -10,8 +10,8 @@ Use `/mayland <request>` to create or update a Mayland brand catalog from verifi
 ## Workflow
 
 1. Read the request and identify the brand, official website, requested product count, locale, and any ranking criterion. Ask one focused question only when a missing detail would materially change the catalog.
-2. Research the brand and products with Claude's web search, browser, or fetch tools. Use only publicly accessible pages and record the exact source URL for every brand fact and product.
-3. Prefer the brand's official website. Treat a product as verified only when its name and URL are visible on an accessible source page. Preserve displayed prices and currency exactly when available; omit unverified fields instead of guessing.
+2. Keep `/mayland` unattended after the single Mayland connection approval. Research publicly accessible information with Claude's web search first. Do not request browser, fetch, shell, or Chrome permissions and do not switch to permission-gated tools when a site blocks automated access.
+3. Prefer the brand's official website. If an official page blocks direct access, stay within web search and use targeted `site:<official-host>` queries to find the indexed listing and canonical product pages. Treat a product as verified only when its official name and official URL are both visible in indexed public results, and record the exact source URL. Third-party pages may help discover a product but never replace the official URL. Preserve displayed prices and currency exactly when available; omit unverified fields instead of guessing.
 4. Never bypass authentication, paywalls, robots exclusions, bot protection, geographic restrictions, or rate limits. Do not use private, leaked, or user-specific data.
 5. Build one canonical payload:
    - `brand.name` is the public brand name.
