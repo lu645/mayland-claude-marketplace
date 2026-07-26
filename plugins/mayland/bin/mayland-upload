@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+import { readFile } from "node:fs/promises";
+import { extname, resolve } from "node:path";
+
+function fail(message) {
+  process.stderr.write(`${message}\n`);
+  process.exit(1);
+}
+
+function contentTypeFromPath(filePath) {
+  switch (extname(filePath).toLowerCase()) {
+    case ".html":
+    case ".htm":
+      return "text/html";
+    case ".eml":
+      return "message/rfc822";
+    case ".png":
+      return "image/png";
+    case ".jpg":
+    case ".jpeg":
+      return "image/jpeg";
+    case ".webp":
+      return "image/webp";
+    default:
+      return "application/octet-stream";
+  }
+}
+
+function validateUploadUrl(rawUrl) {
+  let url;
+  try {
+    url = new URL(rawUrl);
+  } catch {
+    fail("Invalid Mayland upload target.");
+  }
+  const local = url.protocol === "http:" && /^(localhost|127\.0\.0\.1)$/.test(url.hostname);
+  if (!(url.protocol === "https:" || local)) fail("Mayland upload target must be HTTPS.");
+  if (!url.pathname.startsWith("/api/mcp/reference-upload/")) fail("Unexpected Mayland upload path.");
+  if (url.username || url.password) fail("Credential-bearing upload URLs are not allowed.");
+  return url;
+}
+
+const [, , rawUploadUrl, rawFilePath] = process.argv;
+if (!rawUploadUrl || !rawFilePath) {
+  fail("Usage: mayland-upload <upload-url> <file-path>");
+}
+
+const uploadUrl = validateUploadUrl(rawUploadUrl);
+const filePath = resolve(rawFilePath);
+const bytes = await readFile(filePath).catch(() => fail("Could not read the local file."));
+if (!bytes || bytes.byteLength === 0) fail("The local file is empty.");
+
+const response = await fetch(uploadUrl, {
+  method: "POST",
+  headers: {
+    "content-type": contentTypeFromPath(filePath),
+  },
+  body: bytes,
+}).catch(() => fail("Mayland upload failed."));
+
+if (!response.ok) {
+  fail("Mayland upload failed.");
+}
+
+const payload = await response.json().catch(() => ({}));
+if (!payload || payload.uploaded !== true) {
+  fail("Mayland upload response was incomplete.");
+}
+process.stdout.write("Upload complete.\n");

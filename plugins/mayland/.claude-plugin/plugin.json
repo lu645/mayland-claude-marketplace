@@ -2,13 +2,11 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "mayland",
   "displayName": "Mayland",
-  "version": "0.2.3",
+  "version": "0.2.6",
   "description": "Research verified public brand catalogs and produce brand-safe emails through Mayland.",
   "author": {
     "name": "Mayland"
   },
-  "homepage": "https://mayland.frondorf.co",
-  "repository": "https://github.com/lu645/mayland-claude-marketplace",
   "keywords": [
     "email",
     "brand",
