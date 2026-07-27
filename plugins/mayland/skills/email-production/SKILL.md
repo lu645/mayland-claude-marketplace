@@ -17,10 +17,19 @@ missing, say so and stop. Never substitute a plausible one.
 
 Before you design anything:
 
-1. `get_brand_context` for a fresh context pack. Re-read it after any interruption.
-2. `list_products` and `get_product_context` for the products the mail actually promotes.
-3. `list_reference_emails`, then `get_reference_email` for the ones that match the occasion.
-4. `list_approved_learnings` for what this brand has already agreed to.
+1. `list_campaigns` for the brand, and settle where this mail belongs before anything else.
+   Every email lives on exactly one campaign board. Show the user the boards you found and ask
+   which one this mail belongs to. If none of them fits, offer to open a new board and call
+   `create_campaign` only after the user names it. Never guess the board and never silently let
+   the mail fall into Unassigned. A campaign is a board that holds emails, which is a different
+   thing from a campaign goal: goals are reusable briefing intents and hold nothing.
+2. `get_brand_context` for a fresh context pack. Re-read it after any interruption.
+3. `list_products` and `get_product_context` for the products the mail actually promotes.
+4. `list_reference_emails`, then `get_reference_email` for the ones that match the occasion.
+5. `list_approved_learnings` for what this brand has already agreed to.
+
+Settle the campaign before you mint the pack. A pack goes stale while you talk, and the board
+question is a conversation with the user, not a lookup.
 
 Read the brand profile as a design brief, not as decoration:
 
@@ -122,7 +131,9 @@ only urgency that is actually true.
 
 ## Build in Mayledit
 
-1. `create_email` with the brand, the title and the brief. This drafts the document.
+1. `create_email` with the brand, the campaign the user picked in Step 0, the title and the
+   brief. This drafts the document. Omitting the campaign drops the mail onto the brand's
+   Unassigned board, which is a fallback and not a decision you are allowed to make for the user.
 2. `acquire_email_lock` before mutating, and heartbeat it while you work.
 3. `get_email_wip` to read the current document before every batch.
 4. `apply_email_batch` to place work. Use `set_document_metadata` for name, subject and

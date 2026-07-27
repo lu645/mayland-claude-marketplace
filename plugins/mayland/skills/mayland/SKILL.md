@@ -13,8 +13,9 @@ Use `/mayland <request>` to create or update a Mayland brand catalog from verifi
 
 When a user asks what Mayland can do, answer in plain language and organize the
 answer around outcomes such as researching a Brand, maintaining its catalog,
-creating and refining Emails, preparing Client Review, and publishing finished
-work. Offer two or three short example tasks the user can paste next.
+organizing its emails into campaigns, creating and refining Emails, preparing
+Client Review, and publishing finished work. Offer two or three short
+example tasks the user can paste next.
 
 Never list, expose, or explain internal operation names, MCP routes, server
 identifiers, authentication material, or implementation details in a normal
@@ -45,6 +46,15 @@ developer or support request explicitly asks for diagnostics.
 13. When Mayland needs a verified local logo or other local Brand image that it cannot fetch directly, issue the Brand asset handoff, run `mayland-upload "<uploadUrl>" "/absolute/path/to/file"` exactly once, then create the Brand asset with the same Brand and role. Verify the saved asset with `get_brand` or `list_assets`. Mayland never asks the user to authenticate, upload manually, or expose the token.
 14. When content is available, call `create_reference_email` exactly once with the supported external fields only. Never send internal aliases such as `body`, `fileName`, `contentType`, `contentUrl`, `contextPackId`, `contextPackHash`, raw MCP routes, or internal server identifiers. Treat recipient-specific links, tracking parameters, unsubscribe tokens, email addresses, and personal coupon codes as private input that Mayland will remove; never repeat them in the user-facing result.
 15. Verify a created reference with `get_reference_email`. Confirm the returned screenshot asset is present (non-null), count any processing warnings, and report that warning count in plain language in the final summary. Then return a concise result summary with the saved brand, created or updated product count, reference verification status, and the exact public source URLs. Clearly identify any requested item that could not be verified or saved.
+
+## Campaigns
+
+A Brand's emails are grouped onto campaign boards and every email belongs to exactly one, with a
+per-brand Unassigned board as the fallback. `list_campaigns` reads a Brand's boards with the
+number of emails on each, and `create_campaign` opens a new one. Neither is a campaign goal: a
+goal is a reusable briefing intent and never holds emails. Catalog work does not touch campaigns,
+so read them when the user asks how a Brand's emails are organized and leave the writing to email
+production, which asks the user which board a new email belongs to.
 
 ## Ranking and safety
 
