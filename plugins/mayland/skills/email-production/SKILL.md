@@ -24,7 +24,11 @@ Before you design anything:
 
 Read the brand profile as a design brief, not as decoration:
 
-- `palette` gives the only colours you may use. Pick one accent and stay with it.
+- `palette` gives the only colours you may use. Pick one accent and stay with it. When the
+  brand sets `primaryColor`, that is the accent; do not choose a different one.
+- `wordmarkUrl` is the brand mark that belongs inside the email, usually in the header.
+  Place it via `insert_node` as an image. `logoUrl` is the app-facing logo; use it in an
+  email only when no wordmark exists.
 - `displayFont`, `letterSpacing`, `imageryStyle` set the type and picture register.
 - `visual` describes the layout system, the module vocabulary and the button treatment.
 - `voiceNote` and `tone` set the register and the form of address.
