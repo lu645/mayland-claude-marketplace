@@ -153,4 +153,5 @@ visible error, so check geometry when something you placed does not appear.
 - Always start from a fresh context pack before mutating production content.
 - Never assume stale local context is still valid after an interruption.
 - Use `/reset` when you switch emails, after a reconnect, or when Mayland reports stale context.
+- On `CONTEXT_PACK_STALE`, fetch a fresh context pack and re-read the brand before continuing.
 - `complete_agent_run` is the only Claude path that can create a final Email Version.
