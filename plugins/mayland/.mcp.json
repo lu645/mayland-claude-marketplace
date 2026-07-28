@@ -2,9 +2,9 @@
   "mcpServers": {
     "mayland-mayland-dev-bx-gkyc4vmsxxpbnuz5ji": {
       "type": "http",
-      "url": "https://mayland.frondorf.co/api/mcp/releases/5edcc80a-25dc-4122-a5eb-e7f6310d12cc",
+      "url": "https://mayland.frondorf.co/api/mcp/releases/c7ab9e0f-9f2c-4c11-bfa8-e809197f3a16",
       "oauth": {
-        "clientId": "mayland-19c2ad3c8d7a",
+        "clientId": "mayland-3fec577b92ba",
         "callbackPort": 49653,
         "authServerMetadataUrl": "https://mayland.frondorf.co/.well-known/oauth-authorization-server"
       }
