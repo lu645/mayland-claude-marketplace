@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "mayland",
   "displayName": "Mayland",
-  "version": "0.4.12",
+  "version": "0.4.13",
   "description": "Research verified public brand catalogs and produce brand-safe emails through Mayland.",
   "author": {
     "name": "Mayland"
