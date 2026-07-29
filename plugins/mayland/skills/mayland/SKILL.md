@@ -34,6 +34,8 @@ developer or support request explicitly asks for diagnostics.
    - `brand.name` is the public brand name.
    - `brand.site` is the official site origin.
    - Fill every verifiable Brand profile field, not just the minimum: `category`, `truth`, `audience`, `visual`, `voiceNote`, `tone`, `palette`, `nogo`, `notes`, `instagram`, `facebook`, `displayFont`, `letterSpacing`, `imageryStyle`, and the deterministic `furniture` footer/benefits block when evidence exists.
+   - These are the catalog write field names. The Brand Context Pack returns the same material
+     under its own read field names, so never carry one vocabulary into the other.
    - `brand.palette` contains canonical hex colors only. Never mix labels, typography notes, CTA names, or semantic tokens into the color list.
    - `products` contains only verified products, in the requested or source-supported order.
    - Each product uses its canonical public URL and a stable `externalId` derived from the site's own product identifier or canonical URL.

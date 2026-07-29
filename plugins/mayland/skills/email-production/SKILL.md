@@ -26,7 +26,8 @@ Before you design anything:
 2. `get_brand_context` for a fresh context pack. Re-read it after any interruption.
 3. `list_products` and `get_product_context` for the products the mail actually promotes.
 4. `list_reference_emails`, then `get_reference_email` for the ones that match the occasion.
-5. `list_approved_learnings` for what this brand has already agreed to.
+5. `list_approved_learnings` for what this brand has already agreed to. These carry the design
+   corrections earlier reviews produced and they bind exactly like the profile does.
 
 Settle the campaign before you mint the pack. A pack goes stale while you talk, and the board
 question is a conversation with the user, not a lookup.
@@ -39,14 +40,27 @@ Read the brand profile as a design brief, not as decoration:
   Place it via `insert_node` as an image. `logoUrl` is the app-facing logo; use it in an
   email only when no wordmark exists.
 - `displayFont`, `letterSpacing`, `imageryStyle` set the type and picture register.
-- `visual` describes the layout system, the module vocabulary and the button treatment.
-- `voiceNote` and `tone` set the register and the form of address.
-- `nogo` is binding. A mail that breaks one of these is wrong even if it looks good.
+- `visualSummary` describes the layout system, the module vocabulary and the button treatment.
+- `voiceSummary` and `tone` set the register and the form of address.
+- `noGo` is binding. A mail that breaks one of these is wrong even if it looks good.
 - `furniture` holds the footer, the legal links and the service benefits. Use it verbatim.
 - Product `truth` and `benefits` are the only claims you may make.
 
-Reference emails set the calibre bar and nothing else. Match their craft level. Never transfer
-their copy, their offers, their block order or their brand marks into new work.
+## What you take from a reference and what you leave
+
+Reference emails are the calibre bar, and reaching it visually is the job. Study one until you can
+name why it reads well, then build that same reading experience with this brand's own material.
+
+Take the craft: the layout system and its column logic, the rhythm of the bands down the page and
+where they change density, the module vocabulary the mail draws from, the type hierarchy and how
+far the sizes are apart, the button treatment, and the way the page breathes between blocks.
+
+Leave everything that belongs to the mail it was made for: its copy, its offers, its prices,
+percentages and other numbers, its images and its brand marks. Those are not craft, they are that
+sender's content, and none of it is true for this brand unless the brand kit says so.
+
+Structural quotation stays a resemblance, never a copy. Two mails may share the same rhythm and
+still read as different mails, and inside one campaign the variation rule below still applies.
 
 Never invent a price, an availability, a discount, a review or a statistic. If the mail needs a
 fact the brand kit does not contain, ask for it.
@@ -117,6 +131,11 @@ Register rules only. Never copy a sample sentence from anywhere, including this 
 the brand's language and form of address. Keep caps for headlines and CTAs, never for body text.
 Never use em dashes.
 
+Text elements carry inline bold: wrap a phrase in `**` markers and it compiles to bold in the
+mail. Use it in running body text for the one phrase the paragraph exists for, at most once per
+paragraph, so a skimming reader still gets the point. Headlines, kickers, CTAs and fine print
+already carry their own weight, so leave the markers out of them.
+
 State any offer with its size, its validity window and where it applies. Push conditions and
 exclusions into the fine print, never into the selling text.
 
@@ -144,14 +163,19 @@ only urgency that is actually true.
    with `get_image_job`. Image generation runs through Mayland so the organization's configured
    model, its policy and its audit trail all apply. Never call an image provider directly.
 6. `compile_email_wip` and read every warning it returns. Warnings are the build talking to you.
-7. Look at the compiled result. Do not approve a mail from metadata alone.
-8. Fix what you found, then compile again. Only `complete_agent_run` creates a final version.
+7. `get_email_preview_image` returns the rendered mail as an image. Look at it the way a reader
+   would: what lands first, what is unreadable at a glance, what collides, where the eye stalls.
+   Never approve a mail from metadata alone. If the connected release does not offer the tool yet,
+   say plainly that you could not see the result instead of calling it good.
+8. Fix what you found, then compile and look again. Only `complete_agent_run` creates a final
+   version.
 
 Keep elements inside the frame. An element placed fully outside it is dropped at compile with no
 visible error, so check geometry when something you placed does not appear.
 
 ## Before you call it done
 
+- You have looked at the rendered preview image, not only at the compile result.
 - Kicker, punchline, sub, button and capsule read as separate steps.
 - Button text is fully visible and nothing overlaps it.
 - No type sits behind product imagery, including word endings.
@@ -161,7 +185,31 @@ visible error, so check geometry when something you placed does not appear.
 - The first CTA sits within the top 800px.
 - Prices and dates are formatted for the brand's language.
 - Nothing on the page is a claim the brand kit does not support.
-- No `nogo` rule is broken.
+- No `noGo` rule is broken.
+
+## After every review
+
+A correction that stays in the conversation is gone on the next run. Learnings are the channel
+that carries design corrections across runs, which makes this step part of the work and not an
+afterthought.
+
+1. Read the review in full: `list_client_review_feedback` for a released version, `get_qa_review_status`
+   for the QA findings, and whatever the user told you in the conversation.
+2. Fix the mail first, then compile and look at the preview again.
+3. Then call `propose_learning` once for every design decision the review rejected. This is
+   mandatory, including when the fix looks obvious to you. `heading` names the decision, `body`
+   states the rule so it holds for the next mail instead of describing this one repair, `evidence`
+   points at the email, the version and the comment it came from. `type` is BRAND for a rule about
+   this brand's design, PRODUCT when it only holds for one product, AGENCY_PLAYBOOK when it holds
+   regardless of brand.
+4. Rejections of copy, of imagery and of layout all belong here. A learning is proposed, not
+   applied: a human approves it, and from then on it reaches every run through
+   `list_approved_learnings`. Do not wait for that approval.
+5. Leave out typos, broken assets and anything the compiler already catches. Learnings are for
+   taste decisions that would otherwise be argued again on the next mail.
+
+`propose_learning` binds to the current context pack, so refresh the pack before proposing when it
+has gone stale.
 
 ## Session hygiene
 
