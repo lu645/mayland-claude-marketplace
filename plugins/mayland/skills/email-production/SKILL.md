@@ -25,7 +25,8 @@ Before you design anything:
    thing from a campaign goal: goals are reusable briefing intents and hold nothing.
 2. `get_brand_context` for a fresh context pack. Re-read it after any interruption.
 3. `list_products` and `get_product_context` for the products the mail actually promotes.
-4. `list_reference_emails`, then `get_reference_email` for the ones that match the occasion.
+4. `list_reference_emails`, then `get_reference_email` for the ones that match the occasion, and
+   open every reference image before you build. See the reference section below.
 5. `list_approved_learnings` for what this brand has already agreed to. These carry the design
    corrections earlier reviews produced and they bind exactly like the profile does.
 
@@ -34,22 +35,36 @@ question is a conversation with the user, not a lookup.
 
 Read the brand profile as a design brief, not as decoration:
 
-- `palette` gives the only colours you may use. Pick one accent and stay with it. When the
-  brand sets `primaryColor`, that is the accent; do not choose a different one.
-- `wordmarkUrl` is the brand mark that belongs inside the email, usually in the header.
-  Place it via `insert_node` as an image. `logoUrl` is the app-facing logo; use it in an
-  email only when no wordmark exists.
-- `displayFont`, `letterSpacing`, `imageryStyle` set the type and picture register.
+- `designTokens.colors` hands you the palette already sorted into roles: `bg` and `surface` for
+  grounds, `band` with `onBand` for the full-width bands, `ink` and `muted` for type, `accent`
+  with `accentInk` for the buttons and the signal moments. Use the roles rather than picking
+  from `palette` by eye, and keep the accent for what should be loud. `accentInk` is the only
+  colour that goes on top of the accent.
+- `brandMarks` lists the marks you may place inside the mail, each with the background it is cut
+  for. Prefer the entry flagged `isWordmark` in the header, fall back to `isLogo`, and never put
+  a mark cut for a light ground onto a dark band.
+- `displayFont`, `letterSpacing`, `imageryStyle` and `designTokens.form` set the type, picture
+  and shape register: edge style, density, button shape and fill, section rhythm.
 - `visualSummary` describes the layout system, the module vocabulary and the button treatment.
 - `voiceSummary` and `tone` set the register and the form of address.
 - `noGo` is binding. A mail that breaks one of these is wrong even if it looks good.
 - `furniture` holds the footer, the legal links and the service benefits. Use it verbatim.
+- `mandatoryStatements` are the lines this brand is legally required to carry. Every one of them
+  has to appear in the mail, worded exactly as given.
 - Product `truth` and `benefits` are the only claims you may make.
 
 ## What you take from a reference and what you leave
 
 Reference emails are the calibre bar, and reaching it visually is the job. Study one until you can
 name why it reads well, then build that same reading experience with this brand's own material.
+
+**Open the reference image before you build anything.** Most references are captures of a sent
+mail, so `plainText` and `headings` come back empty and every bit of craft sits in the picture:
+download each `imageUrls` entry and read it as an image. A reference you have not looked at teaches
+you nothing, and building from its title and tags alone is how mails end up generic. While you look
+at it, name for yourself the band count down the page, where the density changes, which modules
+repeat, how far the type sizes sit apart, and how the button is treated. Those are the numbers you
+build against, and `layoutSignature` on the sibling mails is what you compare them to.
 
 Take the craft: the layout system and its column logic, the rhythm of the bands down the page and
 where they change density, the module vocabulary the mail draws from, the type hierarchy and how
