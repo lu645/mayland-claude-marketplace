@@ -277,6 +277,32 @@ agent runs are bound to them, so never let a pending image job sit between two b
    rhythm, crest transitions and the hero composition come out of it by construction. It
    replaces the whole document, so compose FIRST: a recompose regenerates element ids and
    orphans every tweak made since.
+
+   Every block reads its own content keys and silently draws nothing for a key it does not
+   know, so a hero that looks right in the plan can compile to an empty band with a lone
+   button. Spell them exactly:
+
+   | Block | Keys it reads |
+   |---|---|
+   | brand_hero, variant impact or full_bleed | `pill`, `kicker`, `punchline`, `punchline2`, `sub`, `trustLine`, `cta` |
+   | brand_hero, variant editorial_split, statement, classic | `eyebrow`, `headline`, `subhead`, `cta` |
+   | story_intro, story_photo | `headline`, `body`, plus `eyebrow` or `signature` |
+   | feature_education | `eyebrow`, `headline`, `body`, `bullets`, `cta` |
+   | icon_grid | `headline`, `items` with `value` as the tile line and `label` as its caption |
+   | timeline | `headline`, `steps` with `headline` and `body` |
+   | stat_row | `stats` with `value` and `label` |
+   | data_viz | `headline`, `bars` with `value` as TEXT and `height` as a 0..1 fraction, or variant threshold with `rows` |
+   | vs_duel | `headline`, `leftTitle`, `left`, `rightTitle`, `right` |
+   | annotated_product | `headline`, `callouts` with `label`, plus `imageSlot` |
+   | review_panel | `quote`, `author`, `source` |
+   | cta_band | `headline`, `subhead`, `cta` |
+   | footer | `navLinks`, `address`, `finePrint`, plus the brand `furniture` |
+
+   A hero draws its scene from its own `imageSlot`, never from `backdrop:hero`: that slot is
+   the section background art behind everything. A hero with no `imageSlot` falls back to a
+   bare band. An `imageClass` of `product_asset` on the hero slot forces the editorial split,
+   which is right for a packshot and wrong for a scene. Carry both key sets on every hero so
+   the mail composes whichever variant the builder settles on.
 5. Refine with `apply_email_batch` in stages, applied back to back within seconds: first the
    depth pass (rotated badges, offset cards, lift shadows, cutout on top), then accent words and
    copy fixes, then any recipe section the block library does not cover. Use
