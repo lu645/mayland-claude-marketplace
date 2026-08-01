@@ -118,9 +118,18 @@ Scale, in document pixels at 600px width:
 | Body text | ~17, never below 16 |
 | Stat numbers | ~50 |
 | Cards | 500 wide |
-| Spacing kicker to punch | 14 |
-| Spacing punch to punch | 5 |
-| Spacing stack to sub | 9 or more |
+| Spacing kicker to punch | 11 |
+| Spacing punch to punch | 11 |
+| Spacing stack to sub | 22 |
+
+Vertical space has exactly three values and no others: 11 inside a group, 22 between elements,
+44 between blocks. Compose from the plan and the builder holds this for you. When you place or
+move a node by hand afterwards, keep it: a 12 or an 18 anywhere on the page is what makes a mail
+look assembled rather than designed, and it is the first thing a client sees.
+
+A shaped section edge is drawn into the space above the seam, so it needs a step of its own: 22
+clear above the crest, then the crest. The builder skips an edge that has no room for both. Do
+not hand-place one tighter.
 
 Autoscale: make the punchline as large as the column allows, shrink in 8% steps if it displaces
 the sub, and stop at the floor. Multi-line headlines never sit at 100% line height, use 110% or
@@ -169,6 +178,7 @@ style per mail, varied across the campaign:
 | diagonal | M0,100 L0,70 L100,20 L100,100 Z |
 | arc | M0,100 L0,58 Q50,8 100,58 L100,100 Z |
 | step | M0,100 L0,55 L20,55 L20,30 L55,30 L55,60 L80,60 L80,38 L100,38 L100,100 Z |
+| torn | M0,100 L0,44 L5,76 L10,44 L15,76 L20,44 L25,76 L30,44 L35,76 L40,44 L45,76 L50,44 L55,76 L60,44 L65,76 L70,44 L75,76 L80,44 L85,76 L90,44 L95,76 L100,44 L100,100 Z |
 
 A soft fade is the seventh option: a full-width `gradient` rectangle from the leaving colour to
 the arriving one. The variation rule below includes the transition: neighbouring mails in a
@@ -210,7 +220,7 @@ For a colour hero without a photo: full-bleed brand colour, text left, text colu
 
 ## Body
 
-Transition, then two to four sections drawn from a varied library: alternating image and text
+Transition, then the sections, drawn from a varied library: alternating image and text
 rows, a three-up number band, a stacked stat, an icon promise grid, a framed code box, a
 marker-highlighted statement, a two-column comparison, a product picks grid, a single large
 review panel, verified buyer cards, a before and after, or a dark icon band. Then a second CTA
@@ -226,6 +236,21 @@ Some section types the library does not ship as blocks are composable from primi
 - Stat stack: the numbers of a stat row stacked vertically with hairline rules between them.
 - Dark icon band: a `band`-coloured strip with two rows of three icon tiles and caps labels.
 - Colour ticker: variant chips as a single row of small rounded rects in the variant colours.
+
+### How many sections
+
+The reference sets the length, not a number in this file. Count the sections in the reference
+you were given and build at least that many. With no reference, six to ten is the working range
+for a promotional mail: a mail that ends after three sections is a fragment, and it reads as one
+next to a real brand mail.
+
+Length is a symptom, not the goal. Each section has to earn its place with something the reader
+did not already have: a different argument, a different proof, a different way of looking. Three
+paraphrases of the same claim are worse than one section. When you run out of substance, that is
+the signal to fetch more from the product context, not to stop early.
+
+Check the finished mail against the reference with `get_email_preview_image`: if yours is half
+as tall, you left the argument unfinished.
 
 Variation is a hard rule: each mail in a campaign needs a combination of transition, hero
 background, headline style and sections that its neighbours do not have.
@@ -278,6 +303,17 @@ agent runs are bound to them, so never let a pending image job sit between two b
    replaces the whole document, so compose FIRST: a recompose regenerates element ids and
    orphans every tweak made since.
 
+   Five plan-level fields set the register of the whole mail and are easy to miss, because the
+   mail still compiles without them and simply comes out in the default:
+
+   | Field | Values | What it decides |
+   |---|---|---|
+   | `typography` | centered, editorial | Whether headings, logo and buttons are centred or set flush left. Editorial is the modern magazine register. Not to be confused with `designTokens.typography` in the brand pack, which names fonts. |
+   | `density` | compact, regular, airy | Scales the vertical rhythm. Compact for retail, airy for editorial. |
+   | `buttonShape` | rect, rounded, pill | Read it from the brand form tokens, never pick a house default. |
+   | `buttonFill` | filled, outline | Outline keeps ink on the ground instead of a solid block. |
+   | `tileStyle` | Brand form token | The treatment of the tiles in the grids. |
+
    Every block reads its own content keys and silently draws nothing for a key it does not
    know, so a hero that looks right in the plan can compile to an empty band with a lone
    button. Spell them exactly:
@@ -297,6 +333,25 @@ agent runs are bound to them, so never let a pending image job sit between two b
    | review_panel | `quote`, `author`, `source` |
    | cta_band | `headline`, `subhead`, `cta` |
    | footer | `navLinks`, `address`, `finePrint`, plus the brand `furniture` |
+
+   Most blocks come in more than one shape, and a block sent without a `variant` takes the first
+   one every time, which is how a whole campaign ends up in one register. Choose it:
+
+   | Block | Variants |
+   |---|---|
+   | brand_hero | classic, impact, full_bleed, statement, editorial_split |
+   | story_intro | panel, band |
+   | lifestyle_circle | circle, full, side |
+   | feature_education | standard, stat, stat_band |
+   | product_card | light, band, split |
+   | cta_band | band, accent |
+   | stat_row | tint, dark |
+   | icon_grid | tiles, list |
+   | data_viz | bars, threshold |
+
+   The stat variants both promise a figure, not prose: stat sets a short number beside its
+   explanation, stat_band gives it the full width on an accent surface. A sentence in that slot
+   is rejected.
 
    A hero draws its scene from its own `imageSlot`, never from `backdrop:hero`: that slot is
    the section background art behind everything. A hero with no `imageSlot` falls back to a
