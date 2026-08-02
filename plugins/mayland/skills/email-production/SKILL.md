@@ -182,7 +182,7 @@ style per mail, varied across the campaign:
 | s_curve | M0,100 L0,55 C30,10 70,90 100,40 L100,100 Z |
 | diagonal | M0,100 L0,70 L100,20 L100,100 Z |
 | arc | M0,100 L0,58 Q50,8 100,58 L100,100 Z |
-| step | M0,100 L0,55 L20,55 L20,30 L55,30 L55,60 L80,60 L80,38 L100,38 L100,100 Z |
+| step | M0,100 L0,70 L33,70 L33,25 L67,25 L67,70 L100,70 L100,100 Z |
 | torn | M0,100 L0,44 L5,76 L10,44 L15,76 L20,44 L25,76 L30,44 L35,76 L40,44 L45,76 L50,44 L55,76 L60,44 L65,76 L70,44 L75,76 L80,44 L85,76 L90,44 L95,76 L100,44 L100,100 Z |
 
 A soft fade is the seventh option: a full-width `gradient` rectangle from the leaving colour to
