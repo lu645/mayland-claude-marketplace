@@ -127,9 +127,14 @@ Vertical space has exactly three values and no others: 11 inside a group, 22 bet
 move a node by hand afterwards, keep it: a 12 or an 18 anywhere on the page is what makes a mail
 look assembled rather than designed, and it is the first thing a client sees.
 
-A shaped section edge is drawn into the space above the seam, so it needs a step of its own: 22
-clear above the crest, then the crest. The builder skips an edge that has no room for both. Do
-not hand-place one tighter.
+A shaped section edge is drawn into the space above the seam, so a send that uses one gives every
+block boundary a step of its own for it: 44 stays clear above the crest and the crest takes the
+next 22. The builder does this for you. Do not hand-place one tighter.
+
+Marks carry a ground. `brandMarks` says which background each one is cut for, and an image entry
+in the plan says the same with a ground field. A mark cut for a dark ground placed on a light band is
+invisible, and nothing downstream can see that it happened, so pass it: the builder falls back to
+the wordmark when the two disagree rather than drawing white on white.
 
 Autoscale: make the punchline as large as the column allows, shrink in 8% steps if it displaces
 the sub, and stop at the floor. Multi-line headlines never sit at 100% line height, use 110% or
