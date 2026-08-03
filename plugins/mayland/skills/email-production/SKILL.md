@@ -136,11 +136,12 @@ in the plan says the same with a ground field. A mark cut for a dark ground plac
 invisible, and nothing downstream can see that it happened, so pass it: the builder falls back to
 the wordmark when the two disagree rather than drawing white on white.
 
-The impact hero puts the mark ON the photo under a dark scrim, so it needs the dark-ground mark
-(usually the white cutout wordmark) as the plan's logo entry, with the ground field saying dark.
-Every other hero draws the mark on a light surface and takes the colored cutout with a light
-ground. Prefer transparent cutouts over marks with a baked background plate: the plate reads as
-a sticker on any ground that is not exactly its own.
+The impact hero puts the mark on the surfaceTint band when the plan carries one; without a tint
+it sits on the photo under a dark scrim. Pick the mark for THAT ground: dark-ground mark
+(usually the white cutout wordmark) when there is no tint or the tint is dark, the colored
+cutout with a light ground when the tint is light. Every other hero draws the mark on a light
+surface and takes the colored cutout. Prefer transparent cutouts over marks with a baked
+background plate: the plate reads as a sticker on any ground that is not exactly its own.
 
 Autoscale: make the punchline as large as the column allows, shrink in 8% steps if it displaces
 the sub, and stop at the floor. Multi-line headlines never sit at 100% line height, use 110% or
