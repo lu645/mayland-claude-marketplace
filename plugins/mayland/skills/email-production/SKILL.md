@@ -315,6 +315,14 @@ agent runs are bound to them, so never let a pending image job sit between two b
    replaces the whole document, so compose FIRST: a recompose regenerates element ids and
    orphans every tweak made since.
 
+   When a compose call dies at the transport (timeout, dropped connection), call it AGAIN with
+   the SAME idempotency key: the gateway either replays the recorded result or completes the
+   write, and a fresh key would only conflict. What you must never do is give up on the composer
+   and assemble the document by hand with `apply_email_batch`: a hand-built document loses the
+   band rhythm, the transitions, the melt and the palette guards, and ships as a visibly weaker
+   mail. If compose still fails after retries, stop and report the failure instead of building
+   around it.
+
    Five plan-level fields set the register of the whole mail and are easy to miss, because the
    mail still compiles without them and simply comes out in the default:
 
@@ -435,6 +443,19 @@ afterthought.
 
 `propose_learning` binds to the current context pack, so refresh the pack before proposing when it
 has gone stale.
+
+## Write back what you had to work out yourself
+
+The pack is the only memory the next run has. Whenever the pack left you a gap and you filled it
+from another source, sampling the real CTA color out of a reference newsletter's pixels, naming
+the display typeface, deriving a register rule, collecting the brand's button imperatives, or
+researching a product's regulatory footnote text, that finding MUST be written back before the
+mail is done, or the next user rebuilds the same knowledge badly. Facts about the brand or a
+product go into the catalog with `upsert_brand_catalog` (palette color with its role explained,
+display font, design DNA, button-label pool, product truth, pain points, footnotes in exact
+wording). Rules of taste go through `propose_learning`. If you notice the gap but cannot fill it,
+name it explicitly in your final summary so a human can. Never finish a session whose best
+insights exist only in the conversation.
 
 ## Session hygiene
 

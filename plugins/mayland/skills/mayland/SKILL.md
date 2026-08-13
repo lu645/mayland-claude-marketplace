@@ -22,6 +22,16 @@ identifiers, authentication material, or implementation details in a normal
 user-facing capability answer. Mention those details only when an authorized
 developer or support request explicitly asks for diagnostics.
 
+## The catalog is the only memory
+
+Nothing you learn in this session survives it except what you write into the catalog. Every fact
+you derive from ANY source, the official site, ads, public reviews, reference newsletters, or
+sampling the pixels of the brand's own creative, must land in a catalog field or it is lost for
+every other user and every later run: the next agent starts from the Brand Context Pack alone and
+produces generic mails wherever the pack is thin. There is no hidden memory that fills the gaps.
+Before the final summary, re-read your own findings and check each one has a home in the payload;
+a finding without a field goes into `notes` under a labelled heading.
+
 ## Workflow
 
 1. Read the request and identify the brand, official website, requested product count, locale, and any ranking criterion. Ask one focused question only when a missing detail would materially change the catalog.
@@ -33,13 +43,14 @@ developer or support request explicitly asks for diagnostics.
 7. Build one canonical payload:
    - `brand.name` is the public brand name.
    - `brand.site` is the official site origin.
-   - Fill every verifiable Brand profile field, not just the minimum: `category`, `truth`, `audience`, `visual`, `voiceNote`, `tone`, `palette`, `nogo`, `notes`, `instagram`, `facebook`, `displayFont`, `letterSpacing`, `imageryStyle`, and the deterministic `furniture` footer/benefits block when evidence exists.
+   - Fill every verifiable Brand profile field, not just the minimum: `category`, `truth`, `audience`, `visual`, `voiceNote`, `tone`, `palette`, `nogo`, `notes`, `instagram`, `facebook`, `displayFont`, `letterSpacing`, `imageryStyle`, `designDna` (button shape and fill, edge style, density, section rhythm, CTA style, case rule, body font), and the deterministic `furniture` footer/benefits block when evidence exists.
+   - When the brand has reference newsletters or public creatives, derive the design identity FROM them and write it down: sample the actual CTA button color from the reference pixels and add it to `palette` even when the shop's website palette does not carry it, name the display typeface in `displayFont`, and record in `notes` which hex plays which role (band color, surface, accent CTA and its ink). A palette copied only from the website while the mails run on a different accent is exactly how a later production run loses the brand's look.
    - These are the catalog write field names. The Brand Context Pack returns the same material
      under its own read field names, so never carry one vocabulary into the other.
    - `brand.palette` contains canonical hex colors only. Never mix labels, typography notes, CTA names, or semantic tokens into the color list.
    - `products` contains only verified products, in the requested or source-supported order.
    - Each product uses its canonical public URL and a stable `externalId` derived from the site's own product identifier or canonical URL.
-   - Fill product substance beyond the listing: `claims`, `nogo`, `availability`, `locale`, and researched `painPoints` with a `sourceUrl` each. Pain points come from how the brand itself frames the problem on product pages, from recurring formulations in public reviews, and from its running ads; they feed the email openers, so an import without them produces generic mails.
+   - Fill product substance beyond the listing: `claims`, `nogo`, `availability`, `locale`, researched `painPoints` with a `sourceUrl` each, the product's `footnotes` in the exact wording and marker the brand prints them with (regulatory claim texts belong here verbatim), `intakeAdvice`, `ingredients`, `servingSize` and `packSize` where the product page states them. Pain points come from how the brand itself frames the problem on product pages, from recurring formulations in public reviews, and from its running ads; they feed the email openers, so an import without them produces generic mails.
    - Collect ten to fifteen verbatim CTA imperatives from the brand's site, ads and mails into `brand.notes` under a labelled heading. These are quoted button labels from the brand's own material, sourced facts and not invented copy; email production draws button copy from this pool.
    - Keep the source map in working notes for the final summary. Never request, reveal, log, or place credentials or authentication material in research notes or tool payloads.
 8. Write the stable idempotency key directly from text already in context. Use `mayland-catalog:<brand-slug>:<official-host>:<product-count>:<normalized-request-slug>` and truncate only the final request slug so the complete key is at most 200 characters. Use the same key for the same normalized intent. Do not invoke any tool to calculate the idempotency key, and do not use a shell, hash command, script, browser, or extra model call for it. Never include credentials or authentication material in the key.
