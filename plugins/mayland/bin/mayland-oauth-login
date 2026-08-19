@@ -18,6 +18,18 @@ from urllib.parse import parse_qs, quote, urlsplit
 
 
 ANSI = re.compile(r"\x1b(?:\[[0-?]*[ -/]*[@-~]|\][^\x07]*(?:\x07|\x1b\\))")
+SECRETISH = re.compile(r"[A-Za-z0-9_-]{40,}")
+
+# ponytail: two flat deadlines, env-overridable so tests do not have to wait them out.
+URL_TIMEOUT = float(os.environ.get("MAYLAND_OAUTH_URL_TIMEOUT") or 60)
+CALLBACK_TIMEOUT = float(os.environ.get("MAYLAND_OAUTH_CALLBACK_TIMEOUT") or 300)
+
+
+def output_tail(captured, limit=800):
+    """Last few lines of the login output, with token-shaped runs redacted."""
+    plain = ANSI.sub("", bytes(captured).decode("utf-8", "ignore"))
+    collapsed = " ".join(plain.split())
+    return SECRETISH.sub("<redacted>", collapsed)[-limit:] or "(no output)"
 
 
 def valid_oauth_url(candidate, endpoint, client_id, resource, callback):
@@ -135,7 +147,8 @@ def run_login(server, endpoint, client_id, resource, callback):
     captured = bytearray()
     opened = False
     child_status = None
-    deadline = time.monotonic() + 600
+    url_deadline = time.monotonic() + URL_TIMEOUT
+    callback_deadline = None
 
     try:
         while True:
@@ -160,19 +173,31 @@ def run_login(server, endpoint, client_id, resource, callback):
                             callback,
                         )
                         if oauth_url:
+                            print(f"Mayland OAuth URL: {oauth_url}", flush=True)
                             open_browser(oauth_url)
                             opened = True
+                            callback_deadline = time.monotonic() + CALLBACK_TIMEOUT
                             print(
-                                "Mayland OAuth opened; waiting for the localhost callback.",
+                                "Mayland OAuth opened in the default browser; waiting up to "
+                                f"{CALLBACK_TIMEOUT:g}s for the localhost callback.",
                                 flush=True,
                             )
 
             child_status = wait_for_child(child_pid)
             if child_status is not None:
                 break
-            if time.monotonic() >= deadline:
+            now = time.monotonic()
+            if not opened and now >= url_deadline:
                 raise RuntimeError(
-                    "Claude MCP login timed out waiting for the localhost callback"
+                    f"Claude did not emit a Mayland OAuth URL within {URL_TIMEOUT:g}s. "
+                    "It is most likely waiting on an interactive prompt. "
+                    f"Last login output: {output_tail(captured)}"
+                )
+            if callback_deadline is not None and now >= callback_deadline:
+                raise RuntimeError(
+                    f"Nobody completed the Mayland sign-in within {CALLBACK_TIMEOUT:g}s. "
+                    "Open the printed OAuth URL in the browser that is signed in to "
+                    "Mayland, then run the setup command again."
                 )
     finally:
         os.close(master)
