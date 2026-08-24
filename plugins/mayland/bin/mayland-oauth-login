@@ -25,9 +25,14 @@ URL_TIMEOUT = float(os.environ.get("MAYLAND_OAUTH_URL_TIMEOUT") or 60)
 CALLBACK_TIMEOUT = float(os.environ.get("MAYLAND_OAUTH_CALLBACK_TIMEOUT") or 300)
 
 
+def plain_text(raw):
+    """Decode PTY bytes and strip ANSI control sequences."""
+    return ANSI.sub("", bytes(raw).decode("utf-8", "ignore"))
+
+
 def output_tail(captured, limit=800):
     """Last few lines of the login output, with token-shaped runs redacted."""
-    plain = ANSI.sub("", bytes(captured).decode("utf-8", "ignore"))
+    plain = plain_text(captured)
     collapsed = " ".join(plain.split())
     return SECRETISH.sub("<redacted>", collapsed)[-limit:] or "(no output)"
 
@@ -61,7 +66,7 @@ def valid_oauth_url(candidate, endpoint, client_id, resource, callback):
 
 
 def extract_oauth_url(raw, endpoint, client_id, resource, callback):
-    plain = ANSI.sub("", raw.decode("utf-8", "ignore"))
+    plain = plain_text(raw)
     variants = [plain]
     variants.extend(
         block.replace("\r", "").replace("\n", "")
@@ -81,6 +86,53 @@ def extract_oauth_url(raw, endpoint, client_id, resource, callback):
                 if valid_oauth_url(option, endpoint, client_id, resource, callback):
                     return option
     return None
+
+
+OAUTH_DECLINED_MESSAGE = (
+    "Mayland declined the sign-in (access_denied). "
+    "Click Connect Claude Code on Mayland, then run the setup command again."
+)
+
+CAPTURE_LIMIT = 1048576
+
+
+def absorb(captured, chunk):
+    """Append a PTY chunk under the one shared capture cap."""
+    captured.extend(chunk)
+    if len(captured) > CAPTURE_LIMIT:
+        del captured[:-CAPTURE_LIMIT]
+
+
+def shows_oauth_error(raw):
+    """True when the given output slice carries the OAuth error callback.
+
+    Keyed on the machine-stable query form only: prose from the server's
+    error_description arrives plus- or percent-encoded on the wire, so matching
+    English sentences would be dead code. Line breaks are stripped first because
+    the terminal wraps the long callback URL at the column limit.
+    """
+    plain = plain_text(raw).replace("\r", "").replace("\n", "")
+    return "error=access_denied" in plain
+
+
+def drain_master(master, captured):
+    """Read whatever the child printed just before exiting so it is not lost.
+
+    Bounded: a grandchild that inherited the pty and keeps writing must not be
+    able to hold the launcher open past the child's own exit.
+    """
+    deadline = time.monotonic() + 0.5
+    while time.monotonic() < deadline:
+        readable, _, _ = select.select([master], [], [], 0.05)
+        if not readable:
+            return
+        try:
+            chunk = os.read(master, 65536)
+        except OSError:
+            return
+        if not chunk:
+            return
+        absorb(captured, chunk)
 
 
 def open_browser(url):
@@ -161,9 +213,9 @@ def run_login(server, endpoint, client_id, resource, callback):
                         raise
                     chunk = b""
                 if chunk:
-                    captured.extend(chunk)
-                    if len(captured) > 1048576:
-                        del captured[:-1048576]
+                    absorb(captured, chunk)
+                    if opened and shows_oauth_error(captured[-(len(chunk) + 256):]):
+                        raise RuntimeError(OAUTH_DECLINED_MESSAGE)
                     if not opened:
                         oauth_url = extract_oauth_url(
                             captured,
@@ -185,6 +237,7 @@ def run_login(server, endpoint, client_id, resource, callback):
 
             child_status = wait_for_child(child_pid)
             if child_status is not None:
+                drain_master(master, captured)
                 break
             now = time.monotonic()
             if not opened and now >= url_deadline:
@@ -207,7 +260,12 @@ def run_login(server, endpoint, client_id, resource, callback):
     if not opened:
         raise RuntimeError("Claude did not emit a valid Mayland OAuth URL")
     if child_status != 0:
-        raise RuntimeError(f"Claude MCP login exited with status {child_status}")
+        if shows_oauth_error(captured):
+            raise RuntimeError(f"{OAUTH_DECLINED_MESSAGE} (login exited with status {child_status})")
+        raise RuntimeError(
+            f"Claude MCP login exited with status {child_status}. "
+            f"Last login output: {output_tail(captured)}"
+        )
     print("Mayland OAuth callback completed.", flush=True)
 
 

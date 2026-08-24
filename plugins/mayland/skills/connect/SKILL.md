@@ -14,6 +14,7 @@ Connect Claude Desktop or Claude Code to Mayland through the attested remote MCP
 - Keep the launcher's `TIOCSWINSZ`/`COLUMNS` width override so Claude does not hard-wrap the OAuth URL. Do not replace the launcher with `script`, and do not redirect, pipe, or place the login process in command substitution: those forms can close the PTY or callback listener in a socket-backed session.
 - Capture the emitted Mayland `/api/oauth/authorize` URL and open it immediately with `open` on macOS or `xdg-open`/`wslview` on Linux or WSL. The setup session opens the emitted OAuth URL; the signed-in Mayland browser redirects the private connect intent back to the waiting localhost callback.
 - After the browser returns, verify that the exact plugin-scoped server is connected.
+- Keep user-facing output minimal: no command output or technical narration while steps succeed, detail only for the failing step. Close with exactly two short sentences: Claude is connected to Mayland, and the user should start a new conversation because the Mayland tools only load there.
 - If Python 3 is unavailable, the pseudo-terminal cannot start, or the intent expired, report the exact failure and direct the user back to Connect Claude Code for a fresh handoff. Do not switch to an unqualified server name.
 - Never print, request, or explain setup credentials. Mayland does not require a code to be pasted into the browser.
 - Use the exact `claude mcp add --transport http --scope user <name> <url>` command only as a support-provided fallback.

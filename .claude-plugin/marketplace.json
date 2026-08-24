@@ -12,7 +12,7 @@
       "displayName": "Mayland",
       "source": "./plugins/mayland",
       "description": "Research verified public brand catalogs and produce brand-safe emails through Mayland.",
-      "version": "0.4.56",
+      "version": "0.4.58",
       "author": {
         "name": "Mayland"
       },
