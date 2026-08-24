@@ -306,7 +306,10 @@ agent runs are bound to them, so never let a pending image job sit between two b
    audit trail all apply. Never call an image provider directly.
 2. `create_email` with the brand, the campaign the user picked in Step 0, the title and the
    brief. Omitting the campaign drops the mail onto the brand's Unassigned board, which is a
-   fallback and not a decision you are allowed to make for the user.
+   fallback and not a decision you are allowed to make for the user. Leave `copyRevisionIds`,
+   `referenceEmailIds` and `campaignGoalId` out: the context pack's stored selection binds
+   automatically, and an explicitly passed set is only accepted when it matches the pack
+   exactly.
 3. `acquire_email_lock` before mutating, and heartbeat it while you work.
 4. `compose_email_from_plan` is the floor, not the fallback: hand it the palette roles from
    `designTokens.colors`, the brand fonts, one transition, one headline style, the furniture,
@@ -340,8 +343,10 @@ agent runs are bound to them, so never let a pending image job sit between two b
 
    | Block | Keys it reads |
    |---|---|
-   | brand_hero, variant impact or full_bleed | `pill`, `kicker`, `punchline`, `punchline2`, `sub`, `trustLine`, `cta` |
-   | brand_hero, variant editorial_split, statement, classic | `eyebrow`, `headline`, `subhead`, `cta` |
+   | brand_hero, variant impact | `pill`, `kicker`, `punchline`, `punchline2`, `sub`, `trustLine`, `cta` |
+   | brand_hero, variant full_bleed | `pill`, `kicker`, `punchline`, `punchline2`, `sub`, `trustLine`, `cta`, `logoCapsule` |
+   | brand_hero, variant editorial_split, classic | `eyebrow`, `headline`, `subhead`, `cta`, `logoCapsule` |
+   | brand_hero, variant statement | `eyebrow`, `headline`, `subhead`, `cta` |
    | story_intro, story_photo | `headline`, `body`, plus `eyebrow` or `signature` |
    | feature_education | `eyebrow`, `headline`, `body`, `bullets`, `cta` |
    | icon_grid | `headline`, `items` with `value` as the tile line and `label` as its caption |
@@ -372,6 +377,13 @@ agent runs are bound to them, so never let a pending image job sit between two b
    The stat variants both promise a figure, not prose: stat sets a short number beside its
    explanation, stat_band gives it the full width on an accent surface. A sentence in that slot
    is rejected.
+
+   A hero with `logoCapsule` set to true draws the brand logo natively in a white rounded capsule
+   anchored to the hero photo's top edge, so never build that capsule by hand out of
+   `apply_email_batch` shapes. It only works where a cover photo exists to anchor to: the
+   full_bleed, editorial_split and classic variants with a scene photo. Impact and statement
+   ignore it, and so does a hero whose slot carries a `product_asset` packshot (those are
+   contained, and the chip would cover the product).
 
    A hero draws its scene from its own `imageSlot`, never from `backdrop:hero`: that slot is
    the section background art behind everything. A hero with no `imageSlot` falls back to a
