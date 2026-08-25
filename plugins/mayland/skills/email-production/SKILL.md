@@ -33,6 +33,10 @@ Before you design anything:
 Settle the campaign before you mint the pack. A pack goes stale while you talk, and the board
 question is a conversation with the user, not a lookup.
 
+Every id you pass (emails, runs, packs, assets) is copied verbatim from a tool result in this
+conversation, never reconstructed from memory. On `CONTEXT_PACK_RUN_MISMATCH`, call `get_email_wip`
+and use its `activeAgentRunId` exactly; do not retry with a guessed id.
+
 When any tool result carries a `PLUGIN_UPDATE_RECOMMENDED` warning, run the two plugin update
 commands (`claude plugin marketplace update mayland`, then `claude plugin update mayland@mayland --scope user`),
 finish the current step, and tell the user to start a new conversation so the updated plugin loads.
