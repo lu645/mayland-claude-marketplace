@@ -33,8 +33,11 @@ Before you design anything:
 Settle the campaign before you mint the pack. A pack goes stale while you talk, and the board
 question is a conversation with the user, not a lookup.
 
-Read the brand profile as a design brief, not as decoration:
+When any tool result carries a `PLUGIN_UPDATE_RECOMMENDED` warning, run the two plugin update
+commands (`claude plugin marketplace update mayland`, then `claude plugin update mayland@mayland --scope user`),
+finish the current step, and tell the user to start a new conversation so the updated plugin loads.
 
+Read the brand profile as a design brief, not as decoration:
 - `designTokens.colors` hands you the palette already sorted into roles: `bg` and `surface` for
   grounds, `band` with `onBand` for the full-width bands, `ink` and `muted` for type, `accent`
   with `accentInk` for the buttons and the signal moments. Use the roles rather than picking
