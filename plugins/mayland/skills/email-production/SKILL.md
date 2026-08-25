@@ -47,6 +47,14 @@ Read the brand profile as a design brief, not as decoration:
   with `accentInk` for the buttons and the signal moments. Use the roles rather than picking
   from `palette` by eye, and keep the accent for what should be loud. `accentInk` is the only
   colour that goes on top of the accent.
+- Band colours follow the reference register: the deep `band` tone carries the full-width
+  statement bands and the light `surface` tint carries the supporting surfaces, exactly as the
+  `designTokens.colors` roles name them. Never invert the pair; a mail that sets its statement
+  bands on the light tint and spends the deep tone on side surfaces reads as a different brand.
+- When the brand's reference newsletters open with a trust or preheader bar above the hero, the
+  plan opens the same way: preheader_trust_bar is the first block, and every item in it is a
+  catalog fact (the furniture benefits, guarantee or shipping lines), never a line written for
+  the occasion.
 - `brandMarks` lists the marks you may place inside the mail, each with the background it is cut
   for. Prefer the entry flagged `isWordmark` in the header, fall back to `isLogo`, and never put
   a mark cut for a light ground onto a dark band.
@@ -310,7 +318,9 @@ agent runs are bound to them, so never let a pending image job sit between two b
    scenes and glow art, prompted with the pack's palette and `imageryStyle`. Poll `get_image_job`;
    `get_completed_image_asset` returns the public `url` an email image element uses. Image
    generation runs through Mayland so the organization's configured model, its policy and its
-   audit trail all apply. Never call an image provider directly.
+   audit trail all apply. Never call an image provider directly. When a cutout job fails with
+   `IMAGE_EDIT_UNFAITHFUL` the model redrew the packaging: use the original packshot on a light
+   card instead of retrying blindly.
 2. `create_email` with the brand, the campaign the user picked in Step 0, the title and the
    brief. Omitting the campaign drops the mail onto the brand's Unassigned board, which is a
    fallback and not a decision you are allowed to make for the user. Leave `copyRevisionIds`,
@@ -323,7 +333,9 @@ agent runs are bound to them, so never let a pending image job sit between two b
    and the block list with variants, with the finished image URLs bound to their slots. Band
    rhythm, crest transitions and the hero composition come out of it by construction. It
    replaces the whole document, so compose FIRST: a recompose regenerates element ids and
-   orphans every tweak made since.
+   orphans every tweak made since. Bind `compose_email_from_plan` to the BRAND context pack:
+   the brand profile in that pack drives the typography defaults, while product packs serve
+   the copy and product tools.
 
    When a compose call dies at the transport (timeout, dropped connection), call it AGAIN with
    the SAME idempotency key: the gateway either replays the recorded result or completes the
