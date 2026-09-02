@@ -418,6 +418,9 @@ agent runs are bound to them, so never let a pending image job sit between two b
    `move_node`, `reorder_nodes`, `set_auto_layout` and `remove_auto_layout`. Use Auto Layout for
    live copy stacks whose height or order may change: pass one `groupId`, the exact ordered
    `nodeIds`, `direction`, `gap`, `paddingX`, `paddingY`, `align`, and the group's `x`/`y` origin.
+   For responsive stacks, add `widthMode` as hug or fixed. A fixed layout also accepts `width`,
+   `justify` as start, center, end, or space-between and `childWidth` as fixed or fill.
+   Horizontal fixed-width layouts may set `wrap` and `rowGap`; wrap cannot be combined with fill.
    It materializes normal email geometry, so do not use it for intentional overlaps or decorative
    compositions. Feed each returned newWipRevision into the next batch, and
    `get_email_wip` when you lost track. Staged batches are also what makes the build watchable
