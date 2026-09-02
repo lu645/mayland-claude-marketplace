@@ -26,7 +26,8 @@ Before you design anything:
 2. `get_brand_context` for a fresh context pack. Re-read it after any interruption.
 3. `list_products` and `get_product_context` for the products the mail actually promotes.
 4. `list_reference_emails`, then `get_reference_email` for the ones that match the occasion, and
-   open every reference image before you build. See the reference section below.
+   inspect the returned preview image block first. If the response is too large to inline, open
+   the signed `imageUrl` from the same result instead. See the reference section below.
 5. `list_approved_learnings` for what this brand has already agreed to. These carry the design
    corrections earlier reviews produced and they bind exactly like the profile does.
 
@@ -74,9 +75,10 @@ Reference emails are the calibre bar, and reaching it visually is the job. Study
 name why it reads well, then build that same reading experience with this brand's own material.
 
 **Open the reference image before you build anything.** Most references are captures of a sent
-mail, so `plainText` and `headings` come back empty and every bit of craft sits in the picture:
-download each `imageUrls` entry and read it as an image. A reference you have not looked at teaches
-you nothing, and building from its title and tags alone is how mails end up generic. While you look
+mail, so every bit of craft sits in the picture: inspect the image block returned by
+`get_reference_email`, or open the signed `imageUrl` from that same result when no image block is
+present. A reference you have not looked at teaches you nothing, and building from its title and
+tags alone is how mails end up generic. While you look
 at it, name for yourself the band count down the page, where the density changes, which modules
 repeat, how far the type sizes sit apart, and how the button is treated. Those are the numbers you
 build against, and `layoutSignature` on the sibling mails is what you compare them to.
