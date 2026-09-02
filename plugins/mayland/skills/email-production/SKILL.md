@@ -415,7 +415,11 @@ agent runs are bound to them, so never let a pending image job sit between two b
    depth pass (rotated badges, offset cards, lift shadows, cutout on top), then accent words and
    copy fixes, then any recipe section the block library does not cover. Use
    `set_document_metadata` for name, subject and language, `insert_node`, `update_node`,
-   `move_node` and `reorder_nodes`. Feed each returned newWipRevision into the next batch, and
+   `move_node`, `reorder_nodes`, `set_auto_layout` and `remove_auto_layout`. Use Auto Layout for
+   live copy stacks whose height or order may change: pass one `groupId`, the exact ordered
+   `nodeIds`, `direction`, `gap`, `paddingX`, `paddingY`, `align`, and the group's `x`/`y` origin.
+   It materializes normal email geometry, so do not use it for intentional overlaps or decorative
+   compositions. Feed each returned newWipRevision into the next batch, and
    `get_email_wip` when you lost track. Staged batches are also what makes the build watchable
    on the board.
 6. `compile_email_wip` and read every warning it returns. Warnings are the build talking to you.
