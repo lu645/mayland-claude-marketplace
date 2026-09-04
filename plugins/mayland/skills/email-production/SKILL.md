@@ -169,7 +169,7 @@ rather than choosing a house default.
 
 ## The element vocabulary
 
-`insert_node` accepts four kinds, and each carries more than the obvious fields. The schema is
+`insert_node` accepts five kinds, and each carries more than the obvious fields. The schema is
 loose: a misspelled field is stored and silently ignored, so spell exactly.
 
 - Text: `text`, `tag` (h1, h2 or p), `color`, `size`, `weight`, `align`, `lh`, `ls`, `italic`,
@@ -177,6 +177,11 @@ loose: a misspelled field is stored and silently ignored, so spell exactly.
 - Button: `label`, `href`, `fill`, `color`, `radius`, `size`, `weight`, `letterSpacing`, `font`.
 - Image: `src`, `alt`, `label`, `fit` (cover, contain or fill), `radius`, and an optional `crop`
   region in source fractions.
+- Icon: search with `search_email_icons`, then import the chosen library/id with
+  `import_email_icon`. Insert the returned `sourceSvg` and immutable Mayland CDN `src` together
+  with `color`, `background`, `padding`, `radius`, `href`, `decorative` and `alt`. Imported icons
+  default to decorative; when an icon carries meaning, set `decorative` false and write an alt
+  that names that meaning. Recipient HTML never references Iconstack.
 - Shape: `shape` is one of rect, rounded, circle, ellipse, line, triangle, diamond, pentagon,
   hexagon, star, arrow or freeform. `fill`, `radius`, `opacity` 0..1, `stroke` with `strokeW`
   and `dash`, an optional `gradient` of `{from, to, angle}` in CSS degrees, and for freeform a
@@ -315,6 +320,37 @@ only urgency that is actually true.
 Imagery first, then compose, then refine. Sessions expire after fifteen minutes and locks and
 agent runs are bound to them, so never let a pending image job sit between two batches.
 
+### Capability contract
+
+Call `get_mayledit_capabilities` before the first mutation. Its versioned response is the
+authority for the fixed frame, element and shape kinds, mutable properties, operation arguments,
+batch limits and exporters. Do not infer a field from Figma or from an older conversation. Query
+only the needed category on a refresh, and use one `apply_email_batch` for related changes.
+
+The facts below are release-generated and contract-tested against that runtime response:
+
+elementKinds: text, button, image, icon, shape
+shapeKinds: rect, rounded, circle, ellipse, triangle, diamond, pentagon, hexagon, polygon, star, line, arrow, freeform
+operations: set_document_metadata, set_frame_state, update_frame, insert_node, update_node, remove_node, create_export_region, rename_export_region, create_component, update_component, create_component_variant, instantiate_component, set_instance_variant, set_instance_property, set_instance_override, swap_instance, reset_instance_overrides, detach_instance, bind_variable, unbind_variable, create_variable, update_variable, remove_variable, move_node, reorder_nodes, set_auto_layout, remove_auto_layout
+exporters: design_preview, delivery_preview, compatible_html, png, pdf, svg, pen, figma_json, klaviyo
+
+The Email frame is always exactly 600px wide and there is exactly one. `update_frame` may change
+only its name, background and height. Grow height when editing makes the mail longer; never try to
+change width or add another section. `set_frame_state` controls root Lock and Eye. A hidden root
+cannot preview, export or publish.
+
+Components and Variables are ordinary typed batch operations. Create or update a Component,
+define variants and exposed properties, instantiate it, then use instance operations for variant,
+property, override, swap, reset or detach. Use typed Variable operations and bindings instead of
+copying the same design value into every instance. The compiler resolves both systems to ordinary
+email nodes; unresolved definitions, cycles and invalid bindings fail closed.
+
+Design Preview is exact Canvas geometry. Delivery Preview and `compatible_html` are the compatible
+artifact used for sending and Klaviyo. Inspect both after any visual refinement; a good Design
+Preview does not waive a Delivery warning. Klaviyo publication itself is a human UI action: leave
+the approved artifact for the operator's `Submit to Klaviyo` confirmation and never invent an
+account, template id, template name or create/update intent through MCP.
+
 1. Run ALL image work before you touch the document: `create_image_edit_job` to cut packshots
    out of their background when no CUTOUT motif exists, `create_image_generation_job` for hero
    scenes and glow art, prompted with the pack's palette and `imageryStyle`. Poll `get_image_job`;
@@ -414,7 +450,8 @@ agent runs are bound to them, so never let a pending image job sit between two b
 5. Refine with `apply_email_batch` in stages, applied back to back within seconds: first the
    depth pass (rotated badges, offset cards, lift shadows, cutout on top), then accent words and
    copy fixes, then any recipe section the block library does not cover. Use
-   `set_document_metadata` for name, subject and language, `insert_node`, `update_node`,
+   `set_document_metadata` for name, subject and language, `update_frame` for frame height,
+   name or background, `insert_node`, `update_node`,
    `move_node`, `reorder_nodes`, `set_auto_layout` and `remove_auto_layout`. Use Auto Layout for
    live copy stacks whose height or order may change: pass one `groupId`, the exact ordered
    `nodeIds`, `direction`, `gap`, `paddingX`, `paddingY`, `align`, and the group's `x`/`y` origin.
