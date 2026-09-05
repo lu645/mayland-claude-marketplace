@@ -7,6 +7,17 @@ allowed-tools:
 
 # Mayland Catalog
 
+Shared Mayledit assets are executable MCP libraries: discover the libraries category through
+`get_mayledit_capabilities` (1.9.0), then call `list_mayledit_library`,
+`save_mayledit_library_item`, or confirmation-gated `delete_mayledit_library_item`.
+Kinds are block and text_style; scopes are campaign, brand, and global (this workspace).
+Use tenant-owned `emailId`/`brandId` for context. Saves require fresh Context Pack bindings and
+idempotency; updates, renames and moves also require `id` and `expectedVersion`.
+Global mutations require a workspace admin. Every input and nested definition is strict;
+unknown fields are rejected. Follow email-production for complete block/text-style definitions
+and payload-bound delete confirmation. Default text styles are Heading 1, Heading 2, Body,
+Caption and Eyebrow templates, saved explicitly when persistence is wanted.
+
 Use `/mayland <request>` to create or update a Mayland brand catalog from verified public information.
 
 ## Capability questions
@@ -71,6 +82,16 @@ number of emails on each, and `create_campaign` opens a new one. Neither is a ca
 goal is a reusable briefing intent and never holds emails. Catalog work does not touch campaigns,
 so read them when the user asks how a Brand's emails are organized and leave the writing to email
 production, which asks the user which board a new email belongs to.
+
+## Mayledit handoff
+
+When catalog work hands off to email production, the producing agent must call
+`get_mayledit_capabilities` and use its `linked_shape_text_cta` recipe for every new CTA. The
+recipe creates a Shape + Text group with one shared validated link and exposes Shape styling such
+as fill, stroke, radius, gradient, opacity and Drop Shadow. Move and resize the pair as a group;
+never include either member in `set_auto_layout`, which rejects CTA pairs to preserve their
+intentional overlap and semantic link. Never instruct the producing agent to
+create a new legacy button node. Reusable Blocks may live at Campaign, Brand, or Global scope.
 
 ## Ranking and safety
 

@@ -169,12 +169,14 @@ rather than choosing a house default.
 
 ## The element vocabulary
 
-`insert_node` accepts five kinds, and each carries more than the obvious fields. The schema is
-loose: a misspelled field is stored and silently ignored, so spell exactly.
+`insert_node` accepts text, image, icon and shape; legacy button nodes are read/export-only.
+Every operation and nested definition uses a strict schema: unknown or misspelled fields are rejected.
+Use complete examples from `get_mayledit_capabilities` and the tool schema.
 
 - Text: `text`, `tag` (h1, h2 or p), `color`, `size`, `weight`, `align`, `lh`, `ls`, `italic`,
   `underline`, `transform` for casing, `valign`, and `accentColor` for the accent runs below.
-- Button: `label`, `href`, `fill`, `color`, `radius`, `size`, `weight`, `letterSpacing`, `font`.
+- Legacy button nodes may be read, moved, or repaired for an existing document, but never create
+  a new one. For a new CTA use the Shape + Text recipe from `linked_shape_text_cta`.
 - Image: `src`, `alt`, `label`, `fit` (cover, contain or fill), `radius`, and an optional `crop`
   region in source fractions.
 - Icon: search with `search_email_icons`, then import the chosen library/id with
@@ -185,7 +187,9 @@ loose: a misspelled field is stored and silently ignored, so spell exactly.
 - Shape: `shape` is one of rect, rounded, circle, ellipse, line, triangle, diamond, pentagon,
   hexagon, star, arrow or freeform. `fill`, `radius`, `opacity` 0..1, `stroke` with `strokeW`
   and `dash`, an optional `gradient` of `{from, to, angle}` in CSS degrees, and for freeform a
-  `path` of SVG data in a 0..100 viewBox that scales with the element box.
+  `path` of SVG data in a 0..100 viewBox that scales with the element box. A Shape also accepts
+  an optional validated `href` and a bounded Drop Shadow through `shadow` with `x`, `y`, `blur`
+  and `color`. Empty links never emit anchors.
 - Every element carries `rotation` in degrees. Rotated text and buttons are baked to an image at
   compile so the tilt survives email clients; they stop being live text, so keep tilts for
   badges, stickers and cutouts, never for body copy.
@@ -320,6 +324,28 @@ only urgency that is actually true.
 Imagery first, then compose, then refine. Sessions expire after fifteen minutes and locks and
 agent runs are bound to them, so never let a pending image job sit between two batches.
 
+### Shared libraries
+
+Call `get_mayledit_capabilities` with category set to libraries for version 1.9.0 library metadata.
+Call `list_mayledit_library` with `emailId` for Campaign and Brand visibility, or `brandId`
+for Brand visibility. Global means the current workspace. Only block and text_style kinds
+are shared by these tools. Heading 1, Heading 2, Body, Caption and Eyebrow are default templates;
+they become persistent items only after saving.
+
+Use `save_mayledit_library_item` with a fresh `contextPackId`/`contextPackHash`, a stable
+`idempotencyKey`, `kind`, `scope`, `name`, and a complete strict definition to create an item.
+Block definitions require id, name, version set to 1, and elements normalized to origin 0,0.
+Text style definitions require id, name, scope, tag, font, weight, size, italic, underline,
+lineHeight, letterSpacing, transform, align, and color. Supply `id` and `expectedVersion` plus `name`, `scope`, or
+`definition` to rename, move, or update. Campaign/Brand bindings derive from tenant-owned
+`emailId`/`brandId`; never supply `campaignId` or `organizationId`. Global mutations require
+a workspace admin. Reuse the returned item version on the next change.
+
+For `delete_mayledit_library_item`, request a confirmation challenge with action
+`delete_mayledit_library_item`, entityType set to mayledit_library_item, the item id, its version
+as `expectedRevision`, and the complete delete payload without `confirmationToken`.
+Then call delete with that payload and the returned token. Retries reuse the same idempotency key.
+
 ### Capability contract
 
 Call `get_mayledit_capabilities` before the first mutation. Its versioned response is the
@@ -333,6 +359,16 @@ elementKinds: text, button, image, icon, shape
 shapeKinds: rect, rounded, circle, ellipse, triangle, diamond, pentagon, hexagon, polygon, star, line, arrow, freeform
 operations: set_document_metadata, set_frame_state, update_frame, insert_node, update_node, remove_node, create_export_region, rename_export_region, create_component, update_component, create_component_variant, instantiate_component, set_instance_variant, set_instance_property, set_instance_override, swap_instance, reset_instance_overrides, detach_instance, bind_variable, unbind_variable, create_variable, update_variable, remove_variable, move_node, reorder_nodes, set_auto_layout, remove_auto_layout
 exporters: design_preview, delivery_preview, compatible_html, png, pdf, svg, pen, figma_json, klaviyo
+recipes: linked_shape_text_cta
+
+Create every new CTA from the `linked_shape_text_cta` recipe returned by capability discovery:
+one rounded Shape background and one Text label share the same `groupId` and the same validated
+`href`. Mayledit compiles that Shape + Text pair back into one live semantic email CTA, including
+the Outlook fallback. Move and resize those two nodes as a group, and never include either member
+in `set_auto_layout`; the operation rejects full and partial CTA-pair selections so the intentional
+overlap and semantic link cannot be flattened. Do not insert a new legacy button node. A Shape + Text CTA can be saved as a
+Reusable Block at Campaign, Brand, or Global scope; use the scope the user named and never promote
+it silently.
 
 The Email frame is always exactly 600px wide and there is exactly one. `update_frame` may change
 only its name, background and height. Grow height when editing makes the mail longer; never try to
@@ -459,7 +495,8 @@ account, template id, template name or create/update intent through MCP.
    `justify` as start, center, end, or space-between and `childWidth` as fixed or fill.
    Horizontal fixed-width layouts may set `wrap` and `rowGap`; wrap cannot be combined with fill.
    It materializes normal email geometry, so do not use it for intentional overlaps or decorative
-   compositions. Feed each returned newWipRevision into the next batch, and
+   compositions. In particular, exclude both nodes of every `linked_shape_text_cta`; full and
+   partial CTA-pair selections fail closed. Feed each returned newWipRevision into the next batch, and
    `get_email_wip` when you lost track. Staged batches are also what makes the build watchable
    on the board.
 6. `compile_email_wip` and read every warning it returns. Warnings are the build talking to you.
