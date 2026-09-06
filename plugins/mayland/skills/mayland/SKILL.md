@@ -8,7 +8,7 @@ allowed-tools:
 # Mayland Catalog
 
 Shared Mayledit assets are executable MCP libraries: discover the libraries category through
-`get_mayledit_capabilities` (1.11.0), then call `list_mayledit_library`,
+`get_mayledit_capabilities` (1.12.0), then call `list_mayledit_library`,
 `save_mayledit_library_item`, or confirmation-gated `delete_mayledit_library_item`.
 Kinds are block and text_style; scopes are campaign, brand, and global (this workspace).
 Use tenant-owned `emailId`/`brandId` for context. Saves require fresh Context Pack bindings and

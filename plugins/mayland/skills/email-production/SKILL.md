@@ -326,7 +326,7 @@ agent runs are bound to them, so never let a pending image job sit between two b
 
 ### Shared libraries
 
-Call `get_mayledit_capabilities` with category set to libraries for version 1.11.0 library metadata.
+Call `get_mayledit_capabilities` with category set to libraries for version 1.12.0 library metadata.
 Call `list_mayledit_library` with `emailId` for Campaign and Brand visibility, or `brandId`
 for Brand visibility. Global means the current workspace. Only block and text_style kinds
 are shared by these tools. Heading 1, Heading 2, Body, Caption and Eyebrow are default templates;
@@ -409,6 +409,17 @@ Codex follows the same tool contracts and this skill's production workflow.
   Auto Layout children must be laid out using `set_auto_layout`. Include complete touched Auto
   Layout trees for group, ungroup, move or duplicate. Locked nodes must first be unlocked; use
   component instance operations for linked component edits.
+- Set a shared group URL by updating every member's `href` in one `apply_email_batch`.
+  For ordinary nodes use `update_node`; clear optional links with unsetProperties set to ["href"].
+  For component members use `set_instance_override` with `sectionId`, `instanceId`,
+  `sourceElementId`, and a patch containing the new href. To clear a component member's
+  link persistently, set href to an empty string in the patch. This preserves unrelated overrides; do not reset
+  or detach the whole instance. Use one operation per member, including all selected group members.
+  Each batch entry is the operation object itself, for example:
+
+  ```json
+  {"type":"set_instance_override","sectionId":"frame","instanceId":"card-instance","sourceElementId":"caption","patch":{"href":""}}
+  ```
 - To use a catalog block, pass its returned definition to `upsert_reusable_block`, then call
   `instantiate_reusable_block` with definitionId, fresh instanceId and x/y. Upserting an existing
   definition updates complete linked instances at their existing origins; structural changes
