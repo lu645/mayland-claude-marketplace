@@ -326,7 +326,7 @@ agent runs are bound to them, so never let a pending image job sit between two b
 
 ### Shared libraries
 
-Call `get_mayledit_capabilities` with category set to libraries for version 1.10.0 library metadata.
+Call `get_mayledit_capabilities` with category set to libraries for version 1.11.0 library metadata.
 Call `list_mayledit_library` with `emailId` for Campaign and Brand visibility, or `brandId`
 for Brand visibility. Global means the current workspace. Only block and text_style kinds
 are shared by these tools. Heading 1, Heading 2, Body, Caption and Eyebrow are default templates;
@@ -357,7 +357,7 @@ The facts below are release-generated and contract-tested against that runtime r
 
 elementKinds: text, button, image, icon, shape
 shapeKinds: rect, rounded, circle, ellipse, triangle, diamond, pentagon, hexagon, polygon, star, line, arrow, freeform
-operations: set_document_metadata, set_frame_state, update_frame, insert_node, update_node, remove_node, create_export_region, rename_export_region, create_component, update_component, create_component_variant, instantiate_component, set_instance_variant, set_instance_property, set_instance_override, swap_instance, reset_instance_overrides, detach_instance, bind_variable, unbind_variable, create_variable, update_variable, remove_variable, move_node, reorder_nodes, set_auto_layout, remove_auto_layout
+operations: set_document_metadata, set_frame_state, update_frame, insert_node, update_node, group_nodes, ungroup_nodes, duplicate_nodes, move_nodes, align_nodes, distribute_nodes, upsert_reusable_block, instantiate_reusable_block, detach_reusable_block, upsert_text_style, bind_text_style, set_text_style_overrides, reset_text_style_overrides, detach_text_style, upsert_saved_style, apply_saved_style, upsert_custom_font, remove_node, create_export_region, rename_export_region, create_component, update_component, create_component_variant, instantiate_component, set_instance_variant, set_instance_property, set_instance_override, swap_instance, reset_instance_overrides, detach_instance, bind_variable, unbind_variable, create_variable, update_variable, remove_variable, move_node, reorder_nodes, set_auto_layout, remove_auto_layout
 exporters: delivery_preview, compatible_html, png, pdf, svg, pen, figma_json, klaviyo
 recipes: linked_shape_text_cta
 
@@ -386,11 +386,47 @@ property, override, swap, reset or detach. Use typed Variable operations and bin
 copying the same design value into every instance. The compiler resolves both systems to ordinary
 email nodes; unresolved definitions, cycles and invalid bindings fail closed.
 
-Design Preview is exact Canvas geometry. Delivery Preview and `compatible_html` are the compatible
-artifact used for sending and Klaviyo. Inspect both after any visual refinement; a good Design
-Preview does not waive a Delivery warning. Klaviyo publication itself is a human UI action: leave
+The Canvas shows design geometry; Preview and `compatible_html` use the compiled delivery
+artifact used for sending and Klaviyo. Inspect the delivery result after visual refinement;
+Canvas appearance does not waive a delivery warning. Klaviyo publication itself is a human UI action: leave
 the approved artifact for the operator's `Submit to Klaviyo` confirmation and never invent an
 account, template id, template name or create/update intent through MCP.
+
+### Executable Canvas actions in Claude Code and Codex
+
+These are protocol-level workflows for either client connected to the Mayland MCP server.
+Use the same fresh Context Pack, email lock, fencing token and expected WIP revision for
+`apply_email_batch`. Client-specific plugin installation commands apply only to that client;
+Codex follows the same tool contracts and this skill's production workflow.
+
+- Remove a link or effect with `update_node`, unsetProperties set to ["href", "shadow"], and
+  an empty patch object. Optional crop, gradient and group membership can also be unset. Never send null
+  as deletion, unset a required field, or patch and unset the same field.
+- Group with `group_nodes`; use `move_nodes` for a shared delta and `ungroup_nodes` to detach
+  membership. `duplicate_nodes` accepts explicit nodeIds, a fresh idPrefix and dx/dy; it creates
+  fresh groups and detaches reusable/component metadata like Canvas duplicate-in-place. Include
+  complete groups. `align_nodes` and `distribute_nodes` use Canvas bounds and rounding; managed
+  Auto Layout children must be laid out using `set_auto_layout`. Include complete touched Auto
+  Layout trees for group, ungroup, move or duplicate. Locked nodes must first be unlocked; use
+  component instance operations for linked component edits.
+- To use a catalog block, pass its returned definition to `upsert_reusable_block`, then call
+  `instantiate_reusable_block` with definitionId, fresh instanceId and x/y. Upserting an existing
+  definition updates complete linked instances at their existing origins; structural changes
+  require detaching incompatible instances first with `detach_reusable_block`.
+- To use a catalog text style, pass its definition to `upsert_text_style`, then `bind_text_style`.
+  Use `set_text_style_overrides`, `reset_text_style_overrides`, and `detach_text_style` for local
+  edits. A style upsert propagates to bound nodes and preserves their explicit overrides. These
+  document operations do not change the shared catalog; save that separately when requested.
+- `upsert_saved_style` and `apply_saved_style` handle document-local per-kind presets.
+  `upsert_custom_font` registers the validated font source; reference it with a safe fallback stack.
+- Export through `export_email_document` with emailId, exactly one stored revisionId or versionId,
+  and format png, pdf, svg, pen or figma_json. For a named region, supply regionId and png/svg;
+  the region must permit that format. Use the returned signed downloadUrl before expiresAt and
+  inspect fidelity warnings. For delivery HTML use `compile_email_wip`'s canonical previewUrl.
+  For recipient preview imagery use `get_email_preview_image` after compile with its revisionId.
+
+Capability canvasActions maps document actions to these commands. Pan, zoom, selection,
+clipboard and panel opening are transient client controls, not persisted email operations.
 
 1. Run ALL image work before you touch the document: `create_image_edit_job` to cut packshots
    out of their background when no CUTOUT motif exists, `create_image_generation_job` for hero
