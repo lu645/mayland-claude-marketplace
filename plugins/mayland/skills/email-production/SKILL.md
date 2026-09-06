@@ -326,7 +326,7 @@ agent runs are bound to them, so never let a pending image job sit between two b
 
 ### Shared libraries
 
-Call `get_mayledit_capabilities` with category set to libraries for version 1.9.0 library metadata.
+Call `get_mayledit_capabilities` with category set to libraries for version 1.10.0 library metadata.
 Call `list_mayledit_library` with `emailId` for Campaign and Brand visibility, or `brandId`
 for Brand visibility. Global means the current workspace. Only block and text_style kinds
 are shared by these tools. Heading 1, Heading 2, Body, Caption and Eyebrow are default templates;
@@ -358,8 +358,13 @@ The facts below are release-generated and contract-tested against that runtime r
 elementKinds: text, button, image, icon, shape
 shapeKinds: rect, rounded, circle, ellipse, triangle, diamond, pentagon, hexagon, polygon, star, line, arrow, freeform
 operations: set_document_metadata, set_frame_state, update_frame, insert_node, update_node, remove_node, create_export_region, rename_export_region, create_component, update_component, create_component_variant, instantiate_component, set_instance_variant, set_instance_property, set_instance_override, swap_instance, reset_instance_overrides, detach_instance, bind_variable, unbind_variable, create_variable, update_variable, remove_variable, move_node, reorder_nodes, set_auto_layout, remove_auto_layout
-exporters: design_preview, delivery_preview, compatible_html, png, pdf, svg, pen, figma_json, klaviyo
+exporters: delivery_preview, compatible_html, png, pdf, svg, pen, figma_json, klaviyo
 recipes: linked_shape_text_cta
+
+Preview displays the compiled delivery HTML. The editor has no separate Design preview.
+An immutable Version keeps its exact approved artifact; a WIP preview compiles the saved current
+WIP. Mobile preview uses a real 390px viewport. Client chrome in a browser is not a native
+Apple/Gmail/Outlook rendering guarantee; use Client Lab evidence for client compatibility.
 
 Create every new CTA from the `linked_shape_text_cta` recipe returned by capability discovery:
 one rounded Shape background and one Text label share the same `groupId` and the same validated
@@ -389,7 +394,12 @@ account, template id, template name or create/update intent through MCP.
 
 1. Run ALL image work before you touch the document: `create_image_edit_job` to cut packshots
    out of their background when no CUTOUT motif exists, `create_image_generation_job` for hero
-   scenes and glow art, prompted with the pack's palette and `imageryStyle`. Poll `get_image_job`;
+   scenes and glow art, prompted with the pack's palette and `imageryStyle`. For every new
+   generation or edit call, supply `assetName`: a concise descriptive library name you choose
+   for the result, such as “Amber bottle on linen” or “Citrus serum transparent cutout” (1–200
+   characters). Describe its subject and visual treatment; never copy the prompt, a job ID,
+   or a generic filename. The field remains optional only for older clients and queued jobs.
+   Poll `get_image_job`;
    `get_completed_image_asset` returns the public `url` an email image element uses. Image
    generation runs through Mayland so the organization's configured model, its policy and its
    audit trail all apply. Never call an image provider directly. When a cutout job fails with
