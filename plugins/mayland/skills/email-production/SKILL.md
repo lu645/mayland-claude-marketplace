@@ -556,7 +556,11 @@ clipboard and panel opening are transient client controls, not persisted email o
    partial CTA-pair selections fail closed. Feed each returned newWipRevision into the next batch, and
    `get_email_wip` when you lost track. Staged batches are also what makes the build watchable
    on the board.
-6. `compile_email_wip` and read every warning it returns. Warnings are the build talking to you.
+6. `compile_email_wip` and inspect its diagnostics. Repair blocking issues in the source WIP before
+   handing the result to the user. Reuse truthful existing asset descriptions; unknown content needs
+   an accurate description, not a generic filename or a decorative flag. Checkpoint and compile again.
+   `complete_agent_run` requires the exact current WIP's bound artifact with no blocking errors;
+   EMAIL_AGENT_DELIVERY_NOT_READY and EMAIL_AGENT_DELIVERY_BLOCKED mean preparation is not finished.
 7. `get_email_preview_image` returns the rendered mail as an image. First read the whole preview
    once for flow. Then download the `imageUrl` immediately (the link expires in ten minutes) and
    crop the hero and every section at native resolution, with sips or ImageMagick, and look at
