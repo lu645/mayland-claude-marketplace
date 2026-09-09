@@ -277,6 +277,10 @@ stale while you talk; already answered campaign decisions must not trigger the s
 Every id you pass (emails, runs, packs, assets) is copied verbatim from a tool result in this
 conversation, never reconstructed from memory. On `CONTEXT_PACK_RUN_MISMATCH`, call `get_email_wip`
 and use its `activeAgentRunId` exactly; do not retry with a guessed id.
+Before the first write, check that the returned Brand ID, name and official website identify
+the requested Brand. Keep that same ID through context, assets, campaigns and email creation;
+a display name or URL slug is not a Brand ID. A mismatch needs resolution, not a catalog edit
+that makes the wrong Brand look like the intended one.
 
 When any tool result carries a `PLUGIN_UPDATE_RECOMMENDED` warning, finish the current step,
 then use Mayland's Connect Agent action for the current client. If using the Claude plugin,
@@ -305,6 +309,18 @@ Read the brand profile as a design brief, not as decoration:
   a mark cut for a light ground onto a dark band.
 - `displayFont`, `letterSpacing`, `imageryStyle` and `designTokens.form` set the type, picture
   and shape register: edge style, density, button shape and fill, section rhythm.
+  A font name is not a loaded font file. Use the supplied trusted font source when available;
+  for a custom family, inspect the official Brand site's stylesheet for its actual font URL
+  rather than guessing a Google Fonts URL. Bind verified static faces in `plan.fonts.faces`
+  with name, data and weight: the same family can have regular at 400 and bold at 700 with
+  their respective files. For an official source outside the renderer's permitted origins,
+  fetch the verified font and embed its font data URL; do not bypass the renderer's network
+  policy or assume that a remote URL loaded. Do not advertise a regular file as every weight. Keep that
+  family in `fonts.heading` and `fonts.body` with safe fallback stacks. A single legacy
+  display source can use `plan.fonts.displayUrl`; use `upsert_custom_font` through `apply_email_batch` for additional faces
+  after compose, which replaces the document. Confirm the face loads in the rendered preview,
+  not just that the WIP contains its name. Disclose an unavailable face rather than claiming
+  exact typography, and never rewrite Brand typography to disguise a renderer fallback.
 - `visualSummary` describes the layout system, the module vocabulary and the button treatment.
 - `voiceSummary` and `tone` set the register and the form of address.
 - `noGo` is binding. A mail that breaks one of these is wrong even if it looks good.
@@ -502,9 +518,18 @@ style per mail, varied across the campaign:
 | step | M0,100 L0,70 L33,70 L33,25 L67,25 L67,70 L100,70 L100,100 Z |
 | torn | M0,100 L0,44 L5,76 L10,44 L15,76 L20,44 L25,76 L30,44 L35,76 L40,44 L45,76 L50,44 L55,76 L60,44 L65,76 L70,44 L75,76 L80,44 L85,76 L90,44 L95,76 L100,44 L100,100 Z |
 
-A soft fade is the seventh option: a full-width `gradient` rectangle from the leaving colour to
+A soft fade is another option: a full-width `gradient` rectangle from the leaving colour to
 the arriving one. The variation rule below includes the transition: neighbouring mails in a
 campaign do not share one.
+
+For a hero photo that should blend into its ground, put its exact `imageSlot` in `plan.fades`.
+This fades the image's edge from transparent to the section background; `plan.transition`
+controls the separate shaped seam between bands. A wave or crest is not a photo fade. Check
+the delivered image edge and the next section together, without obscuring the product or CTA.
+For classic/full_bleed heroes, `content.imageHeight` preserves the intended photo ratio and
+`content.fadeHeight` limits the fade to clear background. For example, a 600×400 scene can use
+400 and 40 respectively when the bottom 40px contain no product. Inspect the actual crop;
+these numbers are not a default for every image.
 
 ## Depth and energy
 
@@ -561,18 +586,17 @@ Some section types the library does not ship as blocks are composable from primi
 
 ### How many sections
 
-The reference sets the length, not a number in this file. Count the sections in the reference
-you were given and build at least that many. With no reference, six to ten is the working range
-for a promotional mail: a mail that ends after three sections is a fragment, and it reads as one
-next to a real brand mail.
+Choose the section count from this assignment's message and verified substance. A reference
+shows pacing and hierarchy, not a minimum section count or height quota. A concise winback
+can be complete; do not repeat guarantees, benefits or the same offer merely to make it longer.
 
 Length is a symptom, not the goal. Each section has to earn its place with something the reader
 did not already have: a different argument, a different proof, a different way of looking. Three
-paraphrases of the same claim are worse than one section. When you run out of substance, that is
-the signal to fetch more from the product context, not to stop early.
+paraphrases of the same claim are worse than one section. Fetch relevant product context when
+an argument needs support; remove a section when it adds no new reason to act.
 
-Check the finished mail against the reference with `get_email_preview_image`: if yours is half
-as tall, you left the argument unfinished.
+Check the finished mail against the reference with `get_email_preview_image`: compare reading
+order, focal point and useful contrast rather than matching its height.
 
 Variation is a hard rule: each mail in a campaign needs a combination of transition, hero
 background, headline style and sections that its neighbours do not have.
@@ -591,8 +615,15 @@ mail. Use it in running body text for the one phrase the paragraph exists for, a
 paragraph, so a skimming reader still gets the point. Headlines, kickers, CTAs and fine print
 already carry their own weight, so leave the markers out of them.
 
-State any offer with its size, its validity window and where it applies. Push conditions and
-exclusions into the fine print, never into the selling text.
+State only the offer terms authorized by the user or verified target context: amount, code,
+eligible products, minimum spend and validity when supplied. Do not turn a winback request into
+an invented discount, deadline, free shipping or exclusivity claim. Omit unknown optional terms;
+ask when a missing condition changes the offer. Keep material restrictions beside the offer,
+with supporting detail in readable fine print.
+An ordinary product URL does not prove automatic discount redemption. Do not say the button
+applies the discount without a verified discount URL or supplied redemption instructions.
+The last email in this assignment is not a promise that the recipient will receive no future
+marketing; do not invent that promise or an offer expiry to give the closing mail urgency.
 
 Subject under 45 characters, preheader continues the thought instead of repeating it. Offer
 three to five subject and preheader pairs across different angles: a curiosity loop, the hero
@@ -724,8 +755,14 @@ Capability canvasActions maps document actions to these commands. Pan, zoom, sel
 clipboard and panel opening are transient client controls, not persisted email operations.
 
 1. Run ALL image work before you touch the document: `create_image_edit_job` to cut packshots
-   out of their background when no CUTOUT motif exists, `create_image_generation_job` for hero
-   scenes and glow art, prompted with the pack's palette and `imageryStyle`. For every new
+   out of their background when no CUTOUT motif exists or to place the actual product into a
+   new scene. Bind its `sourceAssetId` to the verified product image; preserve the product's
+   shape, details and branding while art-directing its setting, lighting and perspective.
+   `create_image_generation_job` has no source-image input: use it for environments or abstract
+   art, never as proof that a depicted product is the real catalog item. A `productId` alone
+   does not send product pixels to the image model. Choose a scene, cutout or existing image
+   because it serves the concept; a raw packshot pasted onto a coloured band is not a generated
+   product scene. Prompt with the pack's palette and `imageryStyle`. For every new
    generation or edit call, supply `assetName`: a concise descriptive library name you choose
    for the result, such as “Amber bottle on linen” or “Citrus serum transparent cutout” (3–100
    characters). Describe its subject and visual treatment; never copy the prompt, a job ID,
@@ -735,6 +772,13 @@ clipboard and panel opening are transient client controls, not persisted email o
    slot's solid #RRGGBB background, never a guessed color. Delivery then pads opaque images in
    that color and compresses them as JPEG when smaller. Genuine cutouts retain transparency;
    without a known solid background, ratio mismatches keep transparent padding. Inspect the result before placement;
+   a PNG extension or a painted checkerboard does not prove transparency. For a cutout, check
+   actual alpha and its edges on the planned ground; reject baked checkerboards, white boxes,
+   halos and changed product details instead of hiding them with an overlay.
+   Request `background="transparent"` for a cutout; omit it for an opaque scene. Unsupported
+   providers fail with `IMAGE_TRANSPARENCY_UNSUPPORTED` before generation, and an opaque result
+   fails with `IMAGE_TRANSPARENCY_MISSING` even if it is a PNG. Preserve the original asset;
+   do not blindly repeat a request or claim a rejected output is a usable cutout.
    explicit user-directed crops remain an editor decision.
    Poll `get_image_job`;
    `get_completed_image_asset` returns the public `url` an email image element uses. Image
@@ -819,6 +863,8 @@ clipboard and panel opening are transient client controls, not persisted email o
    | brand_hero, variant statement | `eyebrow`, `headline`, `subhead`, `cta` |
    | story_intro, story_photo | `headline`, `body`, plus `eyebrow` or `signature` |
    | feature_education | `eyebrow`, `headline`, `body`, `bullets`, `cta` |
+   | product_card | `productName`, `tagline`, `body`, `price`, `productUrl`, `cta`, `chips`; the title is not `headline` |
+   | lifestyle_circle | `captionHeadline`, `captionBody`; not `headline` or `body` |
    | icon_grid | `headline`, `items` with `value` as the tile line and `label` as its caption |
    | timeline | `headline`, `steps` with `headline` and `body` |
    | stat_row | `stats` with `value` and `label` |
