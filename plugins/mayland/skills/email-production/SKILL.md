@@ -270,9 +270,13 @@ Every id you pass (emails, runs, packs, assets) is copied verbatim from a tool r
 conversation, never reconstructed from memory. On `CONTEXT_PACK_RUN_MISMATCH`, call `get_email_wip`
 and use its `activeAgentRunId` exactly; do not retry with a guessed id.
 
-When any tool result carries a `PLUGIN_UPDATE_RECOMMENDED` warning, run the two plugin update
-commands (`claude plugin marketplace update mayland`, then `claude plugin update mayland@mayland --scope user`),
-finish the current step, and tell the user to start a new conversation so the updated plugin loads.
+When any tool result carries a `PLUGIN_UPDATE_RECOMMENDED` warning, finish the current step,
+then use Mayland's Connect Agent action for the current client. If using the Claude plugin,
+run its fresh hash-verified setup command unchanged and follow the connect skill; separate
+update commands or a bare MCP reconnect do not verify the package. After successful Claude
+setup, require `/reload-plugins` or a new Claude Code session before further production work.
+Other MCP clients follow their own Connect Agent instructions and reload the current workflow
+guides; they must not install or run Claude CLI. Do not initiate an update when versions match.
 
 Read the brand profile as a design brief, not as decoration:
 - `designTokens.colors` hands you the palette already sorted into roles: `bg` and `surface` for
