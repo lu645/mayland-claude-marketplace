@@ -307,15 +307,19 @@ Read the brand profile as a design brief, not as decoration:
 - `brandMarks` lists the marks you may place inside the mail, each with the background it is cut
   for. Prefer the entry flagged `isWordmark` in the header, fall back to `isLogo`, and never put
   a mark cut for a light ground onto a dark band.
+  Bind that verified mark to the plan's `logo` image slot before composing, with factual alt
+  text. Navigation labels are not a logo asset. Check the first rendered header rather than
+  shifting the entire finished mail to insert a missing mark afterwards.
 - `displayFont`, `letterSpacing`, `imageryStyle` and `designTokens.form` set the type, picture
   and shape register: edge style, density, button shape and fill, section rhythm.
   A font name is not a loaded font file. Use the supplied trusted font source when available;
   for a custom family, inspect the official Brand site's stylesheet for its actual font URL
   rather than guessing a Google Fonts URL. Bind verified static faces in `plan.fonts.faces`
   with name, data and weight: the same family can have regular at 400 and bold at 700 with
-  their respective files. For an official source outside the renderer's permitted origins,
-  fetch the verified font and embed its font data URL; do not bypass the renderer's network
-  policy or assume that a remote URL loaded. Do not advertise a regular file as every weight. Keep that
+  their respective verified HTTPS font URLs. Mayland fetches and validates those files for the
+  renderer; do not split Base64 font bytes across chat messages or submit placeholder font data.
+  Do not bypass its source validation or assume that a remote URL loaded. Do not advertise a
+  regular file as every weight. Keep that
   family in `fonts.heading` and `fonts.body` with safe fallback stacks. A single legacy
   display source can use `plan.fonts.displayUrl`; use `upsert_custom_font` through `apply_email_batch` for additional faces
   after compose, which replaces the document. Confirm the face loads in the rendered preview,
@@ -378,6 +382,14 @@ tags alone is how mails end up generic. While you look
 at it, name for yourself the band count down the page, where the density changes, which modules
 repeat, how far the type sizes sit apart, and how the button is treated. Those are the numbers you
 build against, and `layoutSignature` on the sibling mails is what you compare them to.
+Before composing, include a concise visual rationale in the existing
+`agentInput.productionInstruction`: the selected reference ID, two concrete spatial observations
+from the image, and the corresponding composition choices in this mail. For example, distinguish
+type placed across a product photo from a text-only opener, and alternating image/text rows from
+stacked paragraphs. A reference's title, tags or extracted slogan are not those observations.
+This is the agent's inspectable account of what it saw, not a server-certified viewing receipt.
+If the host has not displayed the image, report that limitation and resolve image access before
+claiming that the design follows the selected reference.
 
 Take the craft: the layout system and its column logic, the rhythm of the bands down the page and
 where they change density, the module vocabulary the mail draws from, the type hierarchy and how
@@ -758,6 +770,14 @@ clipboard and panel opening are transient client controls, not persisted email o
    out of their background when no CUTOUT motif exists or to place the actual product into a
    new scene. Bind its `sourceAssetId` to the verified product image; preserve the product's
    shape, details and branding while art-directing its setting, lighting and perspective.
+   Set `editIntent` to `product-scene` for a changed setting or pose, and to `background-removal`
+   for a cutout that keeps the source geometry. Omitting the intent retains the legacy cutout
+   comparison, which is not suitable for a new scene. You, the producing agent, judge the
+   scene's product identity and creative quality by actually viewing the source and result.
+   The Analysis model describes Swipe File references; it is not an email or product-scene
+   judge. Mayland runs the requested image jobs and technical checks, without a hidden model
+   approving your creative work. Inspect geometry, colour, material and branding against the
+   real source; a changed setting is expected, a changed product is not.
    `create_image_generation_job` has no source-image input: use it for environments or abstract
    art, never as proof that a depicted product is the real catalog item. A `productId` alone
    does not send product pixels to the image model. Choose a scene, cutout or existing image
@@ -781,11 +801,25 @@ clipboard and panel opening are transient client controls, not persisted email o
    do not blindly repeat a request or claim a rejected output is a usable cutout.
    explicit user-directed crops remain an editor decision.
    Poll `get_image_job`;
-   `get_completed_image_asset` returns the public `url` an email image element uses. Image
+   `get_completed_image_asset` returns the public `url` an email image element uses and actual
+   result image blocks, plus the source image for an edit. View those images and compare source
+   and result before placement; reading their labels, provenance or URLs is not seeing the pixels.
+   If an expected image is missing, report the visual-access gap instead of approving it. Image
    generation runs through Mayland so the organization's configured model, its policy and its
-   audit trail all apply. Never call an image provider directly. When a cutout job fails with
-   `IMAGE_EDIT_UNFAITHFUL` the model redrew the packaging: use the original packshot on a light
-   card instead of retrying blindly.
+   audit trail all apply. Never call an image provider directly. `IMAGE_EDIT_UNFAITHFUL` means
+   that the edit failed its fidelity check; it does not by itself prove which product detail
+   changed. Inspect the reported reason and the intended edit before choosing a repair.
+   Preserve the original product asset and the required role of each planned image.
+
+   A failed scene is still a missing scene. Do not silently remove its `imageSlot`, change a
+   requested photo hero to a text-only variant, substitute a logo or raw packshot for the scene,
+   or call that downgraded draft finished. If a specific cause can be corrected, make one
+   corrected attempt using the appropriate supported edit intent and a new idempotency key;
+   an uncertain transport result instead retries its unchanged key and payload. If the cause
+   cannot be corrected or the corrected attempt fails, report the image requirement as
+   incomplete. Keep any useful draft, but do not call `complete_agent_run` or claim visual
+   approval while the requested hero is missing. An original packshot on a light card can be
+   an explicit temporary preview; it satisfies a product-card placement, not a required scene.
 2. `create_email` with the brand, the campaign the user picked in Step 0, the title and the
    brief. Omitting the campaign drops the mail onto the brand's Unassigned board, which is a
    fallback and not a decision you are allowed to make for the user. Leave `copyRevisionIds`,
@@ -842,6 +876,10 @@ clipboard and panel opening are transient client controls, not persisted email o
 
    Five plan-level fields set the register of the whole mail and are easy to miss, because the
    mail still compiles without them and simply comes out in the default:
+
+   Submit real values only: no placeholder font data, incomplete Base64 chunks or empty palette
+   keys. A schema rejection identifies an invalid request; correct the reported field against
+   the current tool schema instead of inventing aliases or working around validation.
 
    | Field | Values | What it decides |
    |---|---|---|
@@ -927,9 +965,13 @@ clipboard and panel opening are transient client controls, not persisted email o
    an accurate description, not a generic filename or a decorative flag. Checkpoint and compile again.
    `complete_agent_run` requires the exact current WIP's bound artifact with no blocking errors;
    EMAIL_AGENT_DELIVERY_NOT_READY and EMAIL_AGENT_DELIVERY_BLOCKED mean preparation is not finished.
-7. `get_email_preview_image` returns the rendered mail as an image. First read the whole preview
-   once for flow. Then download the `imageUrl` immediately (the link expires in ten minutes) and
-   crop the hero and every section at native resolution, with sips or ImageMagick, and look at
+7. `get_email_preview_image` returns the rendered mail as an image. The host must actually show
+   that image to you: a URL, job receipt or successful compile is not visual inspection. First read the whole preview
+   once for flow. When an `imageUrl` is returned, download it before its reported expiry.
+   Otherwise save the actual returned image pixels using the host's image access: a live render
+   can be visually valid without any downloadable URL. Do not fabricate a URL or treat its
+   absence as a missing image when the image block is present. Use those pixels to crop the
+   hero and every section at native resolution, with sips or ImageMagick, and look at
    each crop. A 600 by 4000 preview viewed whole is downsampled and hides exactly the defects a
    client sees first: collisions, clipped lines, type on busy ground, cropped subjects. Never
    approve a mail from metadata alone. If the connected release does not offer the tool yet, say
@@ -946,6 +988,8 @@ text itself live.
 
 ## Before you call it done
 
+- Every required image role in the assignment is present and visually accepted. A successful
+  compile does not excuse a missing hero, a substituted logo or an unresolved image-job failure.
 - You have looked at the rendered preview image AND at native-resolution crops of the hero and
   every section, not only at the compile result.
 - Every band change carries a named transition or a soft fade, and the mail carries at least one
