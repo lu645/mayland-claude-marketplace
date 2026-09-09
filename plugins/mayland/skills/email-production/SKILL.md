@@ -13,26 +13,258 @@ This skill carries the craft. It carries no brand values. Every colour, font, ph
 product fact and rule of address comes from the connected Mayland release. If a brand value is
 missing, say so and stop. Never substitute a plausible one.
 
-## Step 0 - Load the identity first (mandatory)
+## Prompt library - preserve the assignment before production
+
+This workflow applies to a single email, a campaign, or several campaigns for one brand.
+The email-by-email build loop below does not create a separate prompt line for each tool or mail.
+Prompts preserve reusable production instructions; the catalog preserves verified brand facts,
+and Learnings keep their existing independent proposal and approval flow.
+
+### Prepare the assignment before saving
+
+For a normal new commission, automatically prepare the user's original business request before
+saving V1 and before producing the email. The external agent explicitly carries `rawAssignment`
+(the user's original production request, not a chat transcript) into this workflow. MCP sees only
+the fields actually submitted to its tools; it does not listen to the rest of the conversation.
+Do not replace the original request with your interpretation or manufacture missing user wishes.
+If an explicitly requested briefing is still `briefingStatus=collecting`, remain in that ongoing
+briefing and its existing prompt line; loading this guide does not authorize production. Proceed
+only when it hands off ready, or stop when cancelled. An ordinary request without briefing state
+does not start this interview path.
+
+Use read-only lookups of the existing target brand, relevant products, suitable references and
+approved Learnings to resolve what is already known. Reuse verified context already returned in
+this assignment when still current. Do not launch a website/product scraper, save new catalog
+facts, create images or mutate an email merely to prepare the instruction. Separate sourced facts
+from the user's explicit choices; a reference image is design inspiration, not proof of an offer.
+
+Structure a concise `preparedExecutionIntent` in the agent's working context:
+
+- Goal: what this assignment should accomplish, without inventing another campaign objective.
+- Content: the selected, verified products/facts and requested message, including the required length.
+- Design: the requested mood/composition within the target brand's design system and binding Learnings.
+- CTA: the action and verified destination supported by the request and brand context; never invent
+  an offer, discount, urgency, price, claim or unsupported destination to fill an empty slot.
+- Constraints: preserve every explicit restriction, omission, language choice and user correction.
+
+Unknown information stays unknown. Ask only a targeted question when missing or ambiguous brand,
+product, campaign or necessary content would materially change the result. A clearly identified
+target is not another confirmation step. Do not turn an understandable request into a compulsory
+interview, an Enhance command, a prompt editor or a request to copy and resubmit an improved prompt.
+The normal workflow never activates `/mayland:briefing` automatically. Missing optional inspiration
+does not block an otherwise supported instruction; do not fill it with fictional facts.
+
+Keep two distinct representations: `preparedExecutionIntent` retains concrete, authorized target
+facts and tool-returned identity bindings; `generalizedBody` is a coherent reusable instruction
+for the Prompt library, preserving useful goals/design/constraints while letting a later target
+provide its own facts. Generalizing must not erase a requested product category or restriction.
+Neither representation is a generic rewriter for technical MCP arguments: copy tool-returned IDs,
+locks, revisions, idempotency keys and structured mutations verbatim through their normal contracts.
+These working-context labels are not new MCP fields, persisted secret documents or new tools.
+
+For a new assignment, use the prepared `generalizedBody` as create_prompt's body under the Save
+the first version rules below. After its confirmed save receipt and any necessary targeted answer,
+continue directly into email creation. A brief description of the intended result is enough in
+chat. Do not wait for an extra approval, pasteback or resubmit. Creating a draft is not authorization
+to send, publish, sign off or launch a campaign.
+
+When an explicit briefing hands off `briefingStatus=ready`, reuse `rawAssignment`, confirmed
+requirements, verified target/product/campaign/source bindings and its existing `promptIdentity`
+with requestKey, currentVersionId and last save receipt. Do not create another V1, repeat the
+interview or save an identical revision merely because this skill started. If the briefing already
+saved its latest consolidated requirements, continue from that receipt. Otherwise save only the
+outstanding substantive iteration on the same line before production. A cancelled briefing stops
+production; it does not silently delete or trash the prompt already saved. An interrupted ordinary
+assignment likewise resumes its existing line; uncertainty about identity is not permission to
+mint a duplicate. Read-only requests still do not create any line or email.
+
+At compose time explicitly disclose the original `rawAssignment` as `agentInput.userPrompt` and
+the effective concrete `preparedExecutionIntent` as `agentInput.productionInstruction`, alongside
+the existing version/model/document disclosures. Keep later confirmed corrections in the effective
+instruction, not as a fabricated replacement of the user's original request. No credentials,
+unrelated conversation, hidden host instructions or fabricated model settings belong in either.
+Recorded-plan replay is different: it restores its saved inputs and must not receive a freshly
+rewritten plan or new agentInput. Respect the existing input size limits; never silently truncate
+and claim the original request was captured completely.
+
+Worked example: "Mach für Glycowohl eine Magnesiummail, bisschen winterlich, wenig Text, Produkt
+soll auffallen." If the authorized catalog identifies one matching magnesium product, prepare a
+short product email with a winter mood inside that brand's design rules, the selected product as
+the focal point, concise verified facts and an appropriate CTA to its verified page. The reusable
+body keeps the winter mood, brevity and magnesium-product focus; the execution context retains the
+actual Glycowohl/product bindings. Do not add a winter discount, a medical promise or a deadline.
+If two magnesium products match, ask which product; do not pick one to avoid asking. If the user
+also said "no emojis", keep that restriction in both representations.
+
+### Save the first version
+
+First distinguish a new commission from resuming a tracked assignment and from read-only work.
+Read-only inspection or export does not create a prompt line. When continuing an existing line,
+resolve its retained P-ID, keep the assignment's requestKey and use the iteration workflow for new
+feedback. A restarted skill or reconnected session is not a new commission. If the previous line
+cannot be identified reliably, clarify that identity rather than guessing or duplicating it.
+
+Before production research, campaign creation, copy work, image jobs, or email/document mutations,
+resolve the requested brand with read-only tools and, for a new assignment, save Version 1 with `create_prompt`.
+Ask for a missing or genuinely ambiguous brand; never ask the user to reconfirm an explicit,
+unambiguous target. Source-prompt, brand, product, reference and approved-Learning lookups may
+precede this first save to prepare the instruction from existing evidence. No Context Pack
+is required by the prompt-library tools. Continue into Step 0 only after a successful save receipt.
+
+Supply `brandId`, `scope`, `title`, `body`, `requestKey` and `operationKey`. Set scope to EMAIL for
+one email, CAMPAIGN for one campaign, or MULTI_CAMPAIGN for several campaigns of the same brand.
+Choose one requestKey for the whole brand-bound assignment and keep it through every campaign,
+tool call, document revision, interruption and retry. A distinct new assignment gets a new
+requestKey even when its wording is identical. Use one operationKey for this first save and
+another stable operationKey for each later substantive iteration. Preserve both keys in the
+working context; never derive a new key merely because a request timed out.
+
+Write a directly reusable, coherent body from the user's actual objective and supported instructions.
+Keep useful composition, audience, tone, length and workflow constraints. Generalize brand names,
+specific products, offers, prices and dates into roles the next target's own authorized context
+can fill. Do not carry an original brand's promotion into another brand, invent facts, strengthen
+claims, add supposed user preferences, or save hidden system instructions, credentials or unrelated
+chat messages. Keep the original request and the current target's concrete facts in the production
+context, so generalizing the library text never changes the actual assignment. Explicit restrictions
+remain binding. Preparation and saving belong to the normal production workflow; they do not
+introduce a separate briefing interview or another user-facing prompt-enhancement step.
+
+Keep the returned prompt `id`, `code`, `brandId`, `scope` and `currentVersionId`, together with the
+returned version `id` and `version`. Only that receipt proves the P-ID and Version 1 exist.
+If saving fails or times out, explain the unsaved state and retry the exact payload with the same
+requestKey and operationKey. Never report a successful save, invent a P-ID, create a duplicate line,
+or begin production while the first save remains unconfirmed. PROMPT_OPERATION_CONFLICT means
+the key was already used with different content; inspect the existing assignment rather than
+silently minting a replacement key. A library save never authorizes sending or publishing.
+
+### Consolidate each substantive iteration
+
+For each later user-directed substantive iteration, automatically call `revise_prompt` on the same
+promptId with its last confirmed `expectedVersionId`, a stable `operationKey`, and a complete
+replacement `title` and `body`. Save before applying that iteration's production changes. No
+additional user approval is needed for each prompt version. Keep the still-valid earlier details
+and incorporate the new instructions into one directly usable brief; do not append a chat transcript
+or a list of corrections. For example, "more emojis" followed by "no emojis" leaves only "no emojis"
+in the current body. The earlier preference survives in immutable version history.
+
+Technical retries, polling, compiler repairs and document revisions are not automatically substantive
+iterations and must not create prompt versions. A retry of an uncertain save uses the same keys,
+expectedVersionId and body; never infer failure from a timeout and submit a duplicate update.
+After a successful revision, replace the working currentVersionId with the returned version id.
+
+On PROMPT_VERSION_CONFLICT, stop the stale write and use `resolve_prompt` to read the current line.
+Preserve any intervening manual edits. If the current body already contains the intended iteration,
+do not write it again. Otherwise reconcile only changes whose intent is clear, and base the
+consolidated update on the freshly returned version. Ask the user only when their manual change
+and the requested iteration conflict materially; never silently overwrite it or force an old body.
+An explicit version conflict commits no receipt, so the reconciled write keeps that iteration's
+operationKey with its new expectedVersionId and body. This is different from an uncertain transport
+failure, which must retry the original payload unchanged.
+TRASHED means the line is not active: do not revive it, use it as a template, or replace it with a
+new line silently. Restore only when the user requests restoration.
+Use `set_prompt_status` for that explicit lifecycle request with both the current expectedVersionId
+and `expectedUpdatedAt`, copied verbatim from the prompt's returned updatedAt. Never round or invent
+that timestamp; a newer trash/restore decision must not be overwritten by stale state.
+
+### Read and reuse without changing the source
+
+The /mayland P-1234 workflow uses `resolve_prompt` with `code` to retrieve one exact version.
+Read-only lookup, showing the text, copying it, and `list_prompt_versions` never create a prompt
+line or start production. Keep the returned version id pinned; never reinterpret it as "whatever
+is latest" later. If the user selected a historical version, pass its `versionId` when resolving.
+Report an inaccessible, missing or trashed source instead of guessing its text or choosing another.
+
+When the user actually commissions new work from that source, use `create_prompt` for the target
+brand with a new requestKey and operationKey and the exact pinned `sourceVersionId`. The new line
+gets its own P-ID; never use revise_prompt on the source to represent reuse. Preserve the source's
+generalized intent while using the target brand's own facts, products, references and approved
+Learnings. A later source edit must not change an assignment that has already started.
+
+For one request covering several target brands, make one separate assignment and prompt line per
+brand, all pointing to the same pinned sourceVersionId. Do not request extra confirmation merely
+for this internal split. Several campaigns of one brand still use one MULTI_CAMPAIGN line. Route
+later feedback only to the explicitly affected brand's line; it must not mutate another target's
+line or the source. Brand ownership metadata never means "may only be reused for this brand";
+normal workspace and brand permissions remain binding for each target.
+
+The same split works with a prompt copied from the UI. Use its supplied source P-ID/version when
+available and resolve that exact source through MCP. If only plain text was copied, keep it as the
+new assignment's generalized input; do not invent source provenance. Clarify source identity only
+if the user requires attribution that cannot be established from the provided text.
+The UI's readable source footer contains the P-ID and numeric version. Resolve that P-ID, use
+`list_prompt_versions` on its returned promptId to find the matching version number, then resolve
+that exact versionId. Never substitute the source's latest version when the copied number differs.
+If no matching version is available, report that fact rather than inventing its identifier.
+
+### Client feedback and observed edits
+
+`list_client_review_feedback` reads comments for the correct email and released version; reading a
+client comment alone never changes a prompt or creates a version. Only an explicit user instruction
+to adopt that feedback enters the substantive-iteration workflow. Do not import all comments into
+the prompt library. A manual editor change is not proof of a feedback reason: if an authorized
+iteration summarizes observed edits, describe only the changes actually demonstrated by the saved
+document, without inventing motivation. Learning proposals remain separate and never replace,
+delete or automatically rewrite prompt versions.
+
+### Prompt-tool request examples
+
+These examples show contract shapes, not reusable identifiers. Replace every id and key with the
+actual target, saved receipt and once-chosen assignment keys. The body is the complete generalized
+instruction. A second target uses a different requestKey and operationKey but the same sourceVersionId.
+
+```json
+{"tool":"resolve_prompt","arguments":{"code":"P-1234"}}
+```
+
+```json
+{"tool":"create_prompt","arguments":{"brandId":"11111111-1111-4111-8111-111111111111","scope":"MULTI_CAMPAIGN","title":"Concise product campaigns","body":"Create concise product campaigns using the target brand's verified product facts and design language. Give the product a clear focal point and use one primary call to action. Do not invent offers or health claims.","requestKey":"assignment-a-brand-a","operationKey":"assignment-a-brand-a-v1"}}
+```
+
+```json
+{"tool":"revise_prompt","arguments":{"promptId":"22222222-2222-4222-8222-222222222222","expectedVersionId":"33333333-3333-4333-8333-333333333333","operationKey":"assignment-a-brand-a-iteration-2","title":"Concise product campaigns","body":"Create concise product campaigns using the target brand's verified product facts and design language. Give the product a clear focal point and use one primary call to action. Use no emojis. Do not invent offers or health claims."}}
+```
+
+```json
+{"tool":"create_prompt","arguments":{"brandId":"44444444-4444-4444-8444-444444444444","scope":"EMAIL","title":"Concise product email","body":"Create a concise product email using the target brand's verified product facts and design language. Give the product a clear focal point and use one primary call to action. Use no emojis. Do not invent offers or health claims.","requestKey":"assignment-b-brand-b","operationKey":"assignment-b-brand-b-v1","sourceVersionId":"55555555-5555-4555-8555-555555555555"}}
+```
+
+```json
+{"tool":"create_prompt","arguments":{"brandId":"66666666-6666-4666-8666-666666666666","scope":"EMAIL","title":"Concise product email","body":"Create a concise product email using the target brand's verified product facts and design language. Give the product a clear focal point and use one primary call to action. Use no emojis. Do not invent offers or health claims.","requestKey":"assignment-b-brand-c","operationKey":"assignment-b-brand-c-v1","sourceVersionId":"55555555-5555-4555-8555-555555555555"}}
+```
+
+Only for an explicit request to move this line to the trash, using its current returned timestamp:
+
+```json
+{"tool":"set_prompt_status","arguments":{"promptId":"22222222-2222-4222-8222-222222222222","expectedVersionId":"33333333-3333-4333-8333-333333333333","expectedUpdatedAt":"2026-09-10T08:00:00.123456+00:00","status":"TRASHED","operationKey":"assignment-a-brand-a-trash"}}
+```
+
+## Step 0 - Load the identity after saving Version 1 (mandatory)
 
 Before you design anything:
 
-1. `list_campaigns` for the brand, and settle where this mail belongs before anything else.
-   Every email lives on exactly one campaign board. Show the user the boards you found and ask
-   which one this mail belongs to. If none of them fits, offer to open a new board and call
-   `create_campaign` only after the user names it. Never guess the board and never silently let
+1. `list_campaigns` for the brand, and settle where this mail belongs before minting the production pack.
+   Every email lives on exactly one campaign board. Reuse an explicit, validated campaign selection
+   from the user's request or briefing handoff without asking again. If the user explicitly supplied
+   a new campaign name, check for an existing matching board first and, if absent, call
+   `create_campaign` with that name without another naming question. Use its returned ID.
+   Ask which board only when that decision is missing or genuinely ambiguous; show the available
+   boards then. If none fits and no new name was supplied, ask for that name. Never guess the board and never silently let
    the mail fall into Unassigned. A campaign is a board that holds emails, which is a different
    thing from a campaign goal: goals are reusable briefing intents and hold nothing.
 2. `get_brand_context` for a fresh context pack. Re-read it after any interruption.
 3. `list_products` and `get_product_context` for the products the mail actually promotes.
-4. `list_reference_emails`, then `get_reference_email` for the ones that match the occasion, and
-   inspect the returned preview image block first. If the response is too large to inline, open
-   the signed `imageUrl` from the same result instead. See the reference section below.
+4. Discover both collections with `list_reference_emails`: use `scope=BRAND` with the target
+   `brandId` for Brand Emails, and explicit `scope=WORKSPACE` without a Brand for Swipe File.
+   Follow `nextCursor` while searching the library; the three-reference limit belongs to one
+   run's selection, not to the gallery. Then `get_reference_email` for suitable candidates and
+   inspect the returned preview image block, or open its signed `imageUrl`. See the reference
+   selection rules below. Keep the collections distinct; shared inspiration never overwrites
+   the target Brand's reference information.
 5. `list_approved_learnings` for what this brand has already agreed to. These carry the design
    corrections earlier reviews produced and they bind exactly like the profile does.
 
-Settle the campaign before you mint the pack. A pack goes stale while you talk, and the board
-question is a conversation with the user, not a lookup.
+Settle any outstanding campaign ambiguity before you mint the final production pack. A pack goes
+stale while you talk; already answered campaign decisions must not trigger the same question again.
 
 Every id you pass (emails, runs, packs, assets) is copied verbatim from a tool result in this
 conversation, never reconstructed from memory. On `CONTEXT_PACK_RUN_MISMATCH`, call `get_email_wip`
@@ -71,6 +303,42 @@ Read the brand profile as a design brief, not as decoration:
 
 ## What you take from a reference and what you leave
 
+An explicit user selection takes precedence over automatic alternatives. Resolve the exact
+user-chosen references from tool results, including choices retained from the briefing or Prompt
+handoff; never substitute a similarly titled entry or silently replace them with the rotation.
+Without an explicit selection, choose suitable ready references from either collection yourself.
+Select at most three in total across Brand Emails and Swipe File. If the user requests more,
+ask which three to use rather than silently dropping a requested source.
+
+Check processing state and actual image access for every selected reference before design.
+PENDING, PROCESSING, FAILED, inactive entries or missing/unreadable images are not usable visual
+inspiration. Name the unavailable source and the gap; never claim visual inspection from a title,
+tags, extracted text or a tool's success status alone. Retry a signed image URL by fetching fresh
+detail when it expires. If an explicit reference remains unavailable, ask whether to wait or
+proceed without it. Missing optional automatic inspiration permits an honest original concept.
+
+After `create_email`, read `get_email_wip` and reuse its non-null `activeAgentRunId`. If it has
+no active run, call `create_bulk_agent_run_group` with the fresh `contextPackId` and
+`contextPackHash`, a stable `idempotencyKey`, and `emails` containing this one `emailId` and
+its `brief`. Despite its name, the tool supports a single email and acquires its run's lock.
+Use that email's returned `childRuns` entry for the exact `agentRunId` and `fencingToken`.
+Retry an uncertain start with the same payload and key; do not create another group or run.
+Use the verified active run as `agentRunId` for `select_run_references`; never invent an ID.
+Supply the fresh context pack binding, the exact ordered `referenceEmailIds` and a stable
+`idempotencyKey`. Set `selectionSource=USER` for explicit choices or `AUTOMATIC` for your choices.
+Do this before composing or editing the design. Retain the returned `selectionReceipt` id,
+selectionSource and ordered sources with their scope, Brand assignment, contentHash and
+snapshotAssetId in the assignment context. Only a successful receipt proves durable binding;
+an uncertain call retries the same payload and key. Do not invent receipt IDs or image-viewing
+proof. A server receipt records the selected source, not whether the host actually displayed it.
+A replay of a historical selection may lack `selectionReceipt`. Report that provenance gap;
+do not fabricate a receipt or claim the older selection has the new source history. For a new
+production operation, require the new receipt before design; a missing receipt needs investigation.
+On `REFERENCE_USER_SELECTION_REQUIRED`, preserve the user's choice; do not relabel an automatic
+replacement as USER to bypass it. A later explicit change needs a new selection operation and
+receipt, preserving the earlier history. Run selections supplement the production context;
+never mutate or substitute the target Brand's identity pack with Swipe File contents.
+
 Reference emails are the calibre bar, and reaching it visually is the job. Study one until you can
 name why it reads well, then build that same reading experience with this brand's own material.
 
@@ -90,6 +358,10 @@ far the sizes are apart, the button treatment, and the way the page breathes bet
 Leave everything that belongs to the mail it was made for: its copy, its offers, its prices,
 percentages and other numbers, its images and its brand marks. Those are not craft, they are that
 sender's content, and none of it is true for this brand unless the brand kit says so.
+Colours, fonts, logos, products, prices and binding claims always come from the target Brand and
+confirmed assignment. A Swipe File palette or foreign logo is not catalog evidence. Record the
+transferable layout idea (for example, its product-table rhythm) in the effective production
+instruction while retaining the source receipt separately from the reusable Prompt body.
 
 Structural quotation stays a resemblance, never a copy. Two mails may share the same rhythm and
 still read as different mails, and inside one campaign the variation rule below still applies.
@@ -443,9 +715,15 @@ clipboard and panel opening are transient client controls, not persisted email o
    out of their background when no CUTOUT motif exists, `create_image_generation_job` for hero
    scenes and glow art, prompted with the pack's palette and `imageryStyle`. For every new
    generation or edit call, supply `assetName`: a concise descriptive library name you choose
-   for the result, such as “Amber bottle on linen” or “Citrus serum transparent cutout” (1–200
+   for the result, such as “Amber bottle on linen” or “Citrus serum transparent cutout” (3–100
    characters). Describe its subject and visual treatment; never copy the prompt, a job ID,
-   or a generic filename. The field remains optional only for older clients and queued jobs.
+   or a generic filename. New requests require at least two words; historical queued jobs remain valid.
+   For an email placement, also supply targetSize with width and height from the planned slot's CSS
+   dimensions. For an opaque banner, include `targetSize.backgroundColor` as the actual planned
+   slot's solid #RRGGBB background, never a guessed color. Delivery then pads opaque images in
+   that color and compresses them as JPEG when smaller. Genuine cutouts retain transparency;
+   without a known solid background, ratio mismatches keep transparent padding. Inspect the result before placement;
+   explicit user-directed crops remain an editor decision.
    Poll `get_image_job`;
    `get_completed_image_asset` returns the public `url` an email image element uses. Image
    generation runs through Mayland so the organization's configured model, its policy and its
@@ -467,6 +745,36 @@ clipboard and panel opening are transient client controls, not persisted email o
    orphans every tweak made since. Bind `compose_email_from_plan` to the BRAND context pack:
    the brand profile in that pack drives the typography defaults, while product packs serve
    the copy and product tools.
+
+   Before composing, check the Brand Context Pack: its `brand.facts` is required (a product
+   pack alone is insufficient). Missing displayFont or designDna is optional: tell the user
+   which explicit plan fonts/design choices will be used, or which standard defaults remain,
+   before starting the compose. Do not invent missing brand facts. The run-details export
+   preserves the actual plan, brand context and server release for future attempts.
+
+   Every new compose must include `agentInput`: `userPrompt` (the original production request),
+   `productionInstruction` (the effective instruction you used), `promptVersion` (your instruction
+   revision), `pluginVersion`, `model`, `provider`, `generationSettings`, `documentInputs`
+   (names and exact text of any additional documents used), `jobIds` (all image/research jobs
+   used for this production, including failed/retried attempts), and `unavailableInputs`.
+   When starting any image or research job for an existing email, always pass `emailRun`
+   with its `emailId` and `agentRunId`. The server verifies ownership and records that link
+   immediately after enqueue, so failures before the first compose remain visible in Run details.
+   Omit this binding only for standalone brand research/assets before an email exists.
+   Use null for unavailable model/provider/settings/plugin version and name every unavailable
+   effective input. Never guess your model, expose credentials, or claim to know hidden host
+   instructions. Only include the production request and authorized source documents, not unrelated
+   chat history. This contract records disclosed inputs; it is not an exact replay of Claude or Codex.
+
+   For a requested recorded-plan reproduction, read the source email's run protocol and call
+   `compose_email_from_plan` with `replaySource` containing the source `emailId` and `requestId` instead of `plan`.
+   Acquire the target email's normal lock/run and use its current `expectedWipRevision`, a fresh
+   idempotency key and the same effective Brand Context Pack content. The server loads the recorded
+   plan and disclosed agent inputs, checks its version and context hash, then uses the normal
+   compose/receipt path. If context or version changed or the snapshot is incomplete, report the
+   explicit mismatch; do not describe a new generation as reproduction. An uncertain replay retry
+   uses the same idempotency key. Compare two members' emails with
+   /api/emails/{emailId}/run-protocol?format=json&compareEmailId={otherEmailId} in the same organization.
 
    When a compose call dies at the transport (timeout, dropped connection), call it AGAIN with
    the SAME idempotency key: the gateway either replays the recorded result or completes the
@@ -603,7 +911,9 @@ afterthought.
 
 1. Read the review in full: `list_client_review_feedback` for a released version, `get_qa_review_status`
    for the QA findings, and whatever the user told you in the conversation.
-2. Fix the mail first, then compile and look at the preview again.
+2. For user-authorized corrections, first save the consolidated prompt iteration as described
+   above, then fix the mail, compile and look at the preview again. Client comments read without
+   an instruction to adopt them do not authorize prompt changes or a new production iteration.
 3. Then call `propose_learning` once for every design decision the review rejected. This is
    mandatory, including when the fix looks obvious to you. `heading` names the decision, `body`
    states the rule so it holds for the next mail instead of describing this one repair, `evidence`
@@ -621,7 +931,8 @@ has gone stale.
 
 ## Write back what you had to work out yourself
 
-The pack is the only memory the next run has. Whenever the pack left you a gap and you filled it
+The pack supplies the next run's verified brand knowledge; the prompt line separately preserves
+the reusable assignment. Whenever the pack left you a gap and you filled it
 from another source, sampling the real CTA color out of a reference newsletter's pixels, naming
 the display typeface, deriving a register rule, collecting the brand's button imperatives, or
 researching a product's regulatory footnote text, that finding MUST be written back before the
