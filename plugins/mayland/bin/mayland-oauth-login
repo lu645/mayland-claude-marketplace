@@ -153,6 +153,7 @@ def open_browser(url):
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         check=False,
+        timeout=10,
     )
     if completed.returncode != 0:
         raise RuntimeError(f"Browser opener exited with status {completed.returncode}")
@@ -226,14 +227,24 @@ def run_login(server, endpoint, client_id, resource, callback):
                         )
                         if oauth_url:
                             print(f"Mayland OAuth URL: {oauth_url}", flush=True)
-                            open_browser(oauth_url)
                             opened = True
                             callback_deadline = time.monotonic() + CALLBACK_TIMEOUT
-                            print(
-                                "Mayland OAuth opened in the default browser; waiting up to "
-                                f"{CALLBACK_TIMEOUT:g}s for the localhost callback.",
-                                flush=True,
-                            )
+                            try:
+                                open_browser(oauth_url)
+                            except (RuntimeError, OSError, subprocess.TimeoutExpired):
+                                print(
+                                    "Mayland could not open the browser automatically. Open the "
+                                    "printed OAuth URL in the browser signed in to Mayland; "
+                                    "keep this command running.",
+                                    flush=True,
+                                )
+                            else:
+                                print(
+                                    "Mayland requested browser sign-in. If no tab appears, open "
+                                    "the printed OAuth URL in the browser signed in to Mayland.",
+                                    flush=True,
+                                )
+                            print(f"Waiting up to {CALLBACK_TIMEOUT:g}s for the localhost callback.", flush=True)
 
             child_status = wait_for_child(child_pid)
             if child_status is not None:
