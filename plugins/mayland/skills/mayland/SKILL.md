@@ -110,18 +110,22 @@ a finding without a field goes into `notes` under a labelled heading.
    - Collect the logo and all relevant public Brand images you can actually identify, not just a homepage image. Put each in research.images with direct url, sourceUrl where it was found, descriptive name, and role LOGO or CREATIVE. Marketing creatives with text are legitimate Brand assets; never mistake them for clean product packshots or product truth. Exclude unrelated brands and personal imagery. If more than 100 verified images are available, split them into batches of at most 100, retain a stable key per batch, and continue on the same returned brandId without another approval. Do not truncate reachable images merely because one request is bounded; report any inaccessible or failed remainder honestly.
    - Keep products empty in BRAND_ONLY mode. For an explicitly commissioned product scrape only, include verified `externalId`, name and url, plus supported `claims`, `nogo`, `availability`, `locale`, `painPoints` with sourceUrl, exact `footnotes`, `intakeAdvice`, `ingredients`, `servingSize` and `packSize`. Preserve displayed prices/currency exactly; do not import a catalog merely because Brand imagery shows products.
 6. Choose one stable idempotencyKey for this request and retain it across technical retries and reconnects. A new explicit follow-up gets a new key. Do not place credentials or authentication material in keys, notes or payloads.
-7. Call `start_brand_research` with idempotencyKey, brand, the existing brandId when known, products and research. Set research.mode to BRAND_ONLY unless the separate product request passed the gate below. The start receipt gives jobId, brandId, status, progress and createdAt; it does not mean every image has already been saved. No approval per verified field/image is required. Never fall back to legacy `upsert_brand_catalog` or `start_brand_catalog_import` to bypass additive preservation, identity checks or Shopify restrictions.
+The optional `brand.logoUrl` is also supported: it enters the same verified image pipeline as a LOGO sourced from `brand.site`. Prefer `research.images` when the discovery page differs from the homepage. Do not submit the same logo twice.
+
+7. Call `start_brand_research` with idempotencyKey, brand, the existing brandId when known, products and research. Set research.mode to BRAND_ONLY unless the separate product request passed the gate below. The start receipt gives jobId, brandId, status, progress and createdAt; it does not mean every image has already been saved. No approval per verified field/image is required. Never fall back to legacy `upsert_brand_catalog` or `start_brand_catalog_import` to bypass additive preservation, identity checks or existing product authority.
 8. Poll `get_brand_catalog_import` with the exact jobId until COMPLETED, COMPLETED_WITH_ERRORS or FAILED. Verify persisted fields/images with `get_brand` and `list_assets`; inspect `list_products` only for a commissioned product import. Distinguish added fields/images, preserved/conflicting values, failed transfers and open research points. Partial failures keep successful results. Retry a failed subset with the same source identities in a new explicit retry batch; an uncertain transport result first retries the exact original payload/key. Never recreate the Brand or blindly upload successful assets again.
 
 ### Product research requires a separate request
 
-Only after a subsequent explicit user request for product scraping, call
-`get_brand_research_readiness` for the exact existing brandId BEFORE fetching product listings or
-detail pages. If configuredShopify is true or productResearchAllowed is false, stop product
-scraping and explain that the configured Shopify connection is authoritative even when inactive
-or failing. Do not remove, disable or work around it. Without a configured connection, use
-PRODUCTS mode with the requested verified products. Verify official names and canonical URLs
-from accessible evidence; missing facts stay missing. A Brand-only request never implies this step.
+Only after a separate explicit product request, use PRODUCTS mode with the requested verified
+products and existing brandId. "Create three products from the online shop" means research the
+public official product pages. An available Shopify connection does not block this workflow.
+Do not inspect Shopify connection health, list Shopify snapshots or start a Shopify sync unless
+the user explicitly asks to use Shopify. Do not change connection settings to make research work.
+`get_brand_research_readiness` may verify the Brand is available; configuredShopify is informational,
+not a routing instruction. Existing Shopify-managed products and existing manual fields remain
+unchanged. Verify official names and canonical URLs from accessible evidence; missing facts stay
+missing. A Brand-only request never implies this step.
 
 ### Brand research request example
 
