@@ -72,6 +72,10 @@ Omitting intent uses the legacy cutout comparison, which is unsuitable for a new
 `create_image_generation_job` has no source-image input: `productId` alone
 does not send product pixels. Inspect real source and result for identity and creative quality;
 the Analysis model describes Swipe File references, not product-scene quality.
+Only the single sourceAssetId image is attached to an edit request. Naming additional catalog
+products does not supply their appearance. A multi-product scene needs verified source pixels
+for every product, such as a composite made from the originals; otherwise use separately
+verified assets in the layout. Do not invent the missing products from their names.
 
 Supply assetName (descriptive, at least two words, 3–100 characters) and targetSize from the intended
 placement's CSS width/height. Only supply `targetSize.backgroundColor` when you intentionally
