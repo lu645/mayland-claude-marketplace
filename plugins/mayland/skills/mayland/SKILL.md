@@ -21,6 +21,12 @@ questions and never starts an obligatory interview.
 
 ## Saved prompt routing
 
+For a new commission, use the current assignment and email-production's concise workflow.
+Do not search for an earlier source prompt unless the user selected it. Local memory, completed
+emails and historical prompts cannot establish creative or technical rules. Generated emails are
+eligible inspiration only through the exact customer-approved version; use
+`get_approved_email_reference` for its pixels and proof, never infer approval from completion.
+
 Handle /mayland P-1234 as a saved-prompt lookup before considering the catalog workflow below.
 A pasted production prompt, including a UI-copied source footer, follows email-production rather
 than the catalog-import workflow. Reading that pasted prompt alone still starts no assignment.
@@ -64,7 +70,7 @@ Kinds are block and text_style; scopes are campaign, brand, and global (this wor
 Use tenant-owned `emailId`/`brandId` for context. Saves require fresh Context Pack bindings and
 idempotency; updates, renames and moves also require `id` and `expectedVersion`.
 Global mutations require a workspace admin. Every input and nested definition is strict;
-unknown fields are rejected. Follow email-production for complete block/text-style definitions
+unknown fields are rejected. Load email-production topic=canvas for complete block/text-style definitions
 and payload-bound delete confirmation. Default text styles are Heading 1, Heading 2, Body,
 Caption and Eyebrow templates, saved explicitly when persistence is wanted.
 
@@ -85,6 +91,12 @@ user-facing capability answer. Mention those details only when an authorized
 developer or support request explicitly asks for diagnostics.
 
 ## The catalog preserves brand knowledge
+
+For logo preparation, preserve the official mark and its lettering. Find suitable official variants
+or prepare a faithful transparent derivative through source-backed Mayland image editing;
+inspect alpha, visible bounds and fidelity. A crop alone cannot remove a background.
+Do not save an agent's preferred layout as catalog truth. Unsupported taste belongs in neither
+host memory nor new prompts; propose evidenced Learnings for human approval instead.
 
 Prioritize evidence that helps future creative decisions: actual voice examples, supported
 customer problems and product proof, recurring visual principles, and usable logo/image variants.

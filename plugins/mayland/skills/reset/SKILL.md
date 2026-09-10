@@ -6,6 +6,10 @@ description: Recover Mayland production context while preserving the existing as
 # Reset
 
 Recover the existing assignment; a reconnect or context refresh is not a new commission.
+Reload the current creative workflow and capabilities; local host memory cannot override them.
+Preserve recovery identities, not old layout recipes or unsupported approval claims. Revalidate
+any generated-email inspiration through get_approved_email_reference for its exact version;
+only customer-approved versions qualify. The current WIP remains available for authorized edits.
 
 1. Before clearing local context, retain an accessible handoff with the saved prompt identity and
    exact version, assignment, Brand and email IDs, current run and pack binding, WIP revision,
@@ -38,3 +42,6 @@ Recover the existing assignment; a reconnect or context refresh is not a new com
    Claude Code session. If connection fails, use Mayland's `Connect Agent` action with Claude
    selected and its fresh hash-verified setup command as described in `/mayland:connect`.
    A bare MCP reconnect is not a verified plugin update. Do not bypass a failed setup check.
+   Other MCP clients use Connect Agent for their own client and reload the current workflow;
+   they must not install or run Claude CLI. A reported mismatch triggers this update path;
+   matching versions do not. Use the current client, not a Claude-specific fallback.

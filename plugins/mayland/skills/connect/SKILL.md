@@ -7,6 +7,9 @@ description: Connect this Claude user to one deployment-scoped Mayland MCP relea
 
 Connect Claude Desktop or Claude Code to Mayland through the attested remote MCP release.
 
+A plugin update does not clear host memory. Before production, reload the current workflow;
+old local compose recipes and taste notes are not authority. Do not delete unrelated user memory.
+
 - Start from Mayland's `Connect Agent` action with Claude selected. It prepares a short-lived private connect intent and a fresh hash-verified setup command.
 - ALWAYS run that complete command unchanged, even when MCP already reports Connected. It refreshes the marketplace and plugin, verifies the exact installed version, package contents and deployment, saves Mayland's automatic-update preference, and only then starts OAuth. The explicit update does not depend on host-wide background-update settings; leave those settings unchanged.
 - Before running setup, say that you are checking and updating the connection. Do not promise a browser tab before verification has succeeded.

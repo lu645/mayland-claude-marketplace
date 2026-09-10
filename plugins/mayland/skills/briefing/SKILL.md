@@ -25,11 +25,15 @@ Set briefingStatus to collecting in working context. Retain rawAssignment (the u
 production request), confirmedRequirements, verified target and selected source references.
 Keep facts, user decisions and still-open questions distinct. Never rewrite a guess as a user wish.
 
-Load workflow=email-production for its preparation and prompt-library rules. While collecting,
+Load workflow=email-production and topic=prompt-library for preparation and prompt-library rules. While collecting,
 use those rules to preserve the assignment, not to start production. Read the existing brand,
 product, campaign, reference and approved-Learning context before asking about information it
 already answers. Resolve only uniquely identifiable targets; ask about an ambiguous brand or
 materially ambiguous product instead of choosing one. Do not repeat an already clear answer.
+Browse workspace Swipe File as well as Brand references. Only exact customer-approved generated
+email versions may be inspiration, verified through get_approved_email_reference. Old prompts
+are sources only when user-selected; local memory and template examples do not bind the layout.
+Ask about intent when needed and leave composition decisions to the producing agent.
 
 As soon as the brand and commissioned assignment are identifiable, save Version 1 with
 `create_prompt` before continuing the design-question round. Use the existing prompt-library
