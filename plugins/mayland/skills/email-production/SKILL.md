@@ -683,9 +683,10 @@ clipboard and panel opening are transient client controls, not persisted email o
    characters). Describe its subject and visual treatment; never copy the prompt, a job ID,
    or a generic filename. New requests require at least two words; historical queued jobs remain valid.
    For an email placement, also supply targetSize with width and height from the planned slot's CSS
-   dimensions. For an opaque banner, include `targetSize.backgroundColor` as the actual planned
-   slot's solid #RRGGBB background, never a guessed color. Delivery then pads opaque images in
-   that color when explicitly chosen. Inspect actual output dimensions, subject bounds and edges:
+   dimensions. Only supply `targetSize.backgroundColor` when you intentionally design an opaque
+   frame around the photo, using that frame's actual solid #RRGGBB color. For an unframed photo, omit
+   this field: delivery preserves the whole image and its actual aspect ratio without padding.
+   Inspect actual output dimensions, subject bounds and edges:
    a photo must not acquire accidental transparent gutters. Choose a safe crop or an intentional
    opaque frame when ratios differ; genuine cutouts may retain transparency. Inspect the result before placement;
    a PNG extension or a painted checkerboard does not prove transparency. For a cutout, check
@@ -700,6 +701,8 @@ clipboard and panel opening are transient client controls, not persisted email o
    `get_completed_image_asset` returns the public `url` an email image element uses and actual
    result image blocks, plus the source image for an edit. View those images and compare source
    and result before placement; reading their labels, provenance or URLs is not seeing the pixels.
+   Use its measured `delivery` dimensions for the public image, not the private preview's dimensions.
+   When delivery geometry is unavailable, inspect the public image instead of inferring its size.
    If an expected image is missing, report the visual-access gap instead of approving it. Image
    generation runs through Mayland so the organization's configured model, its policy and its
    audit trail all apply. Never call an image provider directly. `IMAGE_EDIT_UNFAITHFUL` means
