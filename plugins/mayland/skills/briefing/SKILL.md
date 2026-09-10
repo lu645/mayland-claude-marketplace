@@ -79,6 +79,10 @@ contradictions are resolved, required facts are supported and the latest substan
 a confirmed prompt save. Missing required information remains a focused question, never a guess.
 Do not turn optional preferences into mandatory questions.
 
+Leave unspecified composition decisions to the producing agent. The handoff preserves the
+message, evidence and explicit constraints without supplying a default hero, image quota,
+section sequence or decorative style. The agent designs the layout from those requirements.
+
 Set briefingStatus to ready and continue directly through workflow=email-production. A short
 description of the agreed result is enough; do not ask "Shall I create it now?", request a resubmit,
 make the user copy the prepared prompt, or insert another approval gate.

@@ -86,6 +86,12 @@ developer or support request explicitly asks for diagnostics.
 
 ## The catalog preserves brand knowledge
 
+Prioritize evidence that helps future creative decisions: actual voice examples, supported
+customer problems and product proof, recurring visual principles, and usable logo/image variants.
+Separate observed tendencies from explicit Brand requirements and retain their sources. A single
+creative's layout is not a universal Brand rule. Missing optional material does not trigger new
+mandatory onboarding or authorize product research beyond the user's request.
+
 Brand facts survive for later production only when written into the catalog; reusable production
 instructions belong in the separate prompt library. Every brand or product fact
 you derive from ANY source, the official site, ads, public reviews, reference newsletters, or

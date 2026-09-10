@@ -9,9 +9,11 @@ Build one Mayland email at a time. Mayledit is your canvas and you drive it thro
 same way you would drive a design tool: read the document, place nodes, compile, look at the
 result, fix what is wrong.
 
-This skill carries the craft. It carries no brand values. Every colour, font, phrase, claim,
-product fact and rule of address comes from the connected Mayland release. If a brand value is
-missing, say so and stop. Never substitute a plausible one.
+This skill structures the work; you design the layout. Verified Brand rules, product facts and
+explicit user requirements are binding. Choose the information order, hierarchy, typography,
+image roles, spacing and effects for this assignment. No universal hero anatomy, image count,
+section order or decorative treatment applies. Missing optional preferences leave design freedom;
+ask only about necessary missing facts or material conflicts. Never invent Brand facts.
 
 ## Prompt library - preserve the assignment before production
 
@@ -78,11 +80,14 @@ production; it does not silently delete or trash the prompt already saved. An in
 assignment likewise resumes its existing line; uncertainty about identity is not permission to
 mint a duplicate. Read-only requests still do not create any line or email.
 
-At compose time explicitly disclose the original `rawAssignment` as `agentInput.userPrompt` and
+In a new compose or the first free-node `apply_email_batch`, explicitly disclose the original
+`rawAssignment` as `agentInput.userPrompt` and
 the effective concrete `preparedExecutionIntent` as `agentInput.productionInstruction`, alongside
 the existing version/model/document disclosures. Keep later confirmed corrections in the effective
 instruction, not as a fabricated replacement of the user's original request. No credentials,
 unrelated conversation, hidden host instructions or fabricated model settings belong in either.
+Include updated disclosures when substantive creative instructions change; ordinary technical
+edits do not need another identical disclosure. Both build paths record supplied agent inputs.
 Recorded-plan replay is different: it restores its saved inputs and must not receive a freshly
 rewritten plan or new agentInput. Respect the existing input size limits; never silently truncate
 and claim the original request was captured completely.
@@ -296,14 +301,8 @@ Read the brand profile as a design brief, not as decoration:
   with `accentInk` for the buttons and the signal moments. Use the roles rather than picking
   from `palette` by eye, and keep the accent for what should be loud. `accentInk` is the only
   colour that goes on top of the accent.
-- Band colours follow the reference register: the deep `band` tone carries the full-width
-  statement bands and the light `surface` tint carries the supporting surfaces, exactly as the
-  `designTokens.colors` roles name them. Never invert the pair; a mail that sets its statement
-  bands on the light tint and spends the deep tone on side surfaces reads as a different brand.
-- When the brand's reference newsletters open with a trust or preheader bar above the hero, the
-  plan opens the same way: preheader_trust_bar is the first block, and every item in it is a
-  catalog fact (the furniture benefits, guarantee or shipping lines), never a line written for
-  the occasion.
+- Preserve verified palette roles and test the chosen foreground/background pairs. Reference
+  layouts are observations, not obligations to reproduce a bar, band or section sequence.
 - `brandMarks` lists the marks you may place inside the mail, each with the background it is cut
   for. Prefer the entry flagged `isWordmark` in the header, fall back to `isLogo`, and never put
   a mark cut for a light ground onto a dark band.
@@ -380,10 +379,10 @@ mail, so every bit of craft sits in the picture: inspect the image block returne
 present. A reference you have not looked at teaches you nothing, and building from its title and
 tags alone is how mails end up generic. While you look
 at it, name for yourself the band count down the page, where the density changes, which modules
-repeat, how far the type sizes sit apart, and how the button is treated. Those are the numbers you
-build against, and `layoutSignature` on the sibling mails is what you compare them to.
-Before composing, include a concise visual rationale in the existing
-`agentInput.productionInstruction`: the selected reference ID, two concrete spatial observations
+repeat, how far the type sizes sit apart, and how the button is treated. These are observations to evaluate for this assignment, not numeric quotas.
+Use `layoutSignature` on sibling mails as context, not a mandatory rotation rule.
+Before building, include a concise visual rationale in `agentInput.productionInstruction`
+on the first free-node batch or new compose: the selected reference ID, two concrete spatial observations
 from the image, and the corresponding composition choices in this mail. For example, distinguish
 type placed across a product photo from a text-only opener, and alternating image/text rows from
 stacked paragraphs. A reference's title, tags or extracted slogan are not those observations.
@@ -404,28 +403,27 @@ transferable layout idea (for example, its product-table rhythm) in the effectiv
 instruction while retaining the source receipt separately from the reusable Prompt body.
 
 Structural quotation stays a resemblance, never a copy. Two mails may share the same rhythm and
-still read as different mails, and inside one campaign the variation rule below still applies.
+still read as different mails. Reusing a suitable structure within a campaign is permitted.
 
 Never invent a price, an availability, a discount, a review or a statistic. If the mail needs a
 fact the brand kit does not contain, ask for it.
 
 ## When something is missing
 
-Report gaps before building, in exactly three lines: what is missing and what it is needed for,
-what the user should deliver in what form, and what you can do instead in the meantime. One
-report for all gaps, not one conversation per gap. Run this check between Step 0 and the first
-build call: enough imagery for the planned mails, a claim source for every planned section,
-identity fields the design depends on.
+Check task-relevant gaps before production: claim sources, necessary identity decisions and
+material the concept actually needs. Group necessary questions and explain what each answer
+changes. Continue independent work. Missing optional imagery or preferences do not require
+another approval, a complete Brand kit or a universal questionnaire.
 
 ## Substance the pack carries beyond the profile
 
 - Product context `sections` carry researched pain points with sources. Awareness and story
   openers draw the problem from there instead of inventing one.
 - The brand `notes` field carries a labelled pool of researched CTA imperatives. Button copy
-  comes from that pool, each mail using a different entry; never invent a generic label.
-- `list_assets` types every motif: hero scenes for hero grounds, cutouts for poster moments and
-  colour heroes, hand interactions and details for body sections, variants for tickers. Pick by
-  role instead of reusing the packshot everywhere.
+  can draw from that pool when it suits the intended action. Write an accurate label in the Brand's
+  voice when no suitable example exists; no rotation quota applies.
+- `list_assets` identifies available motifs. Choose their placement by communicative role,
+  source fidelity and fit with the composition, not a fixed motif-to-section mapping.
 
 ## The canvas
 
@@ -433,51 +431,23 @@ One flat frame, 600px wide, named as the email frame. Every element is a child o
 Do not add further sections: the compiler reads the first section only, so anything you place
 outside it is silently dropped. Visual bands are full-bleed rectangles at x=0, w=600.
 
-Scale, in document pixels at 600px width:
+Choose type sizes, line heights, column widths and spacing from the actual content and the Brand.
+Measure using the loaded font, weight and available width, then inspect the rendered result.
+Preserve a coherent hierarchy without imposing a global size or spacing sequence.
 
-| Element | Size |
-|---|---|
-| XXL punchline | 58-128, never below 56 |
-| Kicker, caps | 18-23 |
-| Sub | 21-29 |
-| Hero CTA | 427x82, text ~39 |
-| Body CTA | 533x82 |
-| Final headline | 50-56 |
-| Section headings | 20-23 |
-| Body text | ~17, never below 16 |
-| Stat numbers | ~50 |
-| Cards | 500 wide |
-| Spacing kicker to punch | 11 |
-| Spacing punch to punch | 11 |
-| Spacing stack to sub | 22 |
+Choose a verified logo variant for its actual ground. Inspect visible bounds, internal whitespace,
+alpha and contrast before placement. Size the visible mark intentionally and preserve its aspect
+ratio; a small wordmark inside a large JPEG does not become correctly sized through contain alone.
+Prefer an official transparent variant when suitable. Preserve originals, and never strip a
+deliberate background plate or recolour a mark without evidence. Inspect it at desktop and mobile.
+For the optional composer, supply the logo entry in `plan.images` with verified intrinsic
+`width` and `height`, an inspected normalized `crop` when useful, and the block's chosen
+`content.logoWidth`. Cropping selects visible bounds; it does not remove a background. If a new
+transparent variant is needed, use the existing source-backed image edit job with the verified
+logo source and inspect its fidelity. Never claim background removal from geometry alone.
 
-Vertical space has exactly three values and no others: 11 inside a group, 22 between elements,
-44 between blocks. Compose from the plan and the builder holds this for you. When you place or
-move a node by hand afterwards, keep it: a 12 or an 18 anywhere on the page is what makes a mail
-look assembled rather than designed, and it is the first thing a client sees.
-
-A shaped section edge is drawn into the space above the seam, so a send that uses one gives every
-block boundary a step of its own for it: 44 stays clear above the crest and the crest takes the
-next 22. The builder does this for you. Do not hand-place one tighter.
-
-Marks carry a ground. `brandMarks` says which background each one is cut for, and an image entry
-in the plan says the same with a ground field. A mark cut for a dark ground placed on a light band is
-invisible, and nothing downstream can see that it happened, so pass it: the builder falls back to
-the wordmark when the two disagree rather than drawing white on white.
-
-The impact hero puts the mark on the surfaceTint band when the plan carries one; without a tint
-it sits on the photo under a dark scrim. Pick the mark for THAT ground: dark-ground mark
-(usually the white cutout wordmark) when there is no tint or the tint is dark, the colored
-cutout with a light ground when the tint is light. Every other hero draws the mark on a light
-surface and takes the colored cutout. Prefer transparent cutouts over marks with a baked
-background plate: the plate reads as a sticker on any ground that is not exactly its own.
-
-Autoscale: make the punchline as large as the column allows, shrink in 8% steps if it displaces
-the sub, and stop at the floor. Multi-line headlines never sit at 100% line height, use 110% or
-more. Single-line punchlines may use 100-104%.
-
-Corner radius, button shape and letter spacing are brand properties. Read them from the profile
-rather than choosing a house default.
+Corner radius, button shape and letter spacing follow explicit Brand decisions when provided;
+otherwise choose them as part of this composition.
 
 ## The element vocabulary
 
@@ -513,88 +483,21 @@ Inside text, `**` markers bold a phrase and `==` markers set it in the element's
 The accent run is for the one word a headline turns on; without `accentColor` on the element the
 markers degrade to plain text.
 
-## Transitions between bands
+## Design the composition
 
-Flat edges between bands read as a spreadsheet. Between two bands whose colours differ, place a
-named transition: a full-width freeform shape spanning the seam, around 46px tall, filled with
-the arriving band's colour, above the leaving band's imagery and below any text. One transition
-style per mail, varied across the campaign:
+Develop a brief concept linking the message, audience and intended action. Where the assignment
+leaves meaningful alternatives, compare a few distinct approaches before committing to image work;
+no fixed concept count is required. Preserve good supplied copy and an explicit user layout.
 
-| Name | Path in the 0..100 viewBox |
-|---|---|
-| wave | M0,100 L0,45 C18,18 34,72 50,45 C66,18 82,72 100,45 L100,100 Z |
-| scallop | M0,100 L0,60 Q12.5,20 25,60 Q37.5,20 50,60 Q62.5,20 75,60 Q87.5,20 100,60 L100,100 Z |
-| s_curve | M0,100 L0,55 C30,10 70,90 100,40 L100,100 Z |
-| diagonal | M0,100 L0,70 L100,20 L100,100 Z |
-| arc | M0,100 L0,58 Q50,8 100,58 L100,100 Z |
-| step | M0,100 L0,70 L33,70 L33,25 L67,25 L67,70 L100,70 L100,100 Z |
-| torn | M0,100 L0,44 L5,76 L10,44 L15,76 L20,44 L25,76 L30,44 L35,76 L40,44 L45,76 L50,44 L55,76 L60,44 L65,76 L70,44 L75,76 L80,44 L85,76 L90,44 L95,76 L100,44 L100,100 Z |
+Decide the reading order, focal point, grid, image/text relationship, whitespace and hierarchy.
+A text-led opening, a mail without a hero, straight section edges and an effect-free layout are
+valid. Use overlaps, gradients, shaped transitions or emphasis only when they improve this design.
+A campaign may reuse a successful structure; variation is not an end in itself.
 
-A soft fade is another option: a full-width `gradient` rectangle from the leaving colour to
-the arriving one. The variation rule below includes the transition: neighbouring mails in a
-campaign do not share one.
-
-For a hero photo that should blend into its ground, put its exact `imageSlot` in `plan.fades`.
-This fades the image's edge from transparent to the section background; `plan.transition`
-controls the separate shaped seam between bands. A wave or crest is not a photo fade. Check
-the delivered image edge and the next section together, without obscuring the product or CTA.
-For classic/full_bleed heroes, `content.imageHeight` preserves the intended photo ratio and
-`content.fadeHeight` limits the fade to clear background. For example, a 600×400 scene can use
-400 and 40 respectively when the bottom 40px contain no product. Inspect the actual crop;
-these numbers are not a default for every image.
-
-## Depth and energy
-
-A premium page has layers. Flat rectangles stacked edge to edge are the look the client called
-cheap, so every mail carries at least one depth device:
-
-- Cutouts and badge shapes rotate up to 10 degrees either way; band strips 3 to 4 degrees.
-- Card stacks offset: the second card sits about 60px lower and slightly aside.
-- A lift shadow is a near-black copy of the shape, offset a few pixels, `opacity` 0.13, one z
-  below its subject.
-- The product cutout sits on the highest z of its section, and text never runs beneath it.
-- Overlap is a tool on grounds and shapes. The legibility rules stand: nothing overlaps type,
-  buttons or word endings.
-
-## Gradient art direction
-
-Build hero and closing grounds from the pack's own colours, never from invented ones: an urgency
-ground runs from the darkest palette tone into `band`, a fresh ground from the lightest tint into
-white, a premium ground from `band` into a near-black of it. Use the role colours as the stops
-and keep one gradient family per mail.
-
-## Hero anatomy
-
-Top to bottom: logo, badge pill naming the occasion in caps, kicker line, XXL punchline with
-exactly one word in the accent colour, sub of two to three lines, the primary CTA, then a
-micro-trust capsule. Background is a scene image with the subject off-centre so type has room,
-plus an overlay that guarantees legibility, plus a transition shape into the body.
-
-Four headline styles. Use exactly one per mail and vary across a campaign: a single giant word
-after a mini kicker; two or three stacked caps lines each filling the width; a caps line paired
-with an italic accent line; or a size mix of small, giant and medium lines.
-
-For a colour hero without a photo: full-bleed brand colour, text left, text column at most
-350px, product cutout right, and the cutout never touches the text column.
-
-## Body
-
-Transition, then the sections, drawn from a varied library: alternating image and text
-rows, a three-up number band, a stacked stat, an icon promise grid, a framed code box, a
-marker-highlighted statement, a two-column comparison, a product picks grid, a single large
-review panel, verified buyer cards, a before and after, or a dark icon band. Then a second CTA
-carrying the same call as the first, a closing headline with a short sign-off line, and the
-brand's own service and footer furniture.
-
-Some section types the library does not ship as blocks are composable from primitives:
-
-- Chat bubbles: alternating rounded rects with a small triangle tail, question left, answer right.
-- Gauge: a half ellipse over a band, the score as a stat number at its centre.
-- Highlighter: a statement line with a `backgroundColor` on the text element as the marker sweep.
-- Q and A cards: an objection as a quoted card, the answer as body text beneath it.
-- Stat stack: the numbers of a stat row stacked vertically with hairline rules between them.
-- Dark icon band: a `band`-coloured strip with two rows of three icon tiles and caps labels.
-- Colour ticker: variant chips as a single row of small rounded rects in the variant colours.
+Give each image a communicative role and a source. Choose existing imagery or plan generation
+only where it adds value. Slot geometry and the intended subject/crop are part of the composition,
+not an afterthought. There is no mandatory number of images or requirement for people, scenes,
+cutouts or a conventional hero. A suitable text-only mail needs no image job.
 
 ### How many sections
 
@@ -610,22 +513,16 @@ an argument needs support; remove a section when it adds no new reason to act.
 Check the finished mail against the reference with `get_email_preview_image`: compare reading
 order, focal point and useful contrast rather than matching its height.
 
-Variation is a hard rule: each mail in a campaign needs a combination of transition, hero
-background, headline style and sections that its neighbours do not have.
-
 ## Copy
 
-The kicker sets a concrete scene, the punchline pays it off. Provoke the next line. One thought
-per sentence, no nested clauses. Lead with the reader's benefit, not with the brand.
+Develop the copy before building: one clear message, useful progression, specific evidence and
+the Brand's voice. Remove repeated headlines and paragraphs that merely paraphrase each other.
+The opening may be direct, explanatory, narrative or surprising when the task warrants it;
+no kicker/punchline formula, forced provocation or fixed word count applies. Preserve good
+authorized copy. Check editorial quality separately from factual correctness.
 
-Register rules only. Never copy a sample sentence from anywhere, including this file. Write in
-the brand's language and form of address. Keep caps for headlines and CTAs, never for body text.
-Never use em dashes.
-
-Text elements carry inline bold: wrap a phrase in `**` markers and it compiles to bold in the
-mail. Use it in running body text for the one phrase the paragraph exists for, at most once per
-paragraph, so a skimming reader still gets the point. Headlines, kickers, CTAs and fine print
-already carry their own weight, so leave the markers out of them.
+Text supports inline bold through `**` markers and accent runs through `==` with `accentColor`.
+Use emphasis intentionally; it is not a required word count or per-paragraph quota.
 
 State only the offer terms authorized by the user or verified target context: amount, code,
 eligible products, minimum spend and validity when supplied. Do not turn a winback request into
@@ -637,19 +534,16 @@ applies the discount without a verified discount URL or supplied redemption inst
 The last email in this assignment is not a promise that the recipient will receive no future
 marketing; do not invent that promise or an offer expiry to give the closing mail urgency.
 
-Subject under 45 characters, preheader continues the thought instead of repeating it. Offer
-three to five subject and preheader pairs across different angles: a curiosity loop, the hero
-scene, a number, honest urgency, and the direct benefit. No caps spam, no spam triggers, and at
-most one emoji if the brand voice allows one.
-
-Match the register to the funnel stage. Awareness leads with the problem and teaches without
-pressing an offer. Consideration compares and proves. Offer stages lead with the offer and use
-only urgency that is actually true.
+Write a truthful subject and a complementary preheader in the Brand's voice. Compare alternatives
+when helpful; do not manufacture urgency or require a fixed number of variants. Check truncation
+and readability in the intended context. Let the assignment determine how much explanation,
+proof or offer emphasis is useful.
 
 ## Build in Mayledit
 
-Imagery first, then compose, then refine. Sessions expire after fifteen minutes and locks and
-agent runs are bound to them, so never let a pending image job sit between two batches.
+Build in short inspect-and-correct loops. Keep the active session and fenced lock healthy while
+jobs run; after interruption, read current WIP/run state and follow reset recovery before mutating.
+Missing final assets block completion, not internal layout exploration.
 
 ### Shared libraries
 
@@ -766,7 +660,8 @@ Codex follows the same tool contracts and this skill's production workflow.
 Capability canvasActions maps document actions to these commands. Pan, zoom, selection,
 clipboard and panel opening are transient client controls, not persisted email operations.
 
-1. Run ALL image work before you touch the document: `create_image_edit_job` to cut packshots
+1. Plan image slots together with the layout; internal draft geometry can precede finished assets.
+   Use `create_image_edit_job` to cut packshots
    out of their background when no CUTOUT motif exists or to place the actual product into a
    new scene. Bind its `sourceAssetId` to the verified product image; preserve the product's
    shape, details and branding while art-directing its setting, lighting and perspective.
@@ -790,8 +685,9 @@ clipboard and panel opening are transient client controls, not persisted email o
    For an email placement, also supply targetSize with width and height from the planned slot's CSS
    dimensions. For an opaque banner, include `targetSize.backgroundColor` as the actual planned
    slot's solid #RRGGBB background, never a guessed color. Delivery then pads opaque images in
-   that color and compresses them as JPEG when smaller. Genuine cutouts retain transparency;
-   without a known solid background, ratio mismatches keep transparent padding. Inspect the result before placement;
+   that color when explicitly chosen. Inspect actual output dimensions, subject bounds and edges:
+   a photo must not acquire accidental transparent gutters. Choose a safe crop or an intentional
+   opaque frame when ratios differ; genuine cutouts may retain transparency. Inspect the result before placement;
    a PNG extension or a painted checkerboard does not prove transparency. For a cutout, check
    actual alpha and its edges on the planned ground; reject baked checkerboards, white boxes,
    halos and changed product details instead of hiding them with an overlay.
@@ -827,26 +723,27 @@ clipboard and panel opening are transient client controls, not persisted email o
    automatically, and an explicitly passed set is only accepted when it matches the pack
    exactly.
 3. `acquire_email_lock` before mutating, and heartbeat it while you work.
-4. `compose_email_from_plan` is the floor, not the fallback: hand it the palette roles from
-   `designTokens.colors`, the brand fonts, one transition, one headline style, the furniture,
-   and the block list with variants, with the finished image URLs bound to their slots. Band
-   rhythm, crest transitions and the hero composition come out of it by construction. It
-   replaces the whole document, so compose FIRST: a recompose regenerates element ids and
-   orphans every tweak made since. Bind `compose_email_from_plan` to the BRAND context pack:
-   the brand profile in that pack drives the typography defaults, while product packs serve
-   the copy and product tools.
+4. Choose the build path that serves the concept. Use `apply_email_batch` with validated nodes
+   and Auto Layout to compose freely, or optionally use `compose_email_from_plan` when its
+   blocks fit your design. Library blocks and styles are optional, editable starting points.
+   Neither path establishes visual quality by itself. You choose the section order, geometry,
+   spacing, typography and image placement.
 
-   Before composing, check the Brand Context Pack: its `brand.facts` is required (a product
-   pack alone is insufficient). Missing displayFont or designDna is optional: tell the user
-   which explicit plan fonts/design choices will be used, or which standard defaults remain,
-   before starting the compose. Do not invent missing brand facts. The run-details export
-   preserves the actual plan, brand context and server release for future attempts.
+   Compose replaces the whole document and regenerates element IDs; do not recompose over
+   manual refinements without deliberately rebuilding them. A compose requires a BRAND context
+   pack with `brand.facts`; product packs supply product facts. Optional missing displayFont
+   or designDna does not require another approval: disclose consequential defaults and proceed
+   with explicit choices rather than inventing Brand facts.
 
-   Every new compose must include `agentInput`: `userPrompt` (the original production request),
+   Every new compose and the first free-node `apply_email_batch` must include `agentInput`:
+   `userPrompt` (the original production request),
    `productionInstruction` (the effective instruction you used), `promptVersion` (your instruction
    revision), `pluginVersion`, `model`, `provider`, `generationSettings`, `documentInputs`
    (names and exact text of any additional documents used), `jobIds` (all image/research jobs
    used for this production, including failed/retried attempts), and `unavailableInputs`.
+   Update this disclosure when substantive creative instructions change. Routine geometry repairs,
+   polling and unchanged retries do not require another copy of the same disclosure. A batch's
+   optional `agentInput` uses the same disclosure contract as compose and is recorded in Run details.
    When starting any image or research job for an existing email, always pass `emailRun`
    with its `emailId` and `agentRunId`. The server verifies ownership and records that link
    immediately after enqueue, so failures before the first compose remain visible in Run details.
@@ -866,16 +763,13 @@ clipboard and panel opening are transient client controls, not persisted email o
    uses the same idempotency key. Compare two members' emails with
    /api/emails/{emailId}/run-protocol?format=json&compareEmailId={otherEmailId} in the same organization.
 
-   When a compose call dies at the transport (timeout, dropped connection), call it AGAIN with
-   the SAME idempotency key: the gateway either replays the recorded result or completes the
-   write, and a fresh key would only conflict. What you must never do is give up on the composer
-   and assemble the document by hand with `apply_email_batch`: a hand-built document loses the
-   band rhythm, the transitions, the melt and the palette guards, and ships as a visibly weaker
-   mail. If compose still fails after retries, stop and report the failure instead of building
-   around it.
+   For an uncertain compose transport result, retry the SAME idempotency key and payload to
+   resolve whether it committed before making another mutation. A deterministic error needs
+   corrected input. Free composition is a normal supported path, but not a way to bypass
+   validation, locks, uncertain writes or other safety boundaries.
 
-   Five plan-level fields set the register of the whole mail and are easy to miss, because the
-   mail still compiles without them and simply comes out in the default:
+   The following fields and block keys document the optional composer, not required layout
+   anatomy. Choose its options deliberately and inspect the output; omitted values use defaults.
 
    Submit real values only: no placeholder font data, incomplete Base64 chunks or empty palette
    keys. A schema rejection identifies an invalid request; correct the reported field against
@@ -932,9 +826,8 @@ clipboard and panel opening are transient client controls, not persisted email o
    explanation, stat_band gives it the full width on an accent surface. A sentence in that slot
    is rejected.
 
-   A hero with `logoCapsule` set to true draws the brand logo natively in a white rounded capsule
-   anchored to the hero photo's top edge, so never build that capsule by hand out of
-   `apply_email_batch` shapes. It only works where a cover photo exists to anchor to: the
+   A hero with `logoCapsule` set to true draws the brand logo in a white rounded capsule
+   anchored to the hero photo's top edge. Use it only when that treatment suits the design. It only works where a cover photo exists to anchor to: the
    full_bleed, editorial_split and classic variants with a scene photo. Impact and statement
    ignore it, and so does a hero whose slot carries a `product_asset` packshot (those are
    contained, and the chip would cover the product).
@@ -942,11 +835,12 @@ clipboard and panel opening are transient client controls, not persisted email o
    A hero draws its scene from its own `imageSlot`, never from `backdrop:hero`: that slot is
    the section background art behind everything. A hero with no `imageSlot` falls back to a
    bare band. An `imageClass` of `product_asset` on the hero slot forces the editorial split,
-   which is right for a packshot and wrong for a scene. Carry both key sets on every hero so
-   the mail composes whichever variant the builder settles on.
-5. Refine with `apply_email_batch` in stages, applied back to back within seconds: first the
-   depth pass (rotated badges, offset cards, lift shadows, cutout on top), then accent words and
-   copy fixes, then any recipe section the block library does not cover. Use
+   which is right for a packshot and wrong for a scene. Inspect the actual chosen variant and supply the corresponding keys; do not duplicate
+   headlines merely to fill multiple slots.
+5. Build and refine with `apply_email_batch` in coherent stages. Start with the composition's
+   most uncertain or visually important region, compile it and inspect delivery pixels and
+   native detail before extending the design. Correct the observed problem, then continue;
+   do not postpone all visual inspection until the full mail exists. Use
    `set_document_metadata` for name, subject and language, `update_frame` for frame height,
    name or background, `insert_node`, `update_node`,
    `move_node`, `reorder_nodes`, `set_auto_layout` and `remove_auto_layout`. Use Auto Layout for
@@ -972,7 +866,7 @@ clipboard and panel opening are transient client controls, not persisted email o
    canvas mode when a delivery render fails: fix the reported problem and request delivery again.
 
    The host must actually show each returned image to you; a URL, receipt or successful compile
-   is not visual inspection. Read each full viewport render for flow, then request the hero and
+   is not visual inspection. Read each full viewport render for flow, then request the opening and
    each section with `clip` containing x, y, width and height in CSS pixels for that viewport.
    Bound each clip using the returned `contentHeight` and viewport width, not a downsampled
    image's dimensions. Keep the region within that document and viewport; mobile coordinates come from the
@@ -999,17 +893,16 @@ text itself live.
 
 - Every required image role in the assignment is present and visually accepted. A successful
   compile does not excuse a missing hero, a substituted logo or an unresolved image-job failure.
-- You have inspected delivery renders at 600px and 390px AND detail image blocks of the hero and
+- You have inspected delivery renders at 600px and 390px AND detail image blocks of the opening and
   every section, not only the canvas or compile result.
-- Every band change carries a named transition or a soft fade, and the mail carries at least one
-  depth device.
-- Kicker, punchline, sub, button and capsule read as separate steps.
+- Reading order, focal point and hierarchy serve the assignment and the target Brand.
+- Every section adds useful information; headlines and body do not repeat the same thought.
 - Button text is fully visible and nothing overlaps it.
 - No type sits behind product imagery, including word endings.
-- Exactly one accent word, in a colour from the brand palette.
-- Every text is legible on mobile, body at 16px or more.
+- Emphasis, image roles, logo size and colour choices work together intentionally.
+- Every text is legible on mobile.
 - Body contrast at least 4.5:1, headline contrast at least 7:1.
-- The first CTA sits within the top 800px.
+- The action is findable and clearly connected to the message.
 - Prices and dates are formatted for the brand's language.
 - Nothing on the page is a claim the brand kit does not support.
 - No `noGo` rule is broken.
@@ -1025,12 +918,12 @@ afterthought.
 2. For user-authorized corrections, first save the consolidated prompt iteration as described
    above, then fix the mail, compile and look at the preview again. Client comments read without
    an instruction to adopt them do not authorize prompt changes or a new production iteration.
-3. Then call `propose_learning` once for every design decision the review rejected. This is
-   mandatory, including when the fix looks obvious to you. `heading` names the decision, `body`
-   states the rule so it holds for the next mail instead of describing this one repair, `evidence`
-   points at the email, the version and the comment it came from. `type` is BRAND for a rule about
-   this brand's design, PRODUCT when it only holds for one product, AGENCY_PLAYBOOK when it holds
-   regardless of brand.
+3. Propose a learning through `propose_learning` only when the review supports a reusable rule.
+   Distinguish an assignment-specific choice from a Brand rule or a general technical finding;
+   one rejected layout does not make its opposite a universal requirement. `heading` names the
+   decision, `body` states its applicable scope and limits, and `evidence` points at the email,
+   version and review. `type` is BRAND for a supported Brand rule, PRODUCT for one product,
+   or AGENCY_PLAYBOOK only when the evidence holds regardless of Brand.
 4. Rejections of copy, of imagery and of layout all belong here. A learning is proposed, not
    applied: a human approves it, and from then on it reaches every run through
    `list_approved_learnings`. Do not wait for that approval.
@@ -1059,5 +952,6 @@ insights exist only in the conversation.
 - Always start from a fresh context pack before mutating production content.
 - Never assume stale local context is still valid after an interruption.
 - Use `/reset` when you switch emails, after a reconnect, or when Mayland reports stale context.
-- On `CONTEXT_PACK_STALE`, fetch a fresh context pack and re-read the brand before continuing.
+- On `CONTEXT_PACK_STALE`, fetch a fresh same-Brand pack and follow reset's owned-run pause and
+  restart sequence. Never edit or complete the old run with a newly minted mismatched pack.
 - `complete_agent_run` is the only Claude path that can create a final Email Version.

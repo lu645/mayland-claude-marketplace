@@ -20,4 +20,4 @@ Connect Claude Desktop or Claude Code to Mayland through the attested remote MCP
 - Keep user-facing output minimal: no command output or technical narration while steps succeed, detail only for the failing step. Confirm the connection only after setup succeeds. Then require `/reload-plugins` or a new Claude Code session before Mayland work: the installed plugin version is verified, but the current conversation may still have the old version loaded.
 - If Python 3 is unavailable, the pseudo-terminal cannot start, or the intent expired, report the exact failure and direct the user back to Connect Agent for a fresh handoff. Do not switch to an unqualified server name.
 - Never print, request, or explain setup credentials. Mayland does not require a code to be pasted into the browser.
-- `/reset` clears conversation context and requests a fresh Mayland brand context pack; it does not update or reload the plugin.
+- `/reset` recovers the existing assignment and WIP with valid run/context bindings; clear local context only after preserving the handoff. It does not update or reload the plugin. A successful connection is not a new production assignment.
