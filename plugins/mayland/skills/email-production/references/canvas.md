@@ -85,7 +85,13 @@ IMAGE_TRANSPARENCY_MISSING means the result lacks alpha. A PNG extension proves 
 Preserve the source. Logo edits must preserve exact letters and mark geometry; a crop cannot
 remove white within a letter or an opaque plate. Preserve intentional Brand plates.
 
-Poll `get_image_job`, then use `get_completed_image_asset`: it returns the public url,
+Use `get_image_job` with waitMs=20000 for a bounded server-side wait. A queued/running result
+after that budget is not a failed job. Continue useful work or check again; heartbeat the email
+lock between waits. Do not use shell sleep commands or assume a host-specific Monitor tool.
+For failed jobs read errorCode and errorMessage when provided. An unchanged invalid request
+does not become valid through a new job ID. Respect a known provider rejection; do not repeatedly
+rephrase requests to bypass it. Unknown HTTP errors remain unknown rather than a guessed cause.
+Then use `get_completed_image_asset`: it returns the public url,
 result image blocks, plus the source image for an edit. View them before placement. Use measured
 `delivery` dimensions, not private preview dimensions; inspect the public image when unavailable.
 Run image jobs through Mayland, never directly through a provider. Bind emailRun for an existing
