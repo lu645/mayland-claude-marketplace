@@ -965,17 +965,26 @@ clipboard and panel opening are transient client controls, not persisted email o
    an accurate description, not a generic filename or a decorative flag. Checkpoint and compile again.
    `complete_agent_run` requires the exact current WIP's bound artifact with no blocking errors;
    EMAIL_AGENT_DELIVERY_NOT_READY and EMAIL_AGENT_DELIVERY_BLOCKED mean preparation is not finished.
-7. `get_email_preview_image` returns the rendered mail as an image. The host must actually show
-   that image to you: a URL, job receipt or successful compile is not visual inspection. First read the whole preview
-   once for flow. When an `imageUrl` is returned, download it before its reported expiry.
-   Otherwise save the actual returned image pixels using the host's image access: a live render
-   can be visually valid without any downloadable URL. Do not fabricate a URL or treat its
-   absence as a missing image when the image block is present. Use those pixels to crop the
-   hero and every section at native resolution, with sips or ImageMagick, and look at
-   each crop. A 600 by 4000 preview viewed whole is downsampled and hides exactly the defects a
-   client sees first: collisions, clipped lines, type on busy ground, cropped subjects. Never
-   approve a mail from metadata alone. If the connected release does not offer the tool yet, say
-   plainly that you could not see the result instead of calling it good.
+7. Inspect the actual recipient HTML with `get_email_preview_image`: explicitly set `renderMode`
+   to delivery and request both `viewportWidth` 600 and 390 for the compiled `revisionId`.
+   Check the returned revision and artifact identity against the compile result. A canvas image
+   is useful while editing, but it is not proof of desktop or mobile delivery. Do not substitute
+   canvas mode when a delivery render fails: fix the reported problem and request delivery again.
+
+   The host must actually show each returned image to you; a URL, receipt or successful compile
+   is not visual inspection. Read each full viewport render for flow, then request the hero and
+   each section with `clip` containing x, y, width and height in CSS pixels for that viewport.
+   Bound each clip using the returned `contentHeight` and viewport width, not a downsampled
+   image's dimensions. Keep the region within that document and viewport; mobile coordinates come from the
+   390px delivery layout, not the 600px canvas. These calls return the detail pixels directly,
+   including when no `imageUrl` exists. Do not invent a URL or ask a vision-only image block to
+   become a local file. A usable signed URL may also be downloaded before expiry, but it is not
+   required for the MCP detail-view path.
+
+   A tall full-mail image is downsampled and can hide collisions, clipped lines, tiny text,
+   type on busy ground and cropped products. Inspect the detail image blocks in both viewports.
+   You decide whether the result meets the assignment; no server model approves the design.
+   If delivery pixels cannot be inspected, report that specific gap instead of calling it good.
 8. Fix what you found, then compile and look again. Only `complete_agent_run` creates a final
    version.
 
@@ -990,8 +999,8 @@ text itself live.
 
 - Every required image role in the assignment is present and visually accepted. A successful
   compile does not excuse a missing hero, a substituted logo or an unresolved image-job failure.
-- You have looked at the rendered preview image AND at native-resolution crops of the hero and
-  every section, not only at the compile result.
+- You have inspected delivery renders at 600px and 390px AND detail image blocks of the hero and
+  every section, not only the canvas or compile result.
 - Every band change carries a named transition or a soft fade, and the mail carries at least one
   depth device.
 - Kicker, punchline, sub, button and capsule read as separate steps.
