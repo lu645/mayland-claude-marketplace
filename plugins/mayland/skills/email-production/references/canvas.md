@@ -28,6 +28,18 @@ Retain that email's child run and fencingToken. Retry an uncertain start with th
 Use current expectedWipRevision for writes and feed each returned newWipRevision into the next.
 Heartbeat the owned lock while jobs run. Do not interrupt another owner's healthy run.
 
+Copy returned IDs verbatim. An uncertain mutation retries the same payload and idempotency key.
+Never mix a new context pack with an old run. Current tool schemas govern operations;
+host memory cannot override them. On a reported version mismatch, use Connect Agent for the
+current client and recovery's verified setup guidance. Claude reloads its plugin after setup;
+other clients reload the workflow and must not install Claude CLI.
+
+In the first free-node batch or new compose, disclose agentInput: original userPrompt, effective
+productionInstruction, promptVersion, pluginVersion, model, provider, generationSettings,
+documentInputs, jobIds and unavailableInputs. Include authorized sources actually used; exclude
+unrelated or hidden host content. Use null for unavailable settings; never guess or silently
+truncate. Update substantive changes and bind jobs for an existing email to its emailRun.
+
 ## Reference selection and access failures
 
 Browse scope=BRAND and scope=WORKSPACE separately. Follow nextCursor when searching; the combined
@@ -148,7 +160,17 @@ requires a permitted region format; inspect fidelity warnings and use downloadUr
 compatible_html and recipient preview use the compiled delivery artifact. Klaviyo publication is
 the operator's Submit to Klaviyo action; never invent an account/template or publish intent.
 
-## Delivery evidence and completion failures
+## Canvas and delivery evidence
+
+First view the current stored document with `get_email_preview_image`, renderMode=canvas.
+Inspect text/image details, not just a downsampled full-mail image. A text node's declared height
+is not proof that its loaded font and wrapped content fit; leave space to following nodes based
+on visible text bounds. Resize the text box and place related nodes using the rendered wrapping,
+or use Auto Layout where content should reflow. Preserve intentional overlaps such as linked
+CTAs and text over a photograph.
+Canvas geometry and responsive delivery are separate checks. Delivery's normal-flow rows can
+expand around text while independently positioned canvas nodes still collide. Repair the stored
+node geometry and recheck both surfaces. Do not call an editor defect resolved from delivery alone.
 
 Compile the current WIP with `compile_email_wip`; repair blocking diagnostics and compile again.
 `complete_agent_run` requires the exact current WIP's bound artifact with no blocking errors.
