@@ -34,6 +34,8 @@ designs as inspiration. A past template's implementation choices do not become B
 Local host memory is not authority for visual or technical rules. Load the current workflow
 and capability contract instead of old compose recipes. An old "accepted" or "works" note
 does not establish customer approval. Keep recovery identities separate from creative instructions.
+Reject stale blanket rules such as "never overlap a card and image"; reproduce an actual failure
+against the current capability contract before treating it as a technical limitation.
 
 ## Ground the design
 
@@ -68,6 +70,14 @@ For reference failures or unfamiliar operations, consult relevant sections of
 Study transferable craft such as hierarchy, rhythm and image/text relationships; do not copy
 another sender's facts, offer, logo or palette. Record a short visual rationale with the
 effective production instruction. No number of observations or reproduced modules is required.
+
+Distinguish inspiration from an explicit rebuild: when the user asks to match a selected reference
+or screenshot, its requested composition is binding. Keep the exact source identity and inspect
+readable detail crops before writing: fade direction and extent, headline position relative to
+the photo, panel overlap and layer order. A fade into the page background is not a hard white
+header, circle or wave. Do not substitute another reference or remove a requested overlap.
+Record these requested visual relationships in the production instruction and carry corrections
+into any delegated brief. For inspiration alone, layout remains your design choice.
 
 ## Develop the idea
 
@@ -129,6 +139,9 @@ One 600px frame contains every node; grow its height rather than adding sections
 Use `apply_email_batch` to place, group, align, resize and refine nodes freely.
 Begin with the most uncertain or important region; inspect its delivery pixels before extending
 a weak direction across the whole mail. Use the loaded font and actual content to judge geometry.
+For a reference rebuild or repeated series, prototype the fade or overlapping panel first;
+compare it with the selected source on canvas and in delivery at 600px and 390px before
+replicating it into further emails. Repair the prototype before multiplying an unverified pattern.
 Use the capability's linked Shape + Text CTA recipe for semantic links, with your own styling.
 
 The legacy `compose_email_from_plan` is optional: choose it only if its template actually fits
@@ -154,6 +167,9 @@ to compensate for the other. Verify the same final revision after changes.
 Judge the concept and Brand fit as well as geometry: image quality, logo treatment, useful
 hierarchy, specific copy, readable contrast, visible action and progression without repetition.
 Compare with inspected eligible references as a quality bar, not a required layout.
+For an explicit rebuild, also verify each requested visual relationship against the exact source.
+Report any remaining discrepancy or unviewed surface; claim a reference match only after this
+comparison, never from compile success or a collision check alone.
 
 If the composition is weak, reconsider it. Increasing an overlay until text reads does not prove
 that text belongs on that image. Change image choice, placement or concept when appropriate.

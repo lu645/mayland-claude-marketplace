@@ -150,6 +150,13 @@ Components/Variables resolve through typed operations; invalid definitions and c
 Inside text, `**` enables bold and `==` uses accentColor; without that color it is plain text.
 Rotated text is baked into imagery and ceases to be live text. Gradients and translucent/freeform
 shapes may also be baked and skip dark-mode color rewriting; inspect their recipient rendering.
+Rasterization information is not a blanket prohibition on cards over images or faded heroes.
+Keep requested overlaps and layer order while inspecting the actual compiled result. If a panel's
+background and live text separate on mobile, repair that composition and recheck both widths;
+do not silently replace the overlap with an arbitrary gap or claim unsupported renderer behavior.
+For a fade, inspect a detail crop of the source to determine the transition's direction, color
+and extent, then verify those pixels in the result. Use supported gradient/image operations from
+the current capabilities; a hard shape over the image is not evidence of a matching fade.
 
 ## Optional shared libraries and export
 
