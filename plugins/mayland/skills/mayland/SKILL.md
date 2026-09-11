@@ -130,8 +130,25 @@ a finding without a field goes into `notes` under a labelled heading.
 6. Choose one stable idempotencyKey for this request and retain it across technical retries and reconnects. A new explicit follow-up gets a new key. Do not place credentials or authentication material in keys, notes or payloads.
 The optional `brand.logoUrl` is also supported: it enters the same verified image pipeline as a LOGO sourced from `brand.site`. Prefer `research.images` when the discovery page differs from the homepage. Do not submit the same logo twice.
 
-7. Call `start_brand_research` with idempotencyKey, brand, the existing brandId when known, products and research. Set research.mode to BRAND_ONLY unless the separate product request passed the gate below. The start receipt gives jobId, brandId, status, progress and createdAt; it does not mean every image has already been saved. No approval per verified field/image is required. Never fall back to legacy `upsert_brand_catalog` or `start_brand_catalog_import` to bypass additive preservation, identity checks or existing product authority.
+7. Call `start_brand_research` with idempotencyKey, brand, the existing brandId when known, products and research. For a new Brand, always start with BRAND_ONLY and products: [], even when products are also commissioned. Retain the returned brandId and jobId, follow step 8, then use the separate product step below. Never submit PRODUCTS without an existing brandId and a non-empty verified products array. The start receipt gives jobId, brandId, status, progress and createdAt; it does not mean every image has already been saved. No approval per verified field/image is required. Never fall back to legacy `upsert_brand_catalog` or `start_brand_catalog_import` to bypass additive preservation, identity checks or existing product authority.
 8. Poll `get_brand_catalog_import` with the exact jobId until COMPLETED, COMPLETED_WITH_ERRORS or FAILED. Verify persisted fields/images with `get_brand` and `list_assets`; inspect `list_products` only for a commissioned product import. Distinguish added fields/images, preserved/conflicting values, failed transfers and open research points. Partial failures keep successful results. Retry a failed subset with the same source identities in a new explicit retry batch; an uncertain transport result first retries the exact original payload/key. Never recreate the Brand or blindly upload successful assets again.
+
+### Waiting for Brand and product imports
+
+`get_brand_catalog_import` is an immediate status read; do not invent a waitMs parameter.
+Read once after the start receipt. While pending, do independent useful work before checking
+again, or use a bounded native wait only if the host actually advertises one (at most 20 seconds
+per wait, at most three unchanged checks in this turn). Do not use shell sleep commands or
+assume a host-specific Monitor tool. Never bypass a blocked wait with shorter sleeps or a
+tight polling loop. If no supported wait or useful work remains, or the unchanged-check budget
+is reached, report the last known pending state and retain the jobId for the next status check;
+do not promise background monitoring that has not been started.
+
+A blocked wait or failed status read is not a failed import. Keep the original jobId and resume
+status observation; never start a replacement import. Only a returned FAILED status establishes
+import failure. COMPLETED_WITH_ERRORS means partial success, and an unavailable status remains
+unknown. Example: "Der Import lief bei der letzten Prüfung noch. Die Statusabfrage ist gerade
+nicht möglich; das bedeutet nicht, dass der Import fehlgeschlagen ist."
 
 ### Product research requires a separate request
 
@@ -145,6 +162,17 @@ not a routing instruction. Existing Shopify-managed products and existing manual
 unchanged. Verify official names and canonical URLs from accessible evidence; missing facts stay
 missing. A Brand-only request never implies this step.
 
+For a new Brand with commissioned products, first complete the BRAND_ONLY flow above. After
+COMPLETED or COMPLETED_WITH_ERRORS, verify the returned brandId with `get_brand` and
+`get_brand_research_readiness`; proceed only when productResearchAllowed is true. Report any
+partial Brand-image failures separately. For an existing Brand, reuse its verified brandId and
+check readiness directly; do not create another Brand or repeat Brand-only research unnecessarily.
+Use a distinct stable idempotencyKey for the product request and retain its own returned jobId.
+If Brand creation failed or readiness is false, resolve the returned cause before the product
+step. Never fabricate an ID. Explain a corrected sequence plainly: "Ich speichere zuerst die
+Marke und ordne ihr anschließend die beauftragten Produkte zu." These rules apply in fresh
+sessions too; personal memory is not a prerequisite.
+
 ### Brand research request example
 
 Replace URLs with actually verified sources. The example is a Brand-only request, not a claim
@@ -152,6 +180,15 @@ that these images or facts were fetched.
 
 ```json
 {"idempotencyKey":"brand-research-example","brand":{"name":"Example Brand","site":"https://example.com","category":"Verified brand category"},"products":[],"research":{"mode":"BRAND_ONLY","sources":["https://example.com/about"],"images":[{"url":"https://example.com/logo.png","sourceUrl":"https://example.com/about","role":"LOGO","name":"Example Brand logo"}],"openPoints":["Public Instagram page could not be accessed."]}}
+```
+
+### Product research request example
+
+Use only for commissioned products after readiness succeeds. Replace the illustrative brandId
+with the ID returned by Brand creation or the existing Brand lookup, and verify product facts.
+
+```json
+{"idempotencyKey":"product-research-example","brandId":"00000001-1111-4111-8111-111111111111","brand":{"name":"Example Brand","site":"https://example.com"},"products":[{"externalId":"example-product","name":"Example Product","url":"https://example.com/products/example-product"}],"research":{"mode":"PRODUCTS","sources":["https://example.com/products/example-product"],"images":[],"openPoints":[]}}
 ```
 
 ## Campaigns
