@@ -42,9 +42,15 @@ truncate. Update substantive changes and bind jobs for an existing email to its 
 
 ## Reference selection and access failures
 
-Browse scope=BRAND and scope=WORKSPACE separately. Follow nextCursor when searching; the combined
-three-reference bound applies to run selection, not the whole library. Missing Brand inspiration
-does not justify skipping workspace. READY references with missing analysis remain viewable.
+Existing context references take priority. Search scope=WORKSPACE only on demand when references
+exist; when context.references is empty, workspaceInspiration is supplied automatically.
+Use list_reference_emails scope=BRAND with the target brandId to browse further Brand references.
+Use inspirationQuery on get_brand_context/get_product_context for a targeted search even with
+existing references. Follow nextCursor when searching; the combined three-reference bound applies
+to run selection, not the whole library. READY references with missing analysis remain viewable.
+The context pack's workspaceInspiration contains discovery items and nextCursor, not proof of
+visual inspection or a run selection. Continue with list_reference_emails scope=WORKSPACE when
+needed, without a Brand filter, and view promising references with get_reference_email.
 An explicit user selection takes precedence over automatic alternatives when eligible.
 Check processing state and actual image access: unavailable images cannot be visual inspiration.
 Refresh expired signed URLs through get_reference_email; disclose unresolved access.
