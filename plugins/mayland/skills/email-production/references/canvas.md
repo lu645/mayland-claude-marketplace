@@ -101,6 +101,15 @@ lock between waits. Do not use shell sleep commands or assume a host-specific Mo
 For failed jobs read errorCode and errorMessage when provided. An unchanged invalid request
 does not become valid through a new job ID. Respect a known provider rejection; do not repeatedly
 rephrase requests to bypass it. Unknown HTTP errors remain unknown rather than a guessed cause.
+For the provider error code insufficient_quota, explain a quota/billing issue and ask to check the actually connected
+organization/project's billing and limits; the code does not prove a zero account balance.
+For the provider error code rate_limit_exceeded, name the rate limit. For an unspecified OpenAI HTTP 429 say:
+“OpenAI hat die Bildanfrage gerade abgelehnt. Die genaue Ursache ist aus der Fehlermeldung nicht
+erkennbar. Bitte prüfe die Limits der verbundenen OpenAI-Verbindung oder wende dich an den Support.”
+Respect confirmed available credit; never recommend topping up without evidence. Do not invent
+a Mayland restriction on new models, switch models without evidence, or create replacement jobs.
+Keep the existing job retry policy. Missing sanitized error details do not prove that the provider
+supplied no details. Use safe job/connection/model identifiers for support, never credentials.
 Then use `get_completed_image_asset`: it returns the public url,
 result image blocks, plus the source image for an edit. View them before placement. Use measured
 `delivery` dimensions, not private preview dimensions; inspect the public image when unavailable.
@@ -114,6 +123,12 @@ key; uncertain transport retries the same payload/key. If repair fails or lacks 
 preserve useful WIP and report the gap; do not complete until the requirement is fulfilled.
 
 ## Fonts and identity fields
+
+Read all `designDna.font_families` entries and their `usage`, including additional campaign and
+accent families. Composition retains their supplied faces in the existing document CustomFont
+pipeline; use the intended family per element, with an email-safe fallback. A missing source is
+not evidence that the font is loaded. Report unavailable font errors, preserve WIP and repair the
+source before claiming the requested typography rendered correctly.
 
 Read `visualSummary`, `voiceSummary`, `tone`, `noGo`, `imageryStyle` and the target's verified
 designTokens. Product truth/benefits remain sourced; furniture and mandatoryStatements retain their
@@ -198,6 +213,15 @@ node geometry and recheck both surfaces. Do not call an editor defect resolved f
 Compile the current WIP with `compile_email_wip`; repair blocking diagnostics and compile again.
 `complete_agent_run` requires the exact current WIP's bound artifact with no blocking errors.
 EMAIL_AGENT_DELIVERY_NOT_READY/BLOCKED mean production is incomplete, not bypassable warnings.
+
+### Original messages in Run details
+
+Mayland cannot read host chats automatically. On compose/apply, supply `agentInput.conversation`:
+stable id, userPrompts with stable id, chronological sequence and verbatim text (including corrections).
+Bind these to this conversation/email/run; never substitute instructions, tool output or intermediate
+answers. Omit unavailable originals. `complete_agent_run` accepts conversation with the same ID/prompts
+and optional `finalAnswer`. Supply only settled final wording and present it unchanged; otherwise omit
+it. Failed completion never publishes a final answer. Captured prompts and safe errors survive failure.
 
 For `get_email_preview_image`, use renderMode=delivery, compiled revisionId and
 request both `viewportWidth` 600 and 390. Check revision/artifact identity against compile.
