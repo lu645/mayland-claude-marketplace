@@ -146,18 +146,20 @@ weight, bypass source validation, or rewrite Brand typography to disguise a fall
 Get the relevant category from `get_mayledit_capabilities`; its strict definitions and examples
 are the authority. Unknown fields fail. The following capability vocabulary is contract-tested:
 
-elementKinds: text, button, image, icon, shape
+elementKinds: text, button, image, icon, shape, table
 shapeKinds: rect, rounded, circle, ellipse, triangle, diamond, pentagon, hexagon, polygon, star, line, arrow, freeform
 operations: set_document_metadata, set_frame_state, update_frame, insert_node, update_node, group_nodes, ungroup_nodes, duplicate_nodes, move_nodes, align_nodes, distribute_nodes, upsert_reusable_block, instantiate_reusable_block, detach_reusable_block, upsert_text_style, bind_text_style, set_text_style_overrides, reset_text_style_overrides, detach_text_style, upsert_saved_style, apply_saved_style, upsert_custom_font, remove_node, create_export_region, rename_export_region, create_component, update_component, create_component_variant, instantiate_component, set_instance_variant, set_instance_property, set_instance_override, swap_instance, reset_instance_overrides, detach_instance, bind_variable, unbind_variable, create_variable, update_variable, remove_variable, move_node, reorder_nodes, set_auto_layout, remove_auto_layout
-exporters: delivery_preview, compatible_html, png, pdf, svg, pen, figma_json, klaviyo
+exporters: delivery_preview, compatible_html, png, pdf, svg, pen, klaviyo
 recipes: linked_shape_text_cta
 
 Use one 600px frame; grow height with update_frame. Fully off-frame elements are dropped.
 set_frame_state controls root Lock/Eye; a hidden root cannot preview/export.
 New CTA nodes use the `linked_shape_text_cta` recipe: Shape + Text with shared groupId and href.
 Style them freely, including supported Drop Shadow; never create a legacy button node.
-Move/resize the pair together and exclude both members from set_auto_layout to preserve overlap
-and the compiled semantic link. A reusable CTA may be saved at Campaign, Brand, or Global scope.
+Move/resize the pair together; set_auto_layout takes the pair as one child (either member id).
+A reusable CTA may be saved at Campaign, Brand, or Global scope.
+opacity works on every kind; text newlines break lines, "• "/"1. " lines render as lists; table
+elements carry data tables (fields via get_mayledit_capabilities).
 
 For ordinary optional fields, update_node with unsetProperties and an empty patch removes a
 link/effect; do not send null, remove required fields, or both patch and unset a field.
@@ -165,7 +167,8 @@ Change a shared group URL on every member in one batch. For component members us
 set_instance_override with sectionId, instanceId, sourceElementId and patch; an empty href clears
 the link without resetting unrelated overrides. Use complete groups and touched Auto Layout trees
 when grouping, moving or duplicating; locked nodes must be unlocked first.
-Managed Auto Layout children require layout operations; intentional overlap does not belong in it.
+Managed Auto Layout children require layout operations; intentional overlap other than a linked
+CTA pair does not belong in it.
 Components/Variables resolve through typed operations; invalid definitions and cycles fail closed.
 
 Inside text, `**` enables bold and `==` uses accentColor; without that color it is plain text.

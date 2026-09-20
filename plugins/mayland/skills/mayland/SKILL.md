@@ -207,9 +207,10 @@ production, which asks the user which board a new email belongs to.
 When catalog work hands off to email production, the producing agent must call
 `get_mayledit_capabilities` and use its `linked_shape_text_cta` recipe for every new CTA. The
 recipe creates a Shape + Text group with one shared validated link and exposes Shape styling such
-as fill, stroke, radius, gradient, opacity and Drop Shadow. Move and resize the pair as a group;
-never include either member in `set_auto_layout`, which rejects CTA pairs to preserve their
-intentional overlap and semantic link. Never instruct the producing agent to
+as fill, stroke, radius, gradient and Drop Shadow. Move and resize the pair as a group; inside
+`set_auto_layout` the pair counts as ONE child (pass either member id), keeping its overlap and
+semantic link. Layer `opacity` works on every element kind, text lists are lines that start with
+"• " or "1. " (a `\n` is a line break), and `table` elements carry real data tables. Never instruct the producing agent to
 create a new legacy button node. Reusable Blocks may live at Campaign, Brand, or Global scope.
 
 ## Ranking and safety
