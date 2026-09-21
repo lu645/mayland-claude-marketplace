@@ -90,7 +90,8 @@ def extract_oauth_url(raw, endpoint, client_id, resource, callback):
 
 OAUTH_DECLINED_MESSAGE = (
     "Mayland declined the sign-in (access_denied). "
-    "Click Connect Claude Code on Mayland, then run the setup command again."
+    "Open Connect Agent in Mayland, select Claude, and run its NEW setup command once. "
+    "Do not retry the old command or start a second login with the same handoff."
 )
 
 CAPTURE_LIMIT = 1048576
@@ -260,8 +261,8 @@ def run_login(server, endpoint, client_id, resource, callback):
             if callback_deadline is not None and now >= callback_deadline:
                 raise RuntimeError(
                     f"Nobody completed the Mayland sign-in within {CALLBACK_TIMEOUT:g}s. "
-                    "Open the printed OAuth URL in the browser that is signed in to "
-                    "Mayland, then run the setup command again."
+                    "This callback listener has stopped. Open Connect Agent in Mayland, "
+                    "select Claude, and run its NEW setup command once; the old URL cannot complete this login."
                 )
     finally:
         os.close(master)
