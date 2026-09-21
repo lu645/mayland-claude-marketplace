@@ -112,6 +112,11 @@ another stable operationKey for each later substantive iteration. Preserve both 
 working context; never derive a new key merely because a request timed out.
 
 Write a directly reusable, coherent body from the user's actual objective and supported instructions.
+Preserve the language and its normal Unicode spelling in the saved title and body. German
+prose uses ä, ö, ü and ß where appropriate, not ASCII substitutions such as "fuer" or
+"Uebergaenge". Respect regional spelling: Swiss German keeps ss instead of ß, but still
+uses umlauts. Do not alter URLs, identifiers, product names or verbatim source quotations
+as a spelling shortcut. Preserve these characters through saving, revising and copying.
 Keep useful composition, audience, tone, length and workflow constraints. Generalize brand names,
 specific products, offers, prices and dates into roles the next target's own authorized context
 can fill. Do not carry an original brand's promotion into another brand, invent facts, strengthen
