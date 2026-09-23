@@ -8,7 +8,7 @@ description: Design and refine a brand-grounded Mayland email on the Mayledit ca
 You are the designer. Choose the best layout for this message, audience and Brand.
 Mayledit is a canvas: compose with its nodes, measure, render and revise. The tool's example
 or an older email is not a design brief. No required hero, section sequence, image count,
-copy formula, effect, spacing scale or fixed layout applies.
+copy formula, effect or fixed layout applies.
 
 ## Start with the current assignment
 
@@ -98,6 +98,7 @@ discounts, urgency, reviews, benefits, claims or destinations. Omit unknown opti
 ask when an essential missing condition changes the offer. An ordinary product link does not
 prove automatic redemption. A closing campaign email does not promise no future marketing.
 Write a truthful subject and complementary preheader.
+Build quality into this same email: clear action, readable live text, useful imagery and purposeful links. Fewer images or links do not inherently improve inbox placement. Create separate A/B emails only when requested; no automatic second optimization variant.
 
 Plan the image role and geometry with the composition. Judge existing assets for this
 assignment rather than reusing them because a previous agent did. Generated assets from a
@@ -137,25 +138,23 @@ Use `apply_email_batch` to place, group, align, resize and refine nodes freely.
 Begin with the most uncertain or important region; inspect its delivery pixels before extending
 a weak direction across the whole mail. Use the loaded font and actual content to judge geometry.
 For a reference rebuild or repeated series, prototype the uncertain composition first, including any fade or overlapping panel.
-Compare it with the selected source on canvas and in delivery at 600px and 390px before replicating it into further emails. Repair the prototype before multiplying an unverified pattern.
+Compare it with the selected source on canvas and in delivery at 600px and 390px, and repair it before replicating it into further emails.
 Use the capability's linked Shape + Text CTA recipe for semantic links, with your own styling.
 
-The legacy `compose_email_from_plan` is optional: choose it only if its template actually fits
-your considered design or the user asked for that template. It is not the default route.
-Only then read [Optional composer](references/composer.md), available with
-workflow=email-production and topic=composer. Compose replaces the whole document;
-do not accidentally discard free-node refinements.
+Space in 8px steps (4px for tight pairs): 8/16px between related items, 24/32px between blocks, 48px+ between modules. Hold one type scale per campaign: Brand/Campaign styles from `list_mayledit_library`, else `upsert_text_style` the capability's default styles in Brand fonts. `bind_text_style` every text node (override color/alignment); one H1 per email.
 
-Record original and effective instructions through agentInput; the mechanics reference covers
-its fields. Record sources actually used, including any production memory that influenced choices.
-For interrupted writes or a reported version mismatch use [Reset recovery](../reset/SKILL.md),
-workflow=email-production and topic=recovery. Do not initiate setup when versions match.
+The legacy `compose_email_from_plan` is optional: choose it only if its template fits your design or the user asked for it. It is not the default route. Only then read [Optional composer](references/composer.md), available with workflow=email-production and topic=composer. Compose replaces the whole document; do not accidentally discard free-node refinements.
+
+Record original and effective instructions through agentInput; the mechanics reference covers its fields. Record sources actually used, including any production memory that influenced choices.
+For interrupted writes or a reported version mismatch use [Reset recovery](../reset/SKILL.md), workflow=email-production and topic=recovery. Do not initiate setup when versions match.
 
 ## Judge the result, then finish
 
+After every creation and user iteration, follow the warning repair and Mayland Score checks in [Mayledit mechanics](references/canvas.md#warning-repair-and-mayland-score). Review every reported issue, repair meaningful defects and recheck the final revision.
+
 Inspect the current editable canvas with `get_email_preview_image`, renderMode=canvas,
-including readable detail crops. Check actual text bounds, crops, alignment and spacing:
-a wrapped label must fit its box and leave its intended gap to the next element.
+including readable detail crops. Check actual text bounds, crops, alignment, spacing, frame edges and seams:
+a wrapped label must fit its box and keep its gap to the next element.
 Then compile and inspect renderMode=delivery at 600px and 390px, including details.
 Both surfaces must work: delivery reflow can hide bad canvas geometry, while a correct canvas
 does not prove responsive delivery. Correct the document rather than relying on one renderer
@@ -167,9 +166,8 @@ For an explicit rebuild, also verify each requested visual relationship against 
 Report remaining discrepancies or unviewed surfaces; claim a reference match only after comparison, never from compile success or a collision check alone.
 
 If the composition is weak, reconsider image choice, placement or concept. Increasing an overlay until text reads does not prove that text belongs on that image.
-Render again after corrections; a passing compile or successful image job is not visual approval.
-Report missing visual access honestly. Only `complete_agent_run` creates a final version, and it
-requires the exact current WIP's bound artifact with no blocking errors and fulfilled requirements.
+A passing compile or successful image job is not visual approval.
+Report missing visual access honestly. Only `complete_agent_run` creates a final version, and it requires the exact current WIP's bound artifact with no blocking errors and fulfilled requirements.
 Production completion does not mean customer approval or authorize sending/publishing.
 
 Adopt client feedback only within the user's authorized revision. Propose reusable taste

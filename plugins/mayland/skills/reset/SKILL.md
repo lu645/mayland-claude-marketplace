@@ -41,7 +41,9 @@ only customer-approved versions qualify. The current WIP remains available for a
 6. A context reset does not update the plugin. After an update use `/reload-plugins` or a new
    Claude Code session. If connection fails, use Mayland's `Connect Agent` action with Claude
    selected and its fresh hash-verified setup command as described in `/mayland:connect`.
-   A bare MCP reconnect is not a verified plugin update. Do not bypass a failed setup check.
+   A bare MCP reconnect is not a verified plugin update, but an already verified
+   installation can renew OAuth through Mayland's explicit browser confirmation.
+   Do not bypass a failed plugin setup check.
    Other MCP clients use Connect Agent for their own client and reload the current workflow;
    they must not install or run Claude CLI. A reported mismatch triggers this update path;
    matching versions do not. Use the current client, not a Claude-specific fallback.

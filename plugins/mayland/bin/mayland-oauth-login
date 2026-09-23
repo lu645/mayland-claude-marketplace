@@ -89,9 +89,9 @@ def extract_oauth_url(raw, endpoint, client_id, resource, callback):
 
 
 OAUTH_DECLINED_MESSAGE = (
-    "Mayland declined the sign-in (access_denied). "
-    "Open Connect Agent in Mayland, select Claude, and run its NEW setup command once. "
-    "Do not retry the old command or start a second login with the same handoff."
+    "Mayland did not approve the sign-in (access_denied). "
+    "If you cancelled, no access was granted. Otherwise start a fresh OAuth login "
+    "after this listener stops; never reuse the old authorization URL."
 )
 
 CAPTURE_LIMIT = 1048576
@@ -235,14 +235,15 @@ def run_login(server, endpoint, client_id, resource, callback):
                             except (RuntimeError, OSError, subprocess.TimeoutExpired):
                                 print(
                                     "Mayland could not open the browser automatically. Open the "
-                                    "printed OAuth URL in the browser signed in to Mayland; "
+                                    "printed OAuth URL in a browser, sign in to Mayland "
+                                    "and confirm the workspace; "
                                     "keep this command running.",
                                     flush=True,
                                 )
                             else:
                                 print(
                                     "Mayland requested browser sign-in. If no tab appears, open "
-                                    "the printed OAuth URL in the browser signed in to Mayland.",
+                                    "the printed OAuth URL in a browser and confirm the Mayland workspace.",
                                     flush=True,
                                 )
                             print(f"Waiting up to {CALLBACK_TIMEOUT:g}s for the localhost callback.", flush=True)
@@ -261,8 +262,8 @@ def run_login(server, endpoint, client_id, resource, callback):
             if callback_deadline is not None and now >= callback_deadline:
                 raise RuntimeError(
                     f"Nobody completed the Mayland sign-in within {CALLBACK_TIMEOUT:g}s. "
-                    "This callback listener has stopped. Open Connect Agent in Mayland, "
-                    "select Claude, and run its NEW setup command once; the old URL cannot complete this login."
+                    "This callback listener has stopped. Start a fresh OAuth login; "
+                    "the old URL cannot complete this login."
                 )
     finally:
         os.close(master)

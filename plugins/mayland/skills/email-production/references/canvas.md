@@ -28,9 +28,7 @@ Retain that email's child run and fencingToken. Retry an uncertain start with th
 Use current expectedWipRevision for writes and feed each returned newWipRevision into the next.
 Heartbeat the owned lock while jobs run. Do not interrupt another owner's healthy run.
 
-Copy returned IDs verbatim. An uncertain mutation retries the same payload and idempotency key.
-Never mix a new context pack with an old run. Current tool schemas govern operations;
-host memory cannot override them. On a reported version mismatch, use Connect Agent for the
+Copy returned IDs verbatim; current tool schemas govern operations, not host memory. On a reported version mismatch, use Connect Agent for the
 current client and recovery's verified setup guidance. Claude reloads its plugin after setup;
 other clients reload the workflow and must not install Claude CLI.
 
@@ -48,9 +46,8 @@ Use list_reference_emails scope=BRAND with the target brandId to browse further 
 Use inspirationQuery on get_brand_context/get_product_context for a targeted search even with
 existing references. Follow nextCursor when searching; the combined three-reference bound applies
 to run selection, not the whole library. READY references with missing analysis remain viewable.
-The context pack's workspaceInspiration contains discovery items and nextCursor, not proof of
-visual inspection or a run selection. Continue with list_reference_emails scope=WORKSPACE when
-needed, without a Brand filter, and view promising references with get_reference_email.
+workspaceInspiration items are discovery, not visual inspection or a run selection; continue with
+list_reference_emails scope=WORKSPACE (no Brand filter) and view candidates with get_reference_email.
 An explicit user selection takes precedence over automatic alternatives when eligible.
 Check processing state and actual image access: unavailable images cannot be visual inspiration.
 Refresh expired signed URLs through get_reference_email; disclose unresolved access.
@@ -78,15 +75,15 @@ Omitting intent uses the legacy cutout comparison, which is unsuitable for a new
 `create_image_generation_job` has no source-image input: `productId` alone
 does not send product pixels. Inspect real source and result for identity and creative quality;
 the Analysis model describes Swipe File references, not product-scene quality.
-Only the single sourceAssetId image is attached to an edit request. Naming additional catalog
-products does not supply their appearance. A multi-product scene needs verified source pixels
-for every product, such as a composite made from the originals; otherwise use separately
-verified assets in the layout. Do not invent the missing products from their names.
+An edit request attaches only the sourceAssetId image; naming other products does not supply their
+appearance. A multi-product scene needs verified pixels for every product (for example a composite of
+the originals), otherwise place separately verified assets; never invent products from names.
 
 Supply assetName (descriptive, at least two words, 3–100 characters) and targetSize from the intended
 placement's CSS width/height. Only supply `targetSize.backgroundColor` when you intentionally
 want an opaque frame. For an unframed photo, omit it; inspect actual delivery ratio and crop.
 Different output dimensions require deliberate fit/crop, not accidental transparent gutters.
+Prompts state what must stay, quote any text to render and name adjacent edge colors.
 
 For a cutout request background=transparent. Inspect actual alpha and its edges on the planned
 ground; reject baked checkerboards, white boxes, halos and changed product details.
@@ -106,10 +103,9 @@ organization/project's billing and limits; the code does not prove a zero accoun
 For the provider error code rate_limit_exceeded, name the rate limit. For an unspecified OpenAI HTTP 429 say:
 “OpenAI hat die Bildanfrage gerade abgelehnt. Die genaue Ursache ist aus der Fehlermeldung nicht
 erkennbar. Bitte prüfe die Limits der verbundenen OpenAI-Verbindung oder wende dich an den Support.”
-Respect confirmed available credit; never recommend topping up without evidence. Do not invent
-a Mayland restriction on new models, switch models without evidence, or create replacement jobs.
-Keep the existing job retry policy. Missing sanitized error details do not prove that the provider
-supplied no details. Use safe job/connection/model identifiers for support, never credentials.
+Never recommend topping up credit, invent a model restriction, switch models or create replacement
+jobs without evidence; keep the job retry policy. Share safe job/connection/model identifiers for
+support, never credentials.
 Then use `get_completed_image_asset`: it returns the public url,
 result image blocks, plus the source image for an edit. View them before placement. Use measured
 `delivery` dimensions, not private preview dimensions; inspect the public image when unavailable.
@@ -125,10 +121,8 @@ preserve useful WIP and report the gap; do not complete until the requirement is
 ## Fonts and identity fields
 
 Read all `designDna.font_families` entries and their `usage`, including additional campaign and
-accent families. Composition retains their supplied faces in the existing document CustomFont
-pipeline; use the intended family per element, with an email-safe fallback. A missing source is
-not evidence that the font is loaded. Report unavailable font errors, preserve WIP and repair the
-source before claiming the requested typography rendered correctly.
+accent families. Use the intended family per element with an email-safe fallback. Report unavailable font errors,
+preserve WIP and repair the source before claiming the requested typography rendered.
 
 Read `visualSummary`, `voiceSummary`, `tone`, `noGo`, `imageryStyle` and the target's verified
 designTokens. Product truth/benefits remain sourced; furniture and mandatoryStatements retain their
@@ -161,26 +155,20 @@ A reusable CTA may be saved at Campaign, Brand, or Global scope.
 opacity works on every kind; text newlines break lines, "• "/"1. " lines render as lists; table
 elements carry data tables (fields via get_mayledit_capabilities).
 
-For ordinary optional fields, update_node with unsetProperties and an empty patch removes a
-link/effect; do not send null, remove required fields, or both patch and unset a field.
-Change a shared group URL on every member in one batch. For component members use
-set_instance_override with sectionId, instanceId, sourceElementId and patch; an empty href clears
-the link without resetting unrelated overrides. Use complete groups and touched Auto Layout trees
-when grouping, moving or duplicating; locked nodes must be unlocked first.
-Managed Auto Layout children require layout operations; intentional overlap other than a linked
-CTA pair does not belong in it.
+Remove an optional link/effect with update_node, unsetProperties and an empty patch; never send
+null or both patch and unset one field. Change a group URL on every member in one batch; on component
+members use set_instance_override (an empty href clears only the link). Group, move or duplicate
+complete groups and Auto Layout trees; unlock locked nodes first. Managed Auto Layout children need
+layout operations and hold no overlap other than a linked CTA pair.
 Components/Variables resolve through typed operations; invalid definitions and cycles fail closed.
 
 Inside text, `**` enables bold and `==` uses accentColor; without that color it is plain text.
 Rotated text is baked into imagery and ceases to be live text. Gradients and translucent/freeform
 shapes may also be baked and skip dark-mode color rewriting; inspect their recipient rendering.
-Rasterization information is not a blanket prohibition on cards over images or faded heroes.
-Keep requested overlaps and layer order while inspecting the actual compiled result. If a panel's
-background and live text separate on mobile, repair that composition and recheck both widths;
-do not silently replace the overlap with an arbitrary gap or claim unsupported renderer behavior.
-For a fade, inspect a detail crop of the source to determine the transition's direction, color
-and extent, then verify those pixels in the result. Use supported gradient/image operations from
-the current capabilities; a hard shape over the image is not evidence of a matching fade.
+This does not prohibit cards over images or faded heroes: keep requested overlaps and layer order,
+and if panel and live text separate on mobile, repair the composition rather than substituting a
+gap. Match a fade's direction, color and extent from a source detail crop using supported
+gradient/image operations; a hard shape over the image is not a matching fade.
 
 ## Optional shared libraries and export
 
@@ -189,9 +177,8 @@ Global means this workspace. Library saves use fresh context/idempotency; update
 id/expectedVersion. Use definitions from the capabilities' libraries category, not invented fields.
 Global mutations require an admin. Defaults become persistent only after an explicit save.
 
-Library changes and document instances are separate: upsert_reusable_block then
-instantiate_reusable_block imports a block; upsert_text_style then bind_text_style imports a style.
-Local overrides remain local; do not silently promote them to the catalog.
+Library entries and document instances are separate (upsert_reusable_block then
+instantiate_reusable_block; upsert_text_style then bind_text_style); local overrides stay local.
 Delete needs a confirmation challenge bound to the complete delete payload, item id/version and
 action delete_mayledit_library_item, then the same payload with confirmationToken.
 Do not bypass confirmation on retry; retain the idempotency key.
@@ -199,32 +186,52 @@ Do not bypass confirmation on retry; retain the idempotency key.
 export_email_document takes exactly one stored revisionId or versionId. Named-region PNG/SVG
 requires a permitted region format; inspect fidelity warnings and use downloadUrl before expiry.
 compatible_html and recipient preview use the compiled delivery artifact. Klaviyo publication is
-the operator's Submit to Klaviyo action; never invent an account/template or publish intent.
+the operator's Publish action in Mayledit; never invent an account/template or publish intent.
 
 ## Canvas and delivery evidence
 
-First view the current stored document with `get_email_preview_image`, renderMode=canvas.
-Inspect text/image details, not just a downsampled full-mail image. A text node's declared height
-is not proof that its loaded font and wrapped content fit; leave space to following nodes based
-on visible text bounds. Resize the text box and place related nodes using the rendered wrapping,
-or use Auto Layout where content should reflow. Preserve intentional overlaps such as linked
-CTAs and text over a photograph.
-Canvas geometry and responsive delivery are separate checks. Delivery's normal-flow rows can
-expand around text while independently positioned canvas nodes still collide. Repair the stored
-node geometry and recheck both surfaces. Do not call an editor defect resolved from delivery alone.
+First view the stored document with `get_email_preview_image`, renderMode=canvas, including
+detail crops. A text node's declared height does not prove its loaded font and wrapping fit: size
+text boxes from the rendered bounds, or use Auto Layout where content should reflow. Delivery rows
+can expand around text while canvas nodes still collide, so repair stored geometry and recheck both
+surfaces; delivery alone does not resolve an editor defect.
 
-Compile the current WIP with `compile_email_wip`; repair blocking diagnostics and compile again.
+Compile the current WIP with `compile_email_wip`; review all diagnostics using the warning repair
+procedure below, not only blocking errors. Compile again after repairs.
 `complete_agent_run` requires the exact current WIP's bound artifact with no blocking errors.
 EMAIL_AGENT_DELIVERY_NOT_READY/BLOCKED mean production is incomplete, not bypassable warnings.
 
+### Warning repair and Mayland Score
+
+After every creation and user iteration, compile with `compile_email_wip` and review every entry in
+`data.warnings` and `data.documentWarnings` (the warnings Mayledit shows), advisory ones included;
+successful compilation alone does not complete this pass. Repair the actual document through the
+returned element references, then compile and inspect the new revision. Compiler notes on normal
+art flattening, geometry packing or hosted temporary images explain output; they are not defects.
+Keep meaningful text at least 14px (body copy usually 16px) unless a readable exception is deliberate.
+
+Fix meaningful defects within the assignment: unreadable text, weak contrast, inaccessible actions,
+accidental repetition, wrong or missing alt text, broken destinations, missing content and avoidable
+HTML size. Preserve Brand identity, verified offers, prices, products, link destinations,
+personalization tokens, legal content, unsubscribe behavior and user-frozen copy; never strip
+content or compatibility markup to improve a number. Make one deliberate repair pass, recheck, and
+stop repeating an unsuccessful repair. Explain intentional or unfixable warnings; an unresolved
+blocking error still prevents completion.
+
+`data.maylandScore` is an explainable internal heuristic, not an inbox probability, deliverability
+guarantee or performance prediction; a high score does not establish visual or Brand quality.
+Report its returned points and reasons, never an invented, translated or stale score: after any
+mutation, recompile and verify the score belongs to the final revision/artifact. Before an
+iteration, ask only about a concrete material downside the user has not accepted. Requested A/B
+alternatives are separate emails, each checked the same way.
+
 ### Original messages in Run details
 
-Mayland cannot read host chats automatically. On compose/apply, supply `agentInput.conversation`:
-stable id, userPrompts with stable id, chronological sequence and verbatim text (including corrections).
-Bind these to this conversation/email/run; never substitute instructions, tool output or intermediate
-answers. Omit unavailable originals. `complete_agent_run` accepts conversation with the same ID/prompts
-and optional `finalAnswer`. Supply only settled final wording and present it unchanged; otherwise omit
-it. Failed completion never publishes a final answer. Captured prompts and safe errors survive failure.
+Mayland cannot read host chats. On compose/apply, supply `agentInput.conversation` with a stable
+id and the user's prompts verbatim (stable ids, chronological sequence, corrections included); never
+substitute instructions, tool output or intermediate answers, and omit unavailable originals.
+`complete_agent_run` takes the same conversation and an optional `finalAnswer`: only settled final
+wording, presented unchanged.
 
 For `get_email_preview_image`, use renderMode=delivery, compiled revisionId and
 request both `viewportWidth` 600 and 390. Check revision/artifact identity against compile.
@@ -233,6 +240,5 @@ than changing renderMode. Inspect the opening and each section with `clip` conta
 and height in CSS pixels. Bound clips by contentHeight and that viewport's width; mobile
 coordinates come from its 390px layout, not the 600px canvas. Detail pixels are returned directly,
 including when no `imageUrl` exists. Do not invent URLs or local files for image blocks.
-A downsampled full-mail image is insufficient to assess tiny text or collisions; view detail.
 If pixels cannot actually be viewed, report the gap. Neither compile success nor an immutable
 version is customer approval; preserve that distinction in every subsequent reference decision.
