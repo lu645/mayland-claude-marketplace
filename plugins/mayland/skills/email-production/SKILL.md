@@ -38,7 +38,9 @@ Reject stale blanket rules such as "never overlap a card and image"; reproduce t
 
 ## Ground the design
 
-Read a fresh Brand Context Pack, relevant product contexts and approved Learnings.
+Read a fresh Brand Context Pack, relevant product contexts and approved Learnings. If you
+started Brand or product research, wait until its import reports a final status first: a pack
+loaded earlier goes stale when the import lands.
 Use the target's verified identity, imagery style, voice, palette, typography, mandatory
 statements and legal furniture. No-go rules and supported product truth are binding.
 Brand and product intelligence (rating, verbatim reviews, trust facts, story, CTA pool, voice
@@ -84,14 +86,16 @@ Find a coherent relationship between message, copy, imagery and action. Explore 
 where useful, then choose deliberately. Write in the Brand's voice, preserve good authorized
 copy and remove repeated thoughts. Decide where the reader should look and what each region adds.
 A strong text-led design is valid; a visual concept may need several different images.
-For distinct concepts or variants, vary hierarchy, framing and image/text relationships; copy or color swaps alone do not make a distinct concept.
+Distinct concepts or variants vary hierarchy, framing and image/text relationships, not just copy or colour.
 When the user asks to preserve copy, keep every existing string, including subject/preheader,
 verbatim; improve the visual treatment rather than rewriting or removing text.
 
 Turn the message into a visual idea, not a sequence of available product photos. Use the Brand's
 actual imagery range, including people, interaction, props, unusual perspectives and expressive
 light when they fit. Give each image its own purpose; repeated crops of one packshot are not a
-story. Frame scenes deliberately, with close-ups where detail matters. Text over imagery, cutouts,
+story. Every email of a series leads with its own scene: when the register holds no unused scene
+that fits this email's idea, create one (product-scene from a verified packshot, or a generated
+mood without the product); never reuse another email's hero. Text over imagery, cutouts,
 typography-led regions and quiet space are choices, never a required section or preferred template.
 
 Facts and offers come from the authorized assignment or verified target context. Do not invent
@@ -99,7 +103,7 @@ discounts, urgency, reviews, benefits, claims or destinations. Omit unknown opti
 ask when an essential missing condition changes the offer. An ordinary product link does not
 prove automatic redemption. A closing campaign email does not promise no future marketing.
 Write a truthful subject and complementary preheader.
-Build quality into this same email: clear action, readable live text, useful imagery and purposeful links. Fewer images or links do not inherently improve inbox placement. Create separate A/B emails only when requested; no automatic second optimization variant.
+Build quality into this same email: clear action, readable live text, useful imagery and purposeful links. Create A/B emails only when requested.
 
 Plan the image role and geometry with the composition. Judge existing assets for this
 assignment rather than reusing them because a previous agent did. Generated assets from a
@@ -119,7 +123,6 @@ painted checkerboards, halos or changed letters. Preserve intentional Brand back
 For a product scene, use `create_image_edit_job` with a verified sourceAssetId and
 editIntent=product-scene. Generation without source pixels cannot establish product fidelity.
 For a cutout, use editIntent=background-removal and background=transparent.
-Use current job schemas; consult the asset mechanics only for geometry, fidelity or job failures.
 View source and result, inspect delivery dimensions and crop, then decide whether the asset works.
 A required failed image remains incomplete; never silently substitute an unrelated asset.
 There is no mandatory image job or fixed image count.
@@ -152,16 +155,13 @@ For interrupted writes or a reported version mismatch use [Reset recovery](../re
 ## Judge the result, then finish
 
 After every creation and user iteration, follow the warning repair and Mayland Score checks in [Mayledit mechanics](references/canvas.md#warning-repair-and-mayland-score). Review every reported issue, repair meaningful defects and recheck the final revision.
-Then work through [Creative review](references/creative-review.md), workflow=email-production and topic=creative-review, before `complete_agent_run`.
+Then work through [Creative review](references/creative-review.md), workflow=email-production and topic=creative-review, before `complete_agent_run`; pass its eight answers as `creativeReview`.
 
 Inspect the current editable canvas with `get_email_preview_image`, renderMode=canvas,
 including readable detail crops. Check actual text bounds, crops, alignment, spacing, frame edges and seams:
 a wrapped label must fit its box and keep its gap to the next element.
 Then compile and inspect renderMode=delivery at 600px and 390px, including details.
-Both surfaces must work: delivery reflow can hide bad canvas geometry, while a correct canvas
-does not prove responsive delivery. Correct the document rather than relying on one renderer
-to compensate for the other. Verify the same final revision after changes.
-The creative review judges concept and Brand fit.
+Both surfaces must work; correct the document, not one renderer. Verify the same final revision after changes.
 For an explicit rebuild, also verify each requested visual relationship against the exact source.
 Report remaining discrepancies or unviewed surfaces; claim a reference match only after comparison, never from compile success or a collision check alone.
 

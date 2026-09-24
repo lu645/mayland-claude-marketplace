@@ -42,7 +42,7 @@ Answer each with pass or fail and the crop (x, y, width, height) that shows it.
 Repair every failed answer on the canvas, render again and re-answer the questions that failed.
 Stop after two repair rounds and report honestly what still fails and why.
 
-Record the answers in the `agentInput` of your final `apply_email_batch` as a `documentInputs`
-entry named creative-review: each question, pass or fail, its crop and what changed. That
-agentInput replaces the earlier one, so repeat the idea-ledger entry in the same list. When the
-first review passes without repair, give the same answers in your handoff instead.
+Record the final answers in `creativeReview` of `complete_agent_run`: one entry per question
+(1 to 8) with pass or fail, the evidence crop (renderMode, viewportWidth, x, y, width, height)
+and a note on what you saw or changed. The run does not complete without all eight. The
+idea-ledger stays a `documentInputs` entry of your agentInput; the review does not go there.
