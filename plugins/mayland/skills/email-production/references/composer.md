@@ -57,9 +57,9 @@ Load only after choosing a compatible template for this assignment or when the u
    | Field | Values | What it decides |
    |---|---|---|
    | `typography` | centered, editorial | Whether headings, logo and buttons are centred or set flush left. Editorial is the modern magazine register. Not to be confused with `designTokens.typography` in the brand pack, which names fonts. |
-   | `density` | compact, regular, airy | Scales the vertical rhythm. Compact for retail, airy for editorial. |
-   | `buttonShape` | rect, rounded, pill | Read it from the brand form tokens, never pick a house default. |
-   | `buttonFill` | filled, outline | Outline keeps ink on the ground instead of a solid block. |
+   | `density` | compact, regular, airy | Scales the vertical rhythm. Compact for retail, airy for editorial. The Brand's balanced and dense map to regular and compact. |
+   | `buttonShape` | rect, rounded, pill | Read it from the brand form tokens (square maps to rect), never pick a house default. |
+   | `buttonFill` | filled, outline | Outline keeps ink on the ground instead of a solid block. The Brand's solid and ghost map to filled and outline. |
    | `tileStyle` | Brand form token | The treatment of the tiles in the grids. |
 
    Every block reads its own content keys and silently draws nothing for a key it does not
