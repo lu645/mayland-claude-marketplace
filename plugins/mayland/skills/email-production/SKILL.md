@@ -102,7 +102,7 @@ Facts and offers come from the authorized assignment or verified target context.
 discounts, urgency, reviews, benefits, claims or destinations. Omit unknown optional terms;
 ask when an essential missing condition changes the offer. An ordinary product link does not
 prove automatic redemption. A closing campaign email does not promise no future marketing.
-Write a truthful subject and complementary preheader.
+Write a truthful subject and complementary preheader; set both with `set_document_metadata`.
 Build quality into this same email: clear action, readable live text, useful imagery and purposeful links. Create A/B emails only when requested.
 
 Plan the image role and geometry with the composition. Judge existing assets for this

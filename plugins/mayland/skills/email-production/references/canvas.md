@@ -155,16 +155,16 @@ A reusable CTA may be saved at Campaign, Brand, or Global scope.
 opacity works on every kind; text newlines break lines, "• "/"1. " lines render as lists; table
 elements carry data tables (fields via get_mayledit_capabilities).
 
-Remove an optional link/effect with update_node, unsetProperties and an empty patch; never send
-null or both patch and unset one field. Change a group URL on every member in one batch; on component
+Remove an optional link/effect with update_node, unsetProperties and an empty patch. Change a group URL on every member in one batch; on component
 members use set_instance_override (an empty href clears only the link). Group, move or duplicate
 complete groups and Auto Layout trees; unlock locked nodes first. Managed Auto Layout children need
 layout operations and hold no overlap other than a linked CTA pair.
-Components/Variables resolve through typed operations; invalid definitions and cycles fail closed.
 
-Inside text, `**` enables bold and `==` uses accentColor; without that color it is plain text.
-Rotated text is baked into imagery and ceases to be live text. Gradients and translucent/freeform
-shapes may also be baked and skip dark-mode color rewriting; inspect their recipient rendering.
+Inside text, `**` is bold and `==` uses accentColor.
+Rotated text is baked into imagery. Translucent, stroked or freeform shapes behind copy bake too and
+skip dark-mode rewriting. Bands and cards stay live: `set_auto_layout` background/gradient/radius, a
+full-width rect/rounded Shape, or a solid card holding stacked copy and photos. For a one-sided
+rounded seam, lay a rounded full-width sheet over the band's end, not a freeform path.
 This does not prohibit cards over images or faded heroes: keep requested overlaps and layer order,
 and if panel and live text separate on mobile, repair the composition rather than substituting a
 gap. Match a fade's direction, color and extent from a source detail crop using supported

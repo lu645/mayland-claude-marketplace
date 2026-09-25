@@ -148,6 +148,11 @@ tight polling loop. If no supported wait or useful work remains, or the unchange
 is reached, report the last known pending state and retain the jobId for the next status check;
 do not promise background monitoring that has not been started.
 
+When the user also commissioned emails, a running import is no reason to end your turn: set up the
+campaign, prompt and references meanwhile, check the import again and continue into production once
+it reports a final status. End a turn only to ask the user a question or to report a finished or
+blocked assignment; a failed shell command or an unchanged status is neither.
+
 A blocked wait or failed status read is not a failed import. Keep the original jobId and resume
 status observation; never start a replacement import. Only a returned FAILED status establishes
 import failure. COMPLETED_WITH_ERRORS means partial success, and an unavailable status remains
