@@ -2,7 +2,6 @@
 
 Consult the relevant section only when the current tool schema/capability examples do not answer
 an operation or recovery question. The creative entrypoint covers ordinary production.
-These are technical boundaries, not design recipes.
 
 ## Campaign identity and run setup
 
@@ -130,7 +129,7 @@ required wording. Navigation labels are not a logo asset.
 
 A named font is not a loaded face. Use trusted sources or inspect the official Brand site's
 stylesheet for its actual font URL. Register faces with `upsert_custom_font` using their real
-weight and safe fallback stack; do not split Base64 font bytes across chat messages.
+weight; stacks: that face, system fallbacks, generic ("Face, Arial, sans-serif"); do not split Base64 font bytes across chat messages.
 The optional composer accepts plan.fonts.faces with name/data/weight and their respective verified
 HTTPS font URLs. Confirm the face loads in the rendered preview. Do not label regular as every
 weight, bypass source validation, or rewrite Brand typography to disguise a fallback.
@@ -163,15 +162,15 @@ layout operations and hold no overlap other than a linked CTA pair.
 Inside text, `**` is bold and `==` uses accentColor.
 Rotated text is baked into imagery. Translucent, stroked or freeform shapes behind copy bake too and
 skip dark-mode rewriting. Bands and cards stay live: `set_auto_layout` background/gradient/radius, a
-full-width rect/rounded Shape, or a solid card holding stacked copy and photos. For a one-sided
+full-width rect/rounded Shape, or a solid card holding stacked copy and photos; glyph and label
+share font, weight and colour. For a one-sided
 rounded seam, lay a rounded full-width sheet over the band's end, not a freeform path.
 A faded hero: a full-width image with `fade` (edge bottom, colour of the band or frame below). A
 headline on its calm area takes mobileBehavior scale to stay on the picture on phones; body copy and
 CTA sit below. Lowered opacity softens a picture behind copy.
-This does not prohibit cards over images or faded heroes: keep requested overlaps and layer order,
-and if panel and live text separate on mobile, repair the composition rather than substituting a
-gap. Match a fade's direction, color and extent from a source detail crop using supported
-gradient/image operations; a hard shape over the image is not a matching fade.
+Cards over images and faded heroes stay allowed: keep requested overlaps and layer order; if panel
+and live text separate on mobile, repair the composition, never substitute a gap. Match a source
+fade's direction, color and extent with gradient/image operations, not a hard shape.
 
 ## Optional shared libraries and export
 
@@ -186,6 +185,7 @@ challenge for the complete payload, then the same payload with confirmationToken
 export_email_document takes one stored revisionId or versionId; named regions need a permitted
 format, and downloadUrl expires. compatible_html uses the compiled delivery artifact. Klaviyo
 publication is the operator's Publish action in Mayledit; never invent an account, template or publish intent.
+Publish maps unsubscribe/preferences placeholders itself; only exported HTML needs replacements.
 
 ## Canvas and delivery evidence
 
