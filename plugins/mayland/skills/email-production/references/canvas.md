@@ -165,6 +165,9 @@ Rotated text is baked into imagery. Translucent, stroked or freeform shapes behi
 skip dark-mode rewriting. Bands and cards stay live: `set_auto_layout` background/gradient/radius, a
 full-width rect/rounded Shape, or a solid card holding stacked copy and photos. For a one-sided
 rounded seam, lay a rounded full-width sheet over the band's end, not a freeform path.
+A faded hero: a full-width image with `fade` (edge bottom, colour of the band or frame below). A
+headline on its calm area takes mobileBehavior scale to stay on the picture on phones; body copy and
+CTA sit below. Lowered opacity softens a picture behind copy.
 This does not prohibit cards over images or faded heroes: keep requested overlaps and layer order,
 and if panel and live text separate on mobile, repair the composition rather than substituting a
 gap. Match a fade's direction, color and extent from a source detail crop using supported
@@ -172,21 +175,17 @@ gradient/image operations; a hard shape over the image is not a matching fade.
 
 ## Optional shared libraries and export
 
-Use list_mayledit_library with emailId for Campaign/Brand visibility or brandId for Brand.
-Global means this workspace. Library saves use fresh context/idempotency; updates also require
-id/expectedVersion. Use definitions from the capabilities' libraries category, not invented fields.
-Global mutations require an admin. Defaults become persistent only after an explicit save.
+Use list_mayledit_library with emailId (Campaign/Brand) or brandId; Global means this workspace
+and needs an admin. Saves use fresh context/idempotency, updates id/expectedVersion, and fields
+from the capabilities' libraries category.
 
 Library entries and document instances are separate (upsert_reusable_block then
-instantiate_reusable_block; upsert_text_style then bind_text_style); local overrides stay local.
-Delete needs a confirmation challenge bound to the complete delete payload, item id/version and
-action delete_mayledit_library_item, then the same payload with confirmationToken.
-Do not bypass confirmation on retry; retain the idempotency key.
+instantiate_reusable_block; upsert_text_style then bind_text_style). Delete needs a confirmation
+challenge for the complete payload, then the same payload with confirmationToken and idempotency key.
 
-export_email_document takes exactly one stored revisionId or versionId. Named-region PNG/SVG
-requires a permitted region format; inspect fidelity warnings and use downloadUrl before expiry.
-compatible_html and recipient preview use the compiled delivery artifact. Klaviyo publication is
-the operator's Publish action in Mayledit; never invent an account/template or publish intent.
+export_email_document takes one stored revisionId or versionId; named regions need a permitted
+format, and downloadUrl expires. compatible_html uses the compiled delivery artifact. Klaviyo
+publication is the operator's Publish action in Mayledit; never invent an account, template or publish intent.
 
 ## Canvas and delivery evidence
 

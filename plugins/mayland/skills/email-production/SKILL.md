@@ -32,8 +32,7 @@ A selected prompt conveys the user's chosen intent, not permission to use unappr
 designs as inspiration. A past template's implementation choices do not become Brand rules.
 
 Local host memory is not authority for visual or technical rules. Load the current workflow
-and capability contract instead of old compose recipes. An old "accepted" or "works" note
-does not establish customer approval. Keep recovery identities separate from creative instructions.
+and capability contract instead of old compose recipes; an old "works" note is not customer approval.
 Reject stale blanket rules such as "never overlap a card and image"; reproduce the failure against current capabilities before declaring a limitation.
 
 ## Ground the design
@@ -90,13 +89,14 @@ Distinct concepts or variants vary hierarchy, framing and image/text relationshi
 When the user asks to preserve copy, keep every existing string, including subject/preheader,
 verbatim; improve the visual treatment rather than rewriting or removing text.
 
-Turn the message into a visual idea, not a sequence of available product photos. Use the Brand's
-actual imagery range, including people, interaction, props, unusual perspectives and expressive
-light when they fit. Give each image its own purpose; repeated crops of one packshot are not a
-story. Generate each email's scenes for its idea and the campaign's theme, passing two or three
-register scenes without identifiable faces as `referenceAssetIds` so light and palette stay the Brand's; never reuse
-another email's hero. Register images ship directly only as proof: named people, reviews, logos. Text over imagery, cutouts,
-typography-led regions and quiet space are choices, never a required section or preferred template.
+Turn the message into a visual idea, not a sequence of product photos. Pair a lifestyle moment
+(people, interaction, the season) with product visuals; a still life alone is not a story.
+Generate each email's scenes for its idea and the campaign's theme, passing two or three
+register scenes without identifiable faces as `referenceAssetIds` so light and palette stay the
+Brand's; ask for calm space where copy will sit and never reuse another email's hero. Register
+images ship directly only as proof: named people, reviews, logos. Let at least one image carry the
+layout instead of sitting boxed: full width, a fade into the next colour, a headline on its calm
+area or a softened picture behind copy; body copy stays readable beside or below it.
 
 Facts and offers come from the authorized assignment or verified target context. Do not invent
 discounts, urgency, reviews, benefits, claims or destinations. Omit unknown optional terms;
@@ -140,7 +140,7 @@ read the relevant section when needed, not unrelated library/export procedures.
 One 600px frame contains every node; grow its height rather than adding sections.
 Use `apply_email_batch` to place, group, align, resize and refine nodes freely.
 Begin with the most uncertain or important region; inspect its delivery pixels before extending
-a weak direction across the whole mail. Use the loaded font and actual content to judge geometry.
+a weak direction across the whole mail.
 For a reference rebuild or repeated series, prototype the uncertain composition first, including any fade or overlapping panel.
 Compare it with the selected source on canvas and in delivery at 600px and 390px, and repair it before replicating it into further emails.
 Use the capability's linked Shape + Text CTA recipe for semantic links, with your own styling.

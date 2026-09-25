@@ -28,7 +28,9 @@ Answer each with pass or fail and the crop (x, y, width, height) that shows it.
 4. **Layer placement.** Does any text or button cover a face, a hand or the product? Are overlaps
    deliberate and aligned, is anything cropped, and do edges sit on the spacing grid?
 5. **Image variety.** Does each image do a different job (scene, product in use, detail, people,
-   proof)? Is the same packshot repeated where a scene or a detail would say more?
+   proof)? Is there a lifestyle moment next to the product visuals, not only still lifes? Does at
+   least one image carry the layout (full width, a fade into the next colour, a headline on its
+   calm area, a softened picture behind copy) instead of sitting as a boxed picture?
 6. **Substance.** Does the email use at least one proof element from Brand Intelligence (rating,
    a verbatim review, the story, a trust fact) when the Brand has one? Is every sentence
    specific to this Brand and message, without filler?
