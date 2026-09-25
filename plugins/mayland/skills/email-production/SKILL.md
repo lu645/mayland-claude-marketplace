@@ -89,14 +89,14 @@ Distinct concepts or variants vary hierarchy, framing and image/text relationshi
 When the user asks to preserve copy, keep every existing string, including subject/preheader,
 verbatim; improve the visual treatment rather than rewriting or removing text.
 
-Turn the message into a visual idea, not a sequence of product photos. Pair a lifestyle moment
-(people, interaction, the season) with product visuals; a still life alone is not a story.
+Turn the message into a visual idea, not a sequence of product photos. Weigh whether a lifestyle
+moment (people, the season, the product secondary or absent) serves this email better than another product scene.
 Generate each email's scenes for its idea and the campaign's theme, passing two or three
 register scenes without identifiable faces as `referenceAssetIds` so light and palette stay the
-Brand's; ask for calm space where copy will sit and never reuse another email's hero. Register
+Brand's; ask for calm space where copy will sit and never reuse another email's hero or its treatment. Register
 images ship directly only as proof: named people, reviews, logos. Let at least one image carry the
 layout instead of sitting boxed: full width, a fade into the next colour, a headline on its calm
-area or a softened picture behind copy; body copy stays readable beside or below it.
+area or a softened picture behind copy; body copy stays readable below it.
 
 Facts and offers come from the authorized assignment or verified target context. Do not invent
 discounts, urgency, reviews, benefits, claims or destinations. Omit unknown optional terms;

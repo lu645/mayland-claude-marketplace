@@ -28,8 +28,8 @@ Answer each with pass or fail and the crop (x, y, width, height) that shows it.
 4. **Layer placement.** Does any text or button cover a face, a hand or the product? Are overlaps
    deliberate and aligned, is anything cropped, and do edges sit on the spacing grid?
 5. **Image variety.** Does each image do a different job (scene, product in use, detail, people,
-   proof)? Is there a lifestyle moment next to the product visuals, not only still lifes? Does at
-   least one image carry the layout (full width, a fade into the next colour, a headline on its
+   proof)? Where a lifestyle moment (people, the season, the product secondary or absent) would
+   tell the message better than another product scene, is there one? Does at least one image carry the layout (full width, a fade into the next colour, a headline on its
    calm area, a softened picture behind copy) instead of sitting as a boxed picture?
 6. **Substance.** Does the email use at least one proof element from Brand Intelligence (rating,
    a verbatim review, the story, a trust fact) when the Brand has one? Is every sentence
@@ -37,7 +37,9 @@ Answer each with pass or fail and the crop (x, y, width, height) that shows it.
 7. **Reference ideas.** Is every line of the idea ledger visible in the result, and is the email
    more than a copy of any single reference?
 8. **Uniqueness.** Does the email differ visibly from the other emails of the campaign in its
-   hero treatment and module mix?
+   hero treatment and module mix? Across the series, no more than two emails share a hero
+   treatment (for example a picture fading into white with the headline below), and at least two
+   set the headline on the picture or in its fade rather than under it.
 
 ## Repair and record
 
