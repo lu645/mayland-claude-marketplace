@@ -93,9 +93,9 @@ verbatim; improve the visual treatment rather than rewriting or removing text.
 Turn the message into a visual idea, not a sequence of available product photos. Use the Brand's
 actual imagery range, including people, interaction, props, unusual perspectives and expressive
 light when they fit. Give each image its own purpose; repeated crops of one packshot are not a
-story. Every email of a series leads with its own scene: when the register holds no unused scene
-that fits this email's idea, create one (product-scene from a verified packshot, or a generated
-mood without the product); never reuse another email's hero. Text over imagery, cutouts,
+story. Generate each email's scenes for its idea and the campaign's theme, passing two or three
+register scenes without identifiable faces as `referenceAssetIds` so light and palette stay the Brand's; never reuse
+another email's hero. Register images ship directly only as proof: named people, reviews, logos. Text over imagery, cutouts,
 typography-led regions and quiet space are choices, never a required section or preferred template.
 
 Facts and offers come from the authorized assignment or verified target context. Do not invent
@@ -125,7 +125,7 @@ editIntent=product-scene. Generation without source pixels cannot establish prod
 For a cutout, use editIntent=background-removal and background=transparent.
 View source and result, inspect delivery dimensions and crop, then decide whether the asset works.
 A required failed image remains incomplete; never silently substitute an unrelated asset.
-There is no mandatory image job or fixed image count.
+Image count stays free; never generate or alter identifiable real people.
 
 ## Design on the canvas
 
