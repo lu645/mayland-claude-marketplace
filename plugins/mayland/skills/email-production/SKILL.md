@@ -144,12 +144,13 @@ a weak direction across the whole mail.
 For a reference rebuild or repeated series, prototype the uncertain composition first, including any fade or overlapping panel.
 Compare it with the selected source on canvas and in delivery at 600px and 390px, and repair it before replicating it into further emails.
 Use the capability's linked Shape + Text CTA recipe for semantic links, with your own styling.
+`list_mayledit_library` (emailId) lists Campaign, Brand, Global components: reuse fitting ones ([Components](references/canvas.md#components)).
 
 Space in 8px steps (4px for tight pairs): 8/16px between related items, 24/32px between blocks, 48px+ between modules. Hold one type scale per campaign: Brand/Campaign styles from `list_mayledit_library`, else `upsert_text_style` the capability's default styles in Brand fonts, sized by designDna type_scale when present. `bind_text_style` every text node (override color/alignment); one H1 per email, Display for a hero headline.
 
 The legacy `compose_email_from_plan` is optional: choose it only if its template fits your design or the user asked for it. It is not the default route. Only then read [Optional composer](references/composer.md), available with workflow=email-production and topic=composer. Compose replaces the whole document; do not accidentally discard free-node refinements.
 
-Record original and effective instructions through agentInput; the mechanics reference covers its fields. Record sources actually used, including any production memory that influenced choices.
+Record original and effective instructions through agentInput (fields: mechanics reference). Record sources actually used, including any production memory that influenced choices.
 For interrupted writes or a reported version mismatch use [Reset recovery](../reset/SKILL.md), workflow=email-production and topic=recovery. Do not initiate setup when versions match.
 
 ## Judge the result, then finish
@@ -161,7 +162,7 @@ Inspect the current editable canvas with `get_email_preview_image`, renderMode=c
 including readable detail crops. Check actual text bounds, crops, alignment, spacing, frame edges and seams:
 a wrapped label must fit its box and keep its gap to the next element.
 Then compile and inspect renderMode=delivery at 600px and 390px, including details.
-Both surfaces must work; correct the document, not one renderer. Verify the same final revision after changes.
+Both surfaces must work; correct the document, not one renderer.
 For an explicit rebuild, also verify each requested visual relationship against the exact source.
 Report remaining discrepancies or unviewed surfaces; claim a reference match only after comparison, never from compile success or a collision check alone.
 

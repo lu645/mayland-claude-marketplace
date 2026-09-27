@@ -172,15 +172,15 @@ Cards over images and faded heroes stay allowed: keep requested overlaps and lay
 and live text separate on mobile, repair the composition, never substitute a gap. Match a source
 fade's direction, color and extent with gradient/image operations, not a hard shape.
 
-## Optional shared libraries and export
+## Components
 
-Use list_mayledit_library with emailId (Campaign/Brand) or brandId; Global means this workspace
-and needs an admin. Saves use fresh context/idempotency, updates id/expectedVersion, and fields
-from the capabilities' libraries category.
+Members call library blocks Components. Before building a region, list_mayledit_library with emailId
+(Campaign, Brand, Global components and styles) and reuse a fitting header, footer, legal or band
+instead of a look-alike, as that tool describes. Save one only when asked or repeated across
+the campaign. Updates need id/expectedVersion; delete needs a confirmation challenge, then the same
+payload with confirmationToken and idempotency key.
 
-Library entries and document instances are separate (upsert_reusable_block then
-instantiate_reusable_block; upsert_text_style then bind_text_style). Delete needs a confirmation
-challenge for the complete payload, then the same payload with confirmationToken and idempotency key.
+## Export
 
 export_email_document takes one stored revisionId or versionId; named regions need a permitted
 format, and downloadUrl expires. compatible_html uses the compiled delivery artifact. Klaviyo
