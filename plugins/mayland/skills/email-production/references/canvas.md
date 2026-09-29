@@ -142,7 +142,7 @@ are the authority. Unknown fields fail. The following capability vocabulary is c
 elementKinds: text, button, image, icon, shape, table
 shapeKinds: rect, rounded, circle, ellipse, triangle, diamond, pentagon, hexagon, polygon, star, line, arrow, freeform
 operations: set_document_metadata, set_frame_state, update_frame, insert_node, update_node, group_nodes, ungroup_nodes, duplicate_nodes, move_nodes, align_nodes, distribute_nodes, upsert_reusable_block, instantiate_reusable_block, detach_reusable_block, upsert_text_style, bind_text_style, set_text_style_overrides, reset_text_style_overrides, detach_text_style, upsert_saved_style, apply_saved_style, upsert_custom_font, remove_node, create_export_region, rename_export_region, create_component, update_component, create_component_variant, instantiate_component, set_instance_variant, set_instance_property, set_instance_override, swap_instance, reset_instance_overrides, detach_instance, bind_variable, unbind_variable, create_variable, update_variable, remove_variable, move_node, reorder_nodes, set_auto_layout, remove_auto_layout
-exporters: delivery_preview, compatible_html, png, pdf, svg, pen, klaviyo
+exporters: delivery_preview, compatible_html, png, pdf, svg, pen, fig, klaviyo
 recipes: linked_shape_text_cta
 
 Use one 600px frame; grow height with update_frame. Fully off-frame elements are dropped.
