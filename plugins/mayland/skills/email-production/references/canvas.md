@@ -39,7 +39,7 @@ truncate. Update substantive changes and bind jobs for an existing email to its 
 
 ## Reference selection and access failures
 
-Existing context references take priority; add Swipe File items (scope=WORKSPACE) found for the
+Existing context references take priority; add Moodboard items (scope=WORKSPACE) found for the
 email's purpose; when context.references is empty, workspaceInspiration is supplied automatically.
 Use list_reference_emails scope=BRAND with the target brandId to browse further Brand references.
 Use inspirationQuery on get_brand_context/get_product_context for a targeted search even with
@@ -73,7 +73,7 @@ for a changed setting/pose, or background-removal for a cutout preserving geomet
 Omitting intent uses the legacy cutout comparison, which is unsuitable for a new scene.
 `create_image_generation_job` has no source-image input: `productId` alone
 does not send product pixels. Inspect real source and result for identity and creative quality;
-the Analysis model describes Swipe File references, not product-scene quality.
+the Analysis model describes Moodboard references, not product-scene quality.
 An edit request attaches only the sourceAssetId image; naming other products does not supply their
 appearance. A multi-product scene needs verified pixels for every product (for example a composite of
 the originals), otherwise place separately verified assets; never invent products from names.
