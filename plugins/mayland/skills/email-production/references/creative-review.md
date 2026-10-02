@@ -17,14 +17,15 @@ A passing compile, a finished image job or a clean warning list is not an answer
 
 Answer each with pass or fail and the crop (x, y, width, height) that shows it.
 
-1. **Brand recognition.** Would someone who knows the Brand's site recognise the email without
-   the logo? Check colour roles, display font, the logo treatment and, when the Brand has one,
-   its signature motif.
+1. **Brand recognition.** Would someone who knows the Brand's emails (its Brand Emails, else its
+   site) recognise the email without the logo? Check colour roles, display font, the logo
+   treatment and, when the Brand has one, its signature motif.
 2. **Hierarchy.** Does each screen have one element that clearly leads, and is the reading path
    from it to the action obvious? Is the hero headline set at a display size rather than body
    scale?
-3. **Panel consistency.** Do cards, panels and buttons share the Brand's radius, border and shadow
-   values, and does every text use one of the campaign's text styles?
+3. **Panel consistency.** Do cards, panels and buttons share the radius, border and shadow the
+   Brand Emails show (designDna values without them), and does every text use one of the
+   campaign's text styles?
 4. **Layer placement.** Does any text or button cover a face, a hand or the product? Are overlaps
    deliberate and aligned, is anything cropped, and do edges sit on the spacing grid?
 5. **Image variety.** Does each image do a different job (scene, product in use, detail, people,
