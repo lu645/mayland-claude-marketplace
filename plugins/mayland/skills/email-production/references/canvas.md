@@ -40,13 +40,13 @@ truncate. Update substantive changes and bind jobs for an existing email to its 
 ## Reference selection and access failures
 
 Existing context references take priority; add Moodboard items (scope=WORKSPACE) found for the
-email's purpose; when context.references is empty, workspaceInspiration is supplied automatically.
+email's purpose. Without context.references the website leads; the Moodboard only on the user's request.
 Use list_reference_emails scope=BRAND with the target brandId to browse further Brand references.
 Use inspirationQuery on get_brand_context/get_product_context for a targeted search even with
 existing references. Follow nextCursor when searching; the combined five-reference bound applies
 to run selection, not the whole library. READY references with missing analysis remain viewable.
 workspaceInspiration items are discovery, not visual inspection or a run selection; continue with
-list_reference_emails scope=WORKSPACE (no Brand filter) and view candidates with get_reference_email.
+list_reference_emails scope=WORKSPACE and view candidates with get_reference_email.
 An explicit user selection takes precedence over automatic alternatives when eligible.
 Check processing state and actual image access: unavailable images cannot be visual inspiration.
 Refresh expired signed URLs through get_reference_email; disclose unresolved access.
