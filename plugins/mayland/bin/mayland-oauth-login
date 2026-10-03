@@ -236,14 +236,14 @@ def run_login(server, endpoint, client_id, resource, callback):
                                 print(
                                     "Mayland could not open the browser automatically. Open the "
                                     "printed OAuth URL in a browser, sign in to Mayland "
-                                    "and confirm the workspace; "
+                                    "and confirm workspace access; "
                                     "keep this command running.",
                                     flush=True,
                                 )
                             else:
                                 print(
                                     "Mayland requested browser sign-in. If no tab appears, open "
-                                    "the printed OAuth URL in a browser and confirm the Mayland workspace.",
+                                    "the printed OAuth URL in a browser and confirm access to the Mayland workspaces.",
                                     flush=True,
                                 )
                             print(f"Waiting up to {CALLBACK_TIMEOUT:g}s for the localhost callback.", flush=True)

@@ -7,6 +7,15 @@ allowed-tools:
 
 # Mayland
 
+## Workspaces
+
+One connection reaches every workspace the user is a member of. Objects named by id run in their
+own workspace, and workspace-wide lists label each item with workspaceId and workspaceName. Pass
+workspaceId only to create something without a parent object (a new Brand, a catalog import, a
+Moodboard reference), to narrow a list, or when a tool answers WORKSPACE_REQUIRED. When the request
+does not say which workspace is meant, ask the user; never pick one yourself. `list_workspaces`
+lists them. Never mix objects of two workspaces in one call.
+
 ## Explicit briefing routing
 
 Only when the user explicitly invokes /mayland:briefing, load get_workflow_instructions with
