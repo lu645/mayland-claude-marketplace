@@ -3,7 +3,7 @@
   "name": "mayland",
   "owner": {
     "name": "Mayland",
-    "url": "https://mayland.frondorf.co"
+    "url": "https://mayland.ai"
   },
   "description": "Official Mayland plugins for verified brand catalogs and brand-safe email production.",
   "plugins": [
@@ -12,11 +12,11 @@
       "displayName": "Mayland",
       "source": "./plugins/mayland",
       "description": "Research verified public brand catalogs and produce brand-safe emails through Mayland.",
-      "version": "0.7.3",
+      "version": "0.7.4",
       "author": {
         "name": "Mayland"
       },
-      "homepage": "https://mayland.frondorf.co",
+      "homepage": "https://mayland.ai",
       "repository": "https://github.com/lu645/mayland-claude-marketplace",
       "keywords": [
         "email",
