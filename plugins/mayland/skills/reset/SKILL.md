@@ -15,8 +15,9 @@ only customer-approved versions qualify. The current WIP remains available for a
    exact version, assignment, Brand and email IDs, current run and pack binding, WIP revision,
    reference selection receipt/ordered sources, job IDs, unresolved findings and uncertain request
    keys. Mayland's saved prompt, WIP, assets and receipts remain authoritative; do not create a
-   separate local document or node database. If the handoff cannot survive `/clear`, do not clear
-   until these identities can be recovered. Clearing is optional, not a recovery prerequisite.
+   separate local document or node database. If the handoff cannot survive clearing the
+   conversation (`/clear` in Claude Code, a new chat elsewhere), do not clear until these
+   identities can be recovered. Clearing is optional, not a recovery prerequisite.
 2. Read `get_email_wip` for the existing email and resolve the retained prompt version. Preserve
    manual changes and use the returned revision, active run, lock and fencing state. Never guess
    an ID or overwrite a newer document with the pre-interruption copy.
@@ -38,12 +39,16 @@ only customer-approved versions qualify. The current WIP remains available for a
    region before continuing. Completion still requires compiling and visually inspecting the
    exact current WIP. Do not repeat image jobs, create another email or mint a prompt Version 1
    merely because the conversation resumed.
-6. A context reset does not update the plugin. After an update use `/reload-plugins` or a new
-   Claude Code session. If connection fails, use Mayland's `Connect Agent` action with Claude
-   selected and its fresh hash-verified setup command as described in `/mayland:connect`.
-   A bare MCP reconnect is not a verified plugin update, but an already verified
-   installation can renew OAuth through Mayland's explicit browser confirmation.
-   Do not bypass a failed plugin setup check.
-   Other MCP clients use Connect Agent for their own client and reload the current workflow;
-   they must not install or run Claude CLI. A reported mismatch triggers this update path;
-   matching versions do not. Use the current client, not a Claude-specific fallback.
+6. A context reset does not update a plugin or reconnect the client. Only a failed connection or
+   a reported version mismatch needs the path for the current client; matching versions do not.
+   - Claude with the Mayland connector (claude.ai on the web, desktop or mobile, or Claude Code
+     signed in with claude.ai): the connector always reaches the current release. After an
+     authorization error, ask the user to open the Mayland connector and choose Connect, then
+     reload the current workflow.
+   - Claude Code with the Mayland plugin: use Mayland's `Connect Agent` action with Claude
+     selected and run its fresh hash-verified setup command once, then `/reload-plugins` or a new
+     Claude Code session. A bare MCP reconnect is not a verified plugin update, but an already
+     verified installation can renew OAuth through Mayland's explicit browser confirmation.
+     Do not bypass a failed plugin setup check.
+   - Codex and other local MCP clients: use Connect Agent for their own client, start a new
+     session and reload the current workflow; they must not install or run Claude CLI.

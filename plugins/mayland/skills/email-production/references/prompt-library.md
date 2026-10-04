@@ -40,7 +40,7 @@ Unknown information stays unknown. Ask only a targeted question when missing or 
 product, campaign or necessary content would materially change the result. A clearly identified
 target is not another confirmation step. Do not turn an understandable request into a compulsory
 interview, an Enhance command, a prompt editor or a request to copy and resubmit an improved prompt.
-The normal workflow never activates `/mayland:briefing` automatically. Missing optional inspiration
+The normal workflow never starts the optional briefing automatically. Missing optional inspiration
 does not block an otherwise supported instruction; do not fill it with fictional facts.
 
 Keep two distinct representations: `preparedExecutionIntent` retains concrete, authorized target
@@ -165,7 +165,7 @@ that timestamp; a newer trash/restore decision must not be overwritten by stale 
 
 ### Read and reuse without changing the source
 
-The /mayland P-1234 workflow uses `resolve_prompt` with `code` to retrieve one exact version.
+A P-ID lookup uses `resolve_prompt` with `code` to retrieve one exact version.
 Read-only lookup, showing the text, copying it, and `list_prompt_versions` never create a prompt
 line or start production. Keep the returned version id pinned; never reinterpret it as "whatever
 is latest" later. If the user selected a historical version, pass its `versionId` when resolving.

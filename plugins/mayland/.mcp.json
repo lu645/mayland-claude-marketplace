@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "mayland-mayland-dev-bx-gkyc4vmsxxpbnuz5ji": {
+    "mayland-mayland": {
       "type": "http",
-      "url": "https://mayland.ai/api/mcp/deployments/mayland-dev-Bx-gkyC4vMsXXPBNuZ5jI",
+      "url": "https://mayland.ai/api/mcp/deployments/mayland",
       "oauth": {
         "clientId": "mayland-8f9009d0509c",
         "callbackPort": 49653,

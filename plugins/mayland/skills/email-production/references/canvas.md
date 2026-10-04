@@ -16,7 +16,7 @@ a Brand ID. Get a fresh `get_brand_context` pack, relevant product contexts and
 `list_approved_learnings`. On CONTEXT_PACK_RUN_MISMATCH read WIP and use its actual active run.
 On stale context or interruption follow reset: an owned stale run must be paused before starting
 a replacement against a new pack. Never use the new pack to edit or complete the old run.
-For PLUGIN_UPDATE_RECOMMENDED follow connect and reload; a bare MCP reconnect is not an update.
+For PLUGIN_UPDATE_RECOMMENDED follow recovery's update steps; a bare MCP reconnect is not an update.
 
 `create_email` requires the chosen campaign, Brand, title and brief. Leave copyRevisionIds,
 referenceEmailIds and campaignGoalId omitted unless explicitly supplying the pack's exact selection.
@@ -27,9 +27,9 @@ Retain that email's child run and fencingToken. Retry an uncertain start with th
 Use current expectedWipRevision for writes and feed each returned newWipRevision into the next.
 Heartbeat the owned lock while jobs run. Do not interrupt another owner's healthy run.
 
-Copy returned IDs verbatim; current tool schemas govern operations, not host memory. On a reported version mismatch, use Connect Agent for the
-current client and recovery's verified setup guidance. Claude reloads its plugin after setup;
-other clients reload the workflow and must not install Claude CLI.
+Copy returned IDs verbatim; current tool schemas govern operations, not host memory. On a reported
+version mismatch, follow recovery's update steps for the current client: a Claude Code plugin
+reloads after its verified setup, other clients reload the workflow and must not install Claude CLI.
 
 In the first free-node batch or new compose, disclose agentInput: original userPrompt, effective
 productionInstruction, promptVersion, pluginVersion, model, provider, generationSettings,
