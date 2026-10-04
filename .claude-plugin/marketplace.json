@@ -5,28 +5,10 @@
     "name": "Mayland",
     "url": "https://mayland.ai"
   },
-  "description": "Official Mayland plugins for verified brand catalogs and brand-safe email production.",
-  "plugins": [
-    {
-      "name": "mayland",
-      "displayName": "Mayland",
-      "source": "./plugins/mayland",
-      "description": "Research verified public brand catalogs and produce brand-safe emails through Mayland.",
-      "version": "0.7.6",
-      "author": {
-        "name": "Mayland"
-      },
-      "homepage": "https://mayland.ai",
-      "repository": "https://github.com/lu645/mayland-claude-marketplace",
-      "keywords": [
-        "email",
-        "brand",
-        "catalog",
-        "products",
-        "production",
-        "mcp"
-      ],
-      "strict": true
-    }
-  ]
+  "description": "Mayland.ai no longer ships a Claude Code plugin. Add Mayland.ai as a connector from Connect Agent in Mayland.",
+  "forceRemoveDeletedPlugins": true,
+  "renames": {
+    "mayland": null
+  },
+  "plugins": []
 }
